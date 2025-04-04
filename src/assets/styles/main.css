@@ -1,0 +1,120 @@
+/* 전역 스타일 */
+:root {
+  --section-spacing: 4rem;
+  --content-max-width: 1280px;
+}
+
+/* 타이포그래피 */
+.page-title {
+  font-size: 2.5rem;
+  font-weight: 700;
+  margin-bottom: 2rem;
+  color: var(--v-primary-base);
+}
+
+.section-title {
+  font-size: 2rem;
+  font-weight: 600;
+  margin-bottom: 1.5rem;
+  color: var(--v-secondary-base);
+}
+
+.text-accent {
+  color: var(--v-accent-base);
+}
+
+/* 섹션 스타일 */
+.section-padding {
+  padding: var(--section-spacing) 0;
+}
+
+.section-light {
+  background-color: var(--v-background-base);
+}
+
+.section-dark {
+  background-color: var(--v-surface-variant-base);
+}
+
+/* 카드 스타일 */
+.card-hover {
+  transition: transform 0.3s ease-in-out;
+}
+
+.card-hover:hover {
+  transform: translateY(-4px);
+}
+
+/* 이미지 스타일 */
+.img-rounded {
+  border-radius: 12px;
+  overflow: hidden;
+}
+
+.img-shadow {
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+/* 버튼 스타일 */
+.btn-action {
+  text-transform: none !important;
+  letter-spacing: 0.5px;
+}
+
+/* 애니메이션 */
+.fade-enter-active,
+.fade-leave-active {
+  transition: opacity 0.3s ease;
+}
+
+.fade-enter-from,
+.fade-leave-to {
+  opacity: 0;
+}
+
+/* 반응형 여백 */
+@media (max-width: 600px) {
+  :root {
+    --section-spacing: 2rem;
+  }
+
+  .page-title {
+    font-size: 2rem;
+  }
+
+  .section-title {
+    font-size: 1.5rem;
+  }
+}
+
+/* 접근성 */
+.visually-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+/* 스크롤바 스타일 */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--v-surface-variant-base);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--v-primary-base);
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--v-secondary-base);
+} 
