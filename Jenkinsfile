@@ -8,6 +8,7 @@ pipeline {
         DOCKER_CREDENTIALS_ID = '0dd8e584-8e25-4817-b865-bb1e8901663b'
         NETWORK_NAME = 'myeongri'
         NODE_VERSION = '18.0.0'
+        WEATHER_API_KEY = credentials('weather-api-key')
     }
 
     stages {
@@ -46,7 +47,8 @@ pipeline {
                     docker run -d --restart unless-stopped \
                     --name ${APP_NAME} \
                     --network ${NETWORK_NAME} \
-                    -p 8083:80 \
+                    -p 8083:8083 \
+                    -e WEATHER_API_KEY=${WEATHER_API_KEY} \
                     ${IMAGE_NAME}:${env.BUILD_NUMBER}
                     """
                 }
