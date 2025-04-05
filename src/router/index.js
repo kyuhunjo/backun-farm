@@ -4,7 +4,7 @@ import VillageInfoView from '../views/village/VillageInfoView.vue'
 import FarmingMethodsView from '../views/farming/FarmingMethodsView.vue'
 
 const router = createRouter({
-  history: createWebHistory(),
+  history: createWebHistory(import.meta.env.BASE_URL),
   routes: [
     {
       path: '/',
@@ -59,7 +59,13 @@ const router = createRouter({
         }
       ]
     }
-  ]
+  ],
+  scrollBehavior(to, from, savedPosition) {
+    if (savedPosition) {
+      return savedPosition
+    }
+    return { top: 0 }
+  }
 })
 
 export default router 
