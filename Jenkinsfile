@@ -2,13 +2,14 @@ pipeline {
     agent any
 
     environment {
-        APP_NAME = 'backun-farm'
+        APP_NAME = 'backun-farm-frontend'
         IMAGE_NAME = "kyuhunjo/${APP_NAME}"
-        DEPLOY_DIR = '/deploy'
         DOCKER_CREDENTIALS_ID = '0dd8e584-8e25-4817-b865-bb1e8901663b'
         NETWORK_NAME = 'myeongri'
         NODE_VERSION = '18.0.0'
         WEATHER_API_KEY = credentials('weather-api-key')
+        AGRI_WEATHER_API_KEY = credentials('agri-weather-api-key')
+        AIR_QUALITY_API_KEY = credentials('air-quality-api-key')
     }
 
     stages {
@@ -21,6 +22,13 @@ pipeline {
         stage('Build') {
             steps {
                 script {
+                    // 환경 변수 파일 생성
+                    sh """
+                    echo "WEATHER_API_KEY=${WEATHER_API_KEY}" > .env
+                    echo "AGRI_WEATHER_API_KEY=${AGRI_WEATHER_API_KEY}" >> .env
+                    echo "AIR_QUALITY_API_KEY=${AIR_QUALITY_API_KEY}" >> .env
+                    """
+                    
                     dockerImage = docker.build("${IMAGE_NAME}:${env.BUILD_NUMBER}")
                 }
             }
@@ -30,8 +38,11 @@ pipeline {
             steps {
                 script {
                     docker.withRegistry('', "${DOCKER_CREDENTIALS_ID}") {
-                        dockerImage.push('latest')
-                        dockerImage.push("${env.BUILD_NUMBER}")
+                        sh """
+                        docker tag ${IMAGE_NAME}:${env.BUILD_NUMBER} ${IMAGE_NAME}:latest
+                        docker push ${IMAGE_NAME}:${env.BUILD_NUMBER}
+                        docker push ${IMAGE_NAME}:latest
+                        """
                     }
                 }
             }
@@ -48,7 +59,6 @@ pipeline {
                     --name ${APP_NAME} \
                     --network ${NETWORK_NAME} \
                     -p 8083:8083 \
-                    -e WEATHER_API_KEY=${WEATHER_API_KEY} \
                     ${IMAGE_NAME}:${env.BUILD_NUMBER}
                     """
                 }
@@ -66,7 +76,7 @@ pipeline {
 
     post {
         success {
-            echo '백운마을 웹사이트가 Docker로 성공적으로 배포되었습니다.'
+            echo '백운마을 프론트엔드가 Docker로 성공적으로 배포되었습니다.'
         }
         failure {
             echo '빌드 또는 배포 과정에서 오류가 발생했습니다.'
