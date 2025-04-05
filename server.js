@@ -6,8 +6,8 @@ const compression = require('compression');
 const helmet = require('helmet');
 
 const app = express();
-const port = process.env.PORT || 80;
-const httpsPort = process.env.HTTPS_PORT || 443;
+const port = process.env.PORT || 8083;
+const httpsPort = process.env.HTTPS_PORT || 8443;
 
 // 보안 미들웨어
 app.use(helmet({
@@ -37,8 +37,8 @@ app.get('*', (req, res) => {
   res.sendFile(path.join(__dirname, 'dist', 'index.html'));
 });
 
-// HTTP 서버 (HTTPS로 리디렉션)
-app.listen(port, () => {
+// HTTP 서버
+app.listen(port, '0.0.0.0', () => {
   console.log(`HTTP server running on port ${port}`);
 });
 
@@ -49,7 +49,7 @@ try {
   const credentials = { key: privateKey, cert: certificate };
 
   const httpsServer = https.createServer(credentials, app);
-  httpsServer.listen(httpsPort, () => {
+  httpsServer.listen(httpsPort, '0.0.0.0', () => {
     console.log(`HTTPS server running on port ${httpsPort}`);
   });
 } catch (error) {

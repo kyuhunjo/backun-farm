@@ -1,0 +1,42 @@
+# 버전 관리
+.git
+.gitignore
+
+# 의존성
+node_modules
+npm-debug.log
+
+# 개발 환경
+.env
+.env.local
+.env.*.local
+
+# 에디터 설정
+.idea
+.vscode
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?
+
+# 빌드 결과물
+dist
+
+# 시스템 파일
+.DS_Store
+Thumbs.db
+
+# 테스트 파일
+coverage
+*.spec.js
+tests
+
+# 문서
+docs
+*.md
+
+# 기타
+*.log
+*.tmp
+.cache 

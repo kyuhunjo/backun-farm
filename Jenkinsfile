@@ -55,12 +55,12 @@ pipeline {
                     docker run -d --restart unless-stopped \
                     --name ${APP_NAME} \
                     --network ${NETWORK_NAME} \
-                    -p ${HTTP_PORT}:80 \
-                    -p ${HTTPS_PORT}:443 \
+                    -p ${HTTP_PORT}:8083 \
+                    -p ${HTTPS_PORT}:8443 \
                     -v ${SSL_CERT_PATH}:/etc/nginx/ssl/imjoe24.com.pem:ro \
                     -v ${SSL_KEY_PATH}:/etc/nginx/ssl/imjoe24.com.key:ro \
-                    -e PORT=80 \
-                    -e HTTPS_PORT=443 \
+                    -e PORT=8083 \
+                    -e HTTPS_PORT=8443 \
                     ${IMAGE_NAME}:${env.BUILD_NUMBER}
                     """
                 }

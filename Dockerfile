@@ -30,8 +30,10 @@ COPY server.js ./
 RUN mkdir -p /etc/nginx/ssl
 
 # 포트 노출
-EXPOSE 80 443
+EXPOSE 8083 8443
 
 # 서버 실행
 ENV NODE_ENV=production
+ENV PORT=8083
+ENV HTTPS_PORT=8443
 CMD ["node", "server.js"] 
