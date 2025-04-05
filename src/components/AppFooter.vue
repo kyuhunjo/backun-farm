@@ -62,14 +62,6 @@
           <small>&copy; {{ new Date().getFullYear() }} 백운마을 귀농체험. All rights reserved.</small>
         </v-col>
       </v-row>
-
-      <!-- SNS 링크 -->
-      <v-row justify="center" class="mt-2">
-        <v-btn icon="mdi-facebook" variant="text" color="white" href="#" target="_blank"></v-btn>
-        <v-btn icon="mdi-instagram" variant="text" color="white" href="#" target="_blank"></v-btn>
-        <v-btn icon="mdi-youtube" variant="text" color="white" href="#" target="_blank"></v-btn>
-        <v-btn icon="mdi-kakao" variant="text" color="white" href="#" target="_blank"></v-btn>
-      </v-row>
     </v-container>
   </v-footer>
 </template>
