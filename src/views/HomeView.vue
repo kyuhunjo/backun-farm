@@ -8,6 +8,27 @@
       <div class="d-flex flex-column fill-height justify-center align-center text-white text-center">
         <h1 class="text-h2 font-weight-bold mb-4">{{ homeStore.villageInfo.title }}</h1>
         <h2 class="text-h4 mb-6">{{ homeStore.villageInfo.subtitle }}</h2>
+        
+        <!-- 날씨 정보 -->
+        <v-card
+          v-if="weatherData"
+          class="weather-card mb-8 pa-4"
+          width="400"
+          rounded="lg"
+        >
+          <v-row align="center" justify="center" no-gutters>
+            <v-col cols="auto" class="mr-4">
+              <div class="text-h2 font-weight-bold">{{ Math.round(weatherData.temperature) }}°</div>
+            </v-col>
+            <v-col>
+              <div class="text-h5 mb-1">{{ weatherData.description }}</div>
+              <div class="text-body-1">
+                최고 {{ Math.round(weatherData.maxTemp) }}° / 최저 {{ Math.round(weatherData.minTemp) }}°
+              </div>
+            </v-col>
+          </v-row>
+        </v-card>
+
         <v-btn
           color="primary"
           size="x-large"
@@ -213,6 +234,19 @@ const newsImages = [
   left: 0;
   right: 0;
   bottom: 0;
-  background: rgba(0, 0, 0, 0.4);
+  background: rgba(0, 0, 0, 0.5);
+}
+
+.weather-card {
+  background: rgba(255, 255, 255, 0.15) !important;
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.weather-card :deep(.v-card-text),
+.weather-card :deep(.text-h2),
+.weather-card :deep(.text-h5),
+.weather-card :deep(.text-body-1) {
+  color: white !important;
 }
 </style> 
