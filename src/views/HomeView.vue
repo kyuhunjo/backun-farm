@@ -1,192 +1,164 @@
 <template>
-  <v-container class="pa-0" fluid>
-    <!-- 히어로 섹션 -->
-    <v-parallax
-      :src="heroImage"
-      height="700"
-      class="hero-section"
-    >
-      <div class="hero-overlay"></div>
-      <div class="d-flex flex-column align-center justify-center text-center hero-content">
-        <h1 class="text-h2 font-weight-bold mb-4 text-white">
-          {{ homeStore.villageInfo.title }}
-        </h1>
-        <p class="text-h5 mb-8 text-white" style="max-width: 800px; line-height: 1.6;">
-          {{ homeStore.villageInfo.subtitle }}
-        </p>
-
-        <!-- 날씨 정보 -->
-        <v-card
-          v-if="weatherData"
-          class="weather-card mb-12 pa-6"
-          width="500"
-          rounded="0"
-        >
-          <v-row align="center" justify="center" no-gutters>
-            <v-col cols="12" class="text-center">
-              <div class="text-h1 font-weight-bold text-white mb-2">
-                {{ Math.round(weatherData.current.temp) }}°C
-              </div>
-              <div class="text-h4 text-white mb-4">
-                {{ weatherData.current.weather[0].description }}
-              </div>
-              <div class="d-flex justify-center align-center text-white">
-                <span class="text-h6 mr-4">
-                  <v-icon color="white" class="mr-1">mdi-thermometer-high</v-icon>
-                  최고 {{ Math.round(weatherData.daily[0].temp.max) }}°C
-                </span>
-                <span class="text-h6">
-                  <v-icon color="white" class="mr-1">mdi-thermometer-low</v-icon>
-                  최저 {{ Math.round(weatherData.daily[0].temp.min) }}°C
-                </span>
-              </div>
-              <div class="d-flex justify-center align-center mt-4">
-                <span class="text-subtitle-1 text-white mr-4">
-                  <v-icon color="white" class="mr-1">mdi-water-percent</v-icon>
-                  습도 {{ weatherData.current.humidity }}%
-                </span>
-                <span class="text-subtitle-1 text-white">
-                  <v-icon color="white" class="mr-1">mdi-weather-windy</v-icon>
-                  풍속 {{ Math.round(weatherData.current.wind_speed) }}m/s
-                </span>
-              </div>
-            </v-col>
-          </v-row>
-        </v-card>
-
-        <v-btn
-          color="primary"
-          size="x-large"
-          class="px-8"
-          to="/village/specialties"
-          rounded="0"
-        >
-          특산물 구경하기
-          <v-icon icon="mdi-arrow-right" class="ml-2"></v-icon>
-        </v-btn>
-      </div>
-    </v-parallax>
-
-    <!-- 특산물 섹션 -->
-    <v-container class="py-16">
-      <h2 class="text-h3 font-weight-bold text-center mb-12">백운마을 대표 특산물</h2>
-      <v-row>
-        <v-col cols="12" md="4">
-          <v-card class="h-100" elevation="2" rounded="0">
-            <v-img
-              src="https://images.unsplash.com/photo-1574856344991-aaa31b6f4ce3?ixlib=rb-4.0.3"
-              height="200px"
-              cover
-            ></v-img>
-            <v-card-title class="text-h5 pt-4">백운마을 고사리</v-card-title>
-            <v-card-text>
-              <p class="text-body-1">전라남도 화순군 백운마을의 맑은 공기와 깨끗한 환경에서 자란 고품질 고사리입니다. 향이 좋고 부드러운 식감이 특징입니다.</p>
-              <v-chip color="success" class="mt-2">수확기: 4월-5월</v-chip>
-            </v-card-text>
-            <v-divider></v-divider>
-            <v-card-actions>
-              <v-spacer></v-spacer>
-              <v-btn
-                color="primary"
-                variant="text"
-                @click="specialtyDialog1 = true"
-              >
-                자세히 보기
-              </v-btn>
-            </v-card-actions>
-          </v-card>
-        </v-col>
-
-        <v-col cols="12" md="4">
-          <v-card class="h-100" elevation="2" rounded="0">
-            <v-img
-              src="https://images.unsplash.com/photo-1574856344991-aaa31b6f4ce3?ixlib=rb-4.0.3"
-              height="200px"
-              cover
-            ></v-img>
-            <v-card-title class="text-h5 pt-4">백운마을 더덕</v-card-title>
-            <v-card-text>
-              <p class="text-body-1">전라남도 화순군 백운마을의 자연환경에서 자란 산더덕으로, 향이 진하고 영양이 풍부한 고품질 더덕입니다.</p>
-              <v-chip color="success" class="mt-2">수확기: 8월-10월</v-chip>
-            </v-card-text>
-            <v-divider></v-divider>
-            <v-card-actions>
-              <v-spacer></v-spacer>
-              <v-btn
-                color="primary"
-                variant="text"
-                @click="specialtyDialog2 = true"
-              >
-                자세히 보기
-              </v-btn>
-            </v-card-actions>
-          </v-card>
-        </v-col>
-
-        <v-col cols="12" md="4">
-          <v-card class="h-100" elevation="2" rounded="0">
-            <v-img
-              src="https://images.unsplash.com/photo-1574856344991-aaa31b6f4ce3?ixlib=rb-4.0.3"
-              height="200px"
-              cover
-            ></v-img>
-            <v-card-title class="text-h5 pt-4">백운마을 곶감</v-card-title>
-            <v-card-text>
-              <p class="text-body-1">전라남도 화순군 백운마을의 깨끗한 환경에서 재배한 고품질 곶감으로, 당도가 높고 쫄깃한 식감이 특징입니다.</p>
-              <v-chip color="success" class="mt-2">수확기: 11월-12월</v-chip>
-            </v-card-text>
-            <v-divider></v-divider>
-            <v-card-actions>
-              <v-spacer></v-spacer>
-              <v-btn
-                color="primary"
-                variant="text"
-                @click="specialtyDialog3 = true"
-              >
-                자세히 보기
-              </v-btn>
-            </v-card-actions>
-          </v-card>
-        </v-col>
-      </v-row>
-    </v-container>
-
-    <!-- 마을 소식 섹션 -->
-    <v-container class="py-16 bg-grey-lighten-4">
-      <h2 class="text-h3 font-weight-bold text-center mb-12">마을 소식</h2>
-      <v-row>
-        <v-col v-for="(news, index) in homeStore.newsItems" :key="news.title" cols="12" md="6" lg="4">
-          <v-card class="h-100" elevation="2" rounded="0">
-            <v-img
-              :src="newsImages[index]"
-              height="250"
-              cover
-              class="bg-grey-lighten-2"
+  <v-container fluid class="pa-6">
+    <!-- 상단 날씨 정보 카드 -->
+    <v-card class="mb-6" elevation="1">
+      <v-card-text>
+        <div class="d-flex align-center justify-space-between flex-wrap">
+          <div class="text-h5 font-weight-bold">백운마을 특산물 모니터링 시스템</div>
+          <div class="d-flex align-center" v-if="weatherData">
+            <v-icon :icon="getWeatherIcon(weatherData.current.weather[0].id)" class="me-2"></v-icon>
+            <span class="text-h6 me-4">{{ Math.round(weatherData.current.temp) }}°C</span>
+            <span class="text-body-1 me-4">강수확률 {{ weatherData.daily[0].pop }}%</span>
+            <v-chip
+              color="success"
+              size="small"
+              class="font-weight-bold"
             >
-              <template v-slot:placeholder>
-                <v-row align="center" justify="center" class="fill-height">
-                  <v-progress-circular indeterminate color="primary"></v-progress-circular>
-                </v-row>
-              </template>
-            </v-img>
-            <v-card-title class="text-h5 pt-4">{{ news.title }}</v-card-title>
-            <v-card-subtitle class="pt-2">{{ news.date }}</v-card-subtitle>
-            <v-card-text class="text-body-1">{{ news.description }}</v-card-text>
-            <v-card-actions class="pa-4">
-              <v-spacer></v-spacer>
-              <v-btn
-                variant="text"
+              경보: 없음
+            </v-chip>
+          </div>
+        </div>
+      </v-card-text>
+    </v-card>
+
+    <!-- 작물 모니터링 그리드 -->
+    <v-row class="mb-6">
+      <v-col cols="12" md="4">
+        <v-card height="200">
+          <v-card-title class="d-flex align-center">
+            <v-icon color="primary" class="me-2">mdi-sprout</v-icon>
+            더덕 재배지 A구역
+          </v-card-title>
+          <v-card-text>
+            <div class="text-h5 mb-2">토양 수분: 65%</div>
+            <v-progress-linear
+              model-value="65"
+              color="primary"
+              height="8"
+              class="mb-4"
+            ></v-progress-linear>
+            <v-alert
+              color="success"
+              icon="mdi-robot"
+              density="compact"
+            >
+              AI 추천: 모종 심기 적기입니다
+            </v-alert>
+          </v-card-text>
+        </v-card>
+      </v-col>
+
+      <v-col cols="12" md="4">
+        <v-card height="200">
+          <v-card-title class="d-flex align-center">
+            <v-icon color="primary" class="me-2">mdi-flower</v-icon>
+            도라지 재배지 A구역
+          </v-card-title>
+          <v-card-text>
+            <div class="text-h5 mb-2">CO₂: 420ppm</div>
+            <v-progress-linear
+              model-value="42"
+              color="warning"
+              height="8"
+              class="mb-4"
+            ></v-progress-linear>
+            <v-alert
+              color="error"
+              icon="mdi-alert"
+              density="compact"
+            >
+              병해충 경고: 뿌리썩음병 위험
+            </v-alert>
+          </v-card-text>
+        </v-card>
+      </v-col>
+
+      <v-col cols="12" md="4">
+        <v-card height="200">
+          <v-card-title class="d-flex align-center">
+            <v-icon color="primary" class="me-2">mdi-chili-mild</v-icon>
+            고추 재배지 A구역
+          </v-card-title>
+          <v-card-text>
+            <div class="text-h5 mb-2">건조율: 45%</div>
+            <v-progress-linear
+              model-value="45"
+              color="success"
+              height="8"
+              class="mb-4"
+            ></v-progress-linear>
+            <v-chip
+              color="success"
+              class="font-weight-bold"
+            >
+              가격 +8% 상승
+            </v-chip>
+          </v-card-text>
+        </v-card>
+      </v-col>
+    </v-row>
+
+    <!-- 기상 예측 카드 -->
+    <v-card class="mb-6" color="info">
+      <v-card-title class="d-flex align-center">
+        <v-icon color="white" class="me-2">mdi-weather-cloudy-alert</v-icon>
+        기상 예측
+      </v-card-title>
+      <v-card-text class="text-white">
+        <div class="text-h6">3PM 강우 확률 70%</div>
+        <div class="text-body-1">→ 더덕 재배지 방수 시설 가동 예정</div>
+      </v-card-text>
+    </v-card>
+
+    <!-- 체험 프로그램 & 시장 동향 그리드 -->
+    <v-row>
+      <v-col cols="12" md="6">
+        <v-card height="300">
+          <v-card-title class="d-flex align-center">
+            <v-icon color="primary" class="me-2">mdi-calendar-check</v-icon>
+            체험 프로그램 예약 현황
+          </v-card-title>
+          <v-card-text>
+            <div class="mb-4">
+              <div class="d-flex align-center justify-space-between mb-2">
+                <span>더덕 송편 만들기</span>
+                <span class="text-caption">잔여 5석</span>
+              </div>
+              <v-progress-linear
+                model-value="80"
                 color="primary"
-                rounded="0"
-              >
-                자세히 보기
-                <v-icon icon="mdi-arrow-right" class="ml-2"></v-icon>
-              </v-btn>
-            </v-card-actions>
-          </v-card>
-        </v-col>
-      </v-row>
-    </v-container>
+                height="20"
+              ></v-progress-linear>
+            </div>
+            <div class="mb-4">
+              <div class="d-flex align-center justify-space-between mb-2">
+                <span>고추장 담그기</span>
+                <span class="text-caption">잔여 8석</span>
+              </div>
+              <v-progress-linear
+                model-value="60"
+                color="primary"
+                height="20"
+              ></v-progress-linear>
+            </div>
+          </v-card-text>
+        </v-card>
+      </v-col>
+
+      <v-col cols="12" md="6">
+        <v-card height="300">
+          <v-card-title class="d-flex align-center">
+            <v-icon color="primary" class="me-2">mdi-chart-line</v-icon>
+            시장 동향: 전국 더덕 가격 비교
+          </v-card-title>
+          <v-card-text>
+            <v-sheet class="pa-4">
+              <div class="text-center text-body-1">차트 영역</div>
+            </v-sheet>
+          </v-card-text>
+        </v-card>
+      </v-col>
+    </v-row>
   </v-container>
 </template>
 
@@ -198,16 +170,8 @@ const homeStore = useHomeStore()
 const weatherData = ref(null)
 
 // 화순군 백운마을의 위도와 경도 설정
-const VILLAGE_LATITUDE = 35.0647  // 화순군 백운마을 위도
-const VILLAGE_LONGITUDE = 126.9595  // 화순군 백운마을 경도
-
-// 이미지 경로
-const heroImage = 'https://images.unsplash.com/photo-1464226184884-fa280b87c399?q=80&w=1470&auto=format&fit=crop'
-const newsImages = [
-  'https://images.unsplash.com/photo-1625246333195-78d9c38ad449?q=80&w=1470&auto=format&fit=crop',
-  'https://images.unsplash.com/photo-1622383563227-04401ab4e5ea?q=80&w=1470&auto=format&fit=crop',
-  'https://images.unsplash.com/photo-1464226184884-fa280b87c399?q=80&w=1470&auto=format&fit=crop'
-]
+const VILLAGE_LATITUDE = 35.0647
+const VILLAGE_LONGITUDE = 127.0679
 
 // 날씨 정보 가져오기
 const fetchWeatherData = async () => {
@@ -220,56 +184,30 @@ const fetchWeatherData = async () => {
   }
 }
 
+// 날씨 코드에 따른 아이콘 반환
+const getWeatherIcon = (code) => {
+  if (code >= 200 && code < 300) return 'mdi-weather-lightning'
+  if (code >= 300 && code < 400) return 'mdi-weather-pouring'
+  if (code >= 500 && code < 600) return 'mdi-weather-rainy'
+  if (code >= 600 && code < 700) return 'mdi-weather-snowy'
+  if (code >= 700 && code < 800) return 'mdi-weather-fog'
+  if (code === 800) return 'mdi-weather-sunny'
+  return 'mdi-weather-cloudy'
+}
+
 onMounted(() => {
   fetchWeatherData()
+  // 1시간마다 날씨 정보 업데이트
+  setInterval(fetchWeatherData, 3600000)
 })
 </script>
 
 <style scoped>
-.hero-section {
-  position: relative;
-  margin-top: -64px; /* 헤더 높이만큼 위로 올림 */
-}
-
-.hero-overlay {
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background-color: rgba(0, 0, 0, 0.5);
-}
-
-.hero-content {
-  position: relative;
-  z-index: 1;
-  padding-top: 84px; /* 헤더 높이 + 여유 패딩 */
-}
-
-.weather-card {
-  background: rgba(0, 0, 0, 0.7) !important;
-  backdrop-filter: blur(10px);
-}
-
-/* 카드 스타일 */
 .v-card {
-  transition: transform 0.2s ease-in-out;
+  border-radius: 8px;
 }
 
-.v-card:hover {
-  transform: translateY(-4px);
-}
-
-/* 텍스트 스타일 */
-.text-white {
-  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
-}
-
-.weather-card :deep(.v-card-text),
-.weather-card :deep(.text-h1),
-.weather-card :deep(.text-h4),
-.weather-card :deep(.text-h6),
-.weather-card :deep(.text-subtitle-1) {
-  color: white !important;
+.v-progress-linear {
+  border-radius: 4px;
 }
 </style> 
