@@ -10,6 +10,8 @@ const __dirname = path.dirname(__filename);
 const app = express();
 const port = process.env.PORT || 8083;
 
+console.log('Starting server with port:', port);
+
 // 보안 미들웨어 설정 수정
 app.use(helmet({
   contentSecurityPolicy: {
@@ -70,4 +72,5 @@ app.use((req, res) => {
 // HTTP 서버
 app.listen(port, '0.0.0.0', () => {
   console.log(`HTTP server running on port ${port}`);
+  console.log(`Server is listening on http://0.0.0.0:${port}`);
 }); 
