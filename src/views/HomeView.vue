@@ -162,6 +162,9 @@ const VILLAGE_LONGITUDE = 128.5297
 const fetchWeatherData = async () => {
   try {
     const response = await fetch(`/api/weather?lat=${VILLAGE_LATITUDE}&lon=${VILLAGE_LONGITUDE}`)
+    if (!response.ok) {
+      throw new Error(`HTTP error! status: ${response.status}`);
+    }
     const data = await response.json()
     
     weatherData.value = {

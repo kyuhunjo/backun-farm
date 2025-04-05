@@ -1,13 +1,29 @@
 version: '3'
 services:
-  web:
-    build: .
+  frontend:
+    build:
+      context: .
+      dockerfile: Dockerfile.dev
+    ports:
+      - "3000:3000"
+    environment:
+      - NODE_ENV=development
+    volumes:
+      - .:/app
+      - /app/node_modules
+    command: npm run dev
+
+  backend:
+    build:
+      context: .
+      dockerfile: Dockerfile
     ports:
       - "8083:8083"
     environment:
       - WEATHER_API_KEY=${WEATHER_API_KEY}
       - NODE_ENV=development
+      - PORT=8083
     volumes:
       - .:/app
       - /app/node_modules
-    command: npm run dev 
+    command: node server.js 
