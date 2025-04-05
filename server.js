@@ -16,10 +16,10 @@ app.use(helmet({
     directives: {
       defaultSrc: ["'self'"],
       scriptSrc: ["'self'", "'unsafe-inline'", "'unsafe-eval'"],
-      styleSrc: ["'self'", "'unsafe-inline'", 'https:'],
-      imgSrc: ["'self'", 'data:', 'https:'],
+      styleSrc: ["'self'", "'unsafe-inline'", 'https:', 'http:'],
+      imgSrc: ["'self'", 'data:', 'https:', 'http:'],
       connectSrc: ["'self'", 'https:', 'http:', 'ws:', 'wss:'],
-      fontSrc: ["'self'", 'https:', 'data:'],
+      fontSrc: ["'self'", 'https:', 'data:', 'http:'],
       objectSrc: ["'none'"],
       mediaSrc: ["'self'"],
       frameSrc: ["'self'"],
@@ -28,7 +28,11 @@ app.use(helmet({
   crossOriginEmbedderPolicy: false,
   crossOriginOpenerPolicy: false,
   crossOriginResourcePolicy: false,
-  originAgentCluster: false
+  originAgentCluster: false,
+  strictTransportSecurity: false,
+  referrerPolicy: { policy: 'no-referrer' },
+  xssFilter: true,
+  hsts: false
 }));
 
 // CORS 설정 추가
@@ -36,6 +40,8 @@ app.use((req, res, next) => {
   res.header('Access-Control-Allow-Origin', '*');
   res.header('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS');
   res.header('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept, Authorization');
+  // HTTPS 관련 헤더 제거
+  res.removeHeader('Strict-Transport-Security');
   next();
 });
 
@@ -43,15 +49,21 @@ app.use((req, res, next) => {
 app.use(compression());
 
 // 정적 파일 제공
-app.use(express.static(path.join(__dirname, 'dist')));
+app.use(express.static(path.join(__dirname, 'dist'), {
+  setHeaders: (res) => {
+    res.removeHeader('Strict-Transport-Security');
+  }
+}));
 
-// SPA를 위한 라우팅 설정 - 와일드카드 경로를 문자열로 변경
+// SPA를 위한 라우팅 설정
 app.get('/', (req, res) => {
+  res.removeHeader('Strict-Transport-Security');
   res.sendFile(path.join(__dirname, 'dist', 'index.html'));
 });
 
 // 다른 모든 경로도 index.html로 리다이렉트
 app.use((req, res) => {
+  res.removeHeader('Strict-Transport-Security');
   res.sendFile(path.join(__dirname, 'dist', 'index.html'));
 });
 
