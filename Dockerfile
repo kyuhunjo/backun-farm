@@ -1,35 +1,13 @@
-# Step 1: Build Stage
-FROM node:18-alpine AS builder
+# Build stage
+FROM node:18-alpine as build-stage
 WORKDIR /app
-
-# package.json과 package-lock.json 복사
 COPY package*.json ./
-
-# 의존성 설치
 RUN npm install
-
-# 애플리케이션 소스 복사
 COPY . .
-
-# Vue.js 애플리케이션 빌드
 RUN npm run build
 
-# Step 2: Run Stage (Express.js 사용)
-FROM node:18-alpine
-WORKDIR /app
-
-# package.json 복사 및 서버 의존성 설치
-COPY package*.json ./
-RUN npm install express compression helmet
-
-# 빌드된 파일과 서버 설정 파일 복사
-COPY --from=builder /app/dist ./dist
-COPY server.js ./
-
-# 포트 노출
-EXPOSE 8083
-
-# 서버 실행
-ENV NODE_ENV=production
-ENV PORT=8083
-CMD ["node", "server.js"] 
+# Production stage
+FROM nginx:stable-alpine as production-stage
+COPY --from=build-stage /app/dist /usr/share/nginx/html
+EXPOSE 80
+CMD ["nginx", "-g", "daemon off;"] 
