@@ -4,8 +4,6 @@
   </v-container>
 </template>
 
-<script>
-export default {
-  name: 'FarmingExperienceView'
-}
+<script setup>
+// 필요한 경우 추가 로직 구현
 </script> 

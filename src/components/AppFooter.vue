@@ -14,7 +14,7 @@
         <v-col cols="12" sm="4">
           <h3 class="text-h6 font-heading mb-4 text-white">메뉴</h3>
           <v-row>
-            <v-col cols="6">
+            <v-col cols="12">
               <div class="text-subtitle-1 font-body text-white mb-2">마을 소개</div>
               <v-list density="compact" bg-color="transparent" class="pa-0">
                 <v-list-item to="/village/history" class="font-body text-grey-lighten-1 px-0">
@@ -37,26 +37,27 @@
                 </v-list-item>
               </v-list>
             </v-col>
-            <v-col cols="6">
-              <div class="text-subtitle-1 font-body text-white mb-2">귀농 체험</div>
+
+            <v-col cols="12">
+              <div class="text-subtitle-1 font-body text-white mb-2">농사 방법</div>
               <v-list density="compact" bg-color="transparent" class="pa-0">
-                <v-list-item to="/farming/programs" class="font-body text-grey-lighten-1 px-0">
+                <v-list-item to="/farming/fern" class="font-body text-grey-lighten-1 px-0">
                   <template v-slot:prepend>
                     <v-icon icon="mdi-chevron-right" size="small"></v-icon>
                   </template>
-                  체험 프로그램
+                  고사리 농사
                 </v-list-item>
-                <v-list-item to="/farming/prepare" class="font-body text-grey-lighten-1 px-0">
+                <v-list-item to="/farming/deodeok" class="font-body text-grey-lighten-1 px-0">
                   <template v-slot:prepend>
                     <v-icon icon="mdi-chevron-right" size="small"></v-icon>
                   </template>
-                  귀농 준비하기
+                  더덕 농사
                 </v-list-item>
-                <v-list-item to="/farming/success-stories" class="font-body text-grey-lighten-1 px-0">
+                <v-list-item to="/farming/persimmon" class="font-body text-grey-lighten-1 px-0">
                   <template v-slot:prepend>
                     <v-icon icon="mdi-chevron-right" size="small"></v-icon>
                   </template>
-                  성공 사례
+                  곶감 가공
                 </v-list-item>
               </v-list>
             </v-col>

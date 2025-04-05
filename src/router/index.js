@@ -1,9 +1,7 @@
 import { createRouter, createWebHistory } from 'vue-router'
 import HomeView from '../views/HomeView.vue'
 import VillageInfoView from '../views/village/VillageInfoView.vue'
-import FarmingExperienceView from '../views/farming/FarmingExperienceView.vue'
-import CommunityView from '../views/CommunityView.vue'
-import ContactView from '../views/ContactView.vue'
+import FarmingMethodsView from '../views/farming/FarmingMethodsView.vue'
 
 const router = createRouter({
   history: createWebHistory(),
@@ -37,35 +35,29 @@ const router = createRouter({
     },
     {
       path: '/farming',
-      name: 'farming',
-      component: FarmingExperienceView,
+      component: FarmingMethodsView,
       children: [
         {
-          path: 'programs',
-          name: 'farming-programs',
-          component: () => import('@/views/farming/ProgramsView.vue')
+          path: '',
+          name: 'farming',
+          redirect: '/farming/fern'
         },
         {
-          path: 'prepare',
-          name: 'farming-prepare',
-          component: () => import('@/views/farming/PrepareView.vue')
+          path: 'fern',
+          name: 'farming-fern',
+          component: () => import('@/views/farming/FernMethodView.vue')
         },
         {
-          path: 'success-stories',
-          name: 'farming-success-stories',
-          component: () => import('@/views/farming/SuccessStoriesView.vue')
+          path: 'deodeok',
+          name: 'farming-deodeok',
+          component: () => import('@/views/farming/DeodeokMethodView.vue')
+        },
+        {
+          path: 'persimmon',
+          name: 'farming-persimmon',
+          component: () => import('@/views/farming/PersimmonMethodView.vue')
         }
       ]
-    },
-    {
-      path: '/community',
-      name: 'community',
-      component: CommunityView
-    },
-    {
-      path: '/contact',
-      name: 'contact',
-      component: ContactView
     }
   ]
 })
