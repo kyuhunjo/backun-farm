@@ -26,12 +26,27 @@ services:
       - WEATHER_API_KEY=${WEATHER_API_KEY}
       - NODE_ENV=development
       - PORT=8083
+      - MONGODB_URI=mongodb://mongodb:27017/backun_farm
     volumes:
       - .:/app
       - /app/node_modules
     command: node server.js
+    depends_on:
+      - mongodb
     healthcheck:
       test: ["CMD", "curl", "-f", "http://localhost:8083/api/health"]
       interval: 30s
       timeout: 10s
-      retries: 3 
+      retries: 3
+
+  mongodb:
+    image: mongo:latest
+    ports:
+      - "27017:27017"
+    volumes:
+      - mongodb_data:/data/db
+    environment:
+      - MONGO_INITDB_DATABASE=backun_farm
+
+volumes:
+  mongodb_data: 
