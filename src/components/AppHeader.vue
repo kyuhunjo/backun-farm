@@ -59,42 +59,61 @@
         <v-btn to="/community" text class="font-body">커뮤니티</v-btn>
         <v-btn to="/contact" text class="font-body">문의하기</v-btn>
       </div>
-
-      <!-- Mobile Navigation Drawer -->
-      <v-navigation-drawer v-model="drawer" app temporary rounded="0">
-        <v-list rounded="0">
-          <v-list-item
-            prepend-avatar="@/assets/images/20250402_123303.jpg"
-            :title="'백운마을 귀농체험'"
-            :subtitle="'화순군 백운면'"
-            rounded="0"
-          ></v-list-item>
-          
-          <v-divider></v-divider>
-
-          <v-list-group value="village">
-            <template v-slot:activator="{ props }">
-              <v-list-item v-bind="props" title="마을소개" class="font-body"></v-list-item>
-            </template>
-            <v-list-item to="/village/history" title="마을 역사" class="font-body"></v-list-item>
-            <v-list-item to="/village/location" title="찾아오시는 길" class="font-body"></v-list-item>
-            <v-list-item to="/village/specialties" title="특산물" class="font-body"></v-list-item>
-          </v-list-group>
-
-          <v-list-group value="farming">
-            <template v-slot:activator="{ props }">
-              <v-list-item v-bind="props" title="귀농체험" class="font-body"></v-list-item>
-            </template>
-            <v-list-item to="/farming/programs" title="체험 프로그램" class="font-body"></v-list-item>
-            <v-list-item to="/farming/prepare" title="귀농 준비하기" class="font-body"></v-list-item>
-            <v-list-item to="/farming/success-stories" title="성공 사례" class="font-body"></v-list-item>
-          </v-list-group>
-
-          <v-list-item to="/community" title="커뮤니티" class="font-body"></v-list-item>
-          <v-list-item to="/contact" title="문의하기" class="font-body"></v-list-item>
-        </v-list>
-      </v-navigation-drawer>
     </v-app-bar>
+
+    <!-- Mobile Navigation Drawer -->
+    <v-navigation-drawer v-model="drawer" temporary>
+      <v-list>
+        <v-list-item
+          prepend-avatar="/village-logo.png"
+          :title="'백운마을'"
+          :subtitle="'화순군 백운면'"
+        ></v-list-item>
+        
+        <v-divider class="my-2"></v-divider>
+
+        <v-list-group
+          v-model="villageMenuOpen"
+        >
+          <template v-slot:activator="{ props }">
+            <v-list-item
+              v-bind="props"
+              title="마을소개"
+              class="font-body"
+            ></v-list-item>
+          </template>
+          <v-list-item
+            v-for="(item, i) in villageMenuItems"
+            :key="i"
+            :to="item.to"
+            :title="item.title"
+            class="font-body pl-4"
+          ></v-list-item>
+        </v-list-group>
+
+        <v-list-group
+          v-model="farmingMenuOpen"
+        >
+          <template v-slot:activator="{ props }">
+            <v-list-item
+              v-bind="props"
+              title="귀농체험"
+              class="font-body"
+            ></v-list-item>
+          </template>
+          <v-list-item
+            v-for="(item, i) in farmingMenuItems"
+            :key="i"
+            :to="item.to"
+            :title="item.title"
+            class="font-body pl-4"
+          ></v-list-item>
+        </v-list-group>
+
+        <v-list-item to="/community" title="커뮤니티" class="font-body"></v-list-item>
+        <v-list-item to="/contact" title="문의하기" class="font-body"></v-list-item>
+      </v-list>
+    </v-navigation-drawer>
   </div>
 </template>
 
@@ -102,6 +121,20 @@
 import { ref } from 'vue'
 
 const drawer = ref(false)
+const villageMenuOpen = ref(false)
+const farmingMenuOpen = ref(false)
+
+const villageMenuItems = [
+  { title: '마을 역사', to: '/village/history' },
+  { title: '찾아오시는 길', to: '/village/location' },
+  { title: '특산물', to: '/village/specialties' }
+]
+
+const farmingMenuItems = [
+  { title: '체험 프로그램', to: '/farming/programs' },
+  { title: '귀농 준비하기', to: '/farming/prepare' },
+  { title: '성공 사례', to: '/farming/success-stories' }
+]
 </script>
 
 <style scoped>
@@ -153,5 +186,14 @@ const drawer = ref(false)
   .site-title {
     font-size: 1.2rem;
   }
+}
+
+/* 사이드 메뉴 스타일 */
+.v-list-item--active {
+  color: var(--v-primary-base) !important;
+}
+
+.v-list-group__items .v-list-item {
+  padding-left: 16px;
 }
 </style> 

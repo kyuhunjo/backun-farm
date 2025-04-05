@@ -15,18 +15,10 @@ const __dirname = dirname(__filename);
 const envPath = path.resolve(process.cwd(), '.env');
 console.log('Looking for .env file at:', envPath);
 
-let WEATHER_API_KEY = process.env.WEATHER_API_KEY || 'YOUR_DEFAULT_API_KEY';
-try {
-  if (fs.existsSync(envPath)) {
-    const envConfig = dotenv.parse(fs.readFileSync(envPath));
-    WEATHER_API_KEY = envConfig.WEATHER_API_KEY || WEATHER_API_KEY;
-    console.log('Loaded API key from .env file');
-  } else {
-    console.log('.env file not found, using default or environment variable');
-  }
-} catch (error) {
-  console.warn('Warning: Error reading .env file:', error);
-  console.log('Continuing with default or environment variable');
+let WEATHER_API_KEY = process.env.WEATHER_API_KEY;
+if (!WEATHER_API_KEY) {
+  console.error('Error: WEATHER_API_KEY environment variable is not set');
+  process.exit(1);
 }
 
 const app = express();
@@ -77,28 +69,6 @@ app.get('/api/health', (req, res) => {
 app.get('/api/weather', async (req, res) => {
   try {
     const { lat, lon } = req.query;
-
-    // API 키가 기본값이면 더미 데이터 반환
-    if (WEATHER_API_KEY === 'YOUR_DEFAULT_API_KEY') {
-      console.log('Using dummy weather data (no API key)');
-      return res.json({
-        current: {
-          temp: 20,
-          humidity: 65,
-          wind_speed: 3.5,
-          weather: [{
-            description: '맑음'
-          }]
-        },
-        daily: [{
-          temp: {
-            max: 25,
-            min: 15
-          }
-        }]
-      });
-    }
-
     const url = `https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&units=metric&lang=kr&appid=${WEATHER_API_KEY}`;
     console.log('Requesting weather data from:', url);
     

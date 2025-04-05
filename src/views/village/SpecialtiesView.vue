@@ -1,143 +1,280 @@
 <template>
   <v-container>
-    <h2 class="text-h4 font-heading mb-6">백운마을 특산물</h2>
+    <v-row>
+      <v-col cols="12">
+        <h1 class="text-h3 mb-6 font-heading">백운마을 특산물</h1>
+        <p class="text-body-1 mb-8">
+          백운마을은 청정한 자연환경에서 정성껏 키운 농산물로 유명합니다. 
+          우리 마을의 대표 특산물을 소개합니다.
+        </p>
+      </v-col>
+    </v-row>
 
     <v-row>
-      <v-col cols="12" md="4" v-for="product in products" :key="product.id">
-        <v-card elevation="1">
+      <!-- 고구마 -->
+      <v-col cols="12" sm="6" md="4">
+        <v-card>
           <v-img
-            :src="product.image"
+            src="/images/specialties/sweet-potato.jpg"
             height="200"
             cover
-          ></v-img>
-          <v-card-title class="text-h5 font-heading">{{ product.name }}</v-card-title>
-          <v-card-subtitle class="font-body">{{ product.season }}</v-card-subtitle>
-          <v-card-text class="font-body">
-            <p class="text-body-1">{{ product.description }}</p>
-            <v-divider class="my-3"></v-divider>
-            <div class="d-flex align-center justify-space-between">
-              <div class="text-body-2">판매 시기: {{ product.availability }}</div>
-              <v-chip color="primary" class="font-body">{{ product.price }}</v-chip>
-            </div>
+            class="align-end"
+          >
+            <v-card-title class="text-white bg-black bg-opacity-50">
+              백운 고구마
+            </v-card-title>
+          </v-img>
+
+          <v-card-text>
+            <v-row no-gutters>
+              <v-col cols="6">
+                <div class="text-subtitle-1 mb-1">수확시기</div>
+                <div class="text-body-2 mb-2">9월 ~ 10월</div>
+              </v-col>
+              <v-col cols="6">
+                <div class="text-subtitle-1 mb-1">보관방법</div>
+                <div class="text-body-2 mb-2">서늘한 곳 보관</div>
+              </v-col>
+            </v-row>
+            <p class="text-body-2 mt-4">
+              백운마을의 대표 특산물인 고구마는 모래와 점토가 적절히 섞인 토양에서 재배되어 
+              단맛이 풍부하고 식감이 부드럽습니다.
+            </p>
           </v-card-text>
-          <v-card-actions>
-            <v-btn
-              color="primary"
-              variant="text"
-              class="font-body"
-              @click="product.showDetails = !product.showDetails"
-            >
-              자세히 보기
-            </v-btn>
-            <v-spacer></v-spacer>
-            <v-btn
-              :icon="product.showDetails ? 'mdi-chevron-up' : 'mdi-chevron-down'"
-              @click="product.showDetails = !product.showDetails"
-            ></v-btn>
-          </v-card-actions>
+
           <v-expand-transition>
-            <div v-show="product.showDetails">
+            <div v-show="showDetails">
               <v-divider></v-divider>
-              <v-card-text class="font-body">
+              <v-card-text>
+                <div class="text-subtitle-1 mb-2">상품 정보</div>
                 <v-list density="compact">
-                  <v-list-item v-for="(detail, index) in product.details" :key="index">
+                  <v-list-item>
                     <template v-slot:prepend>
-                      <v-icon color="primary" size="small">mdi-check</v-icon>
+                      <v-icon icon="mdi-check"></v-icon>
                     </template>
-                    <v-list-item-title class="font-body">{{ detail }}</v-list-item-title>
+                    <v-list-item-title>특상 5kg: 25,000원</v-list-item-title>
+                  </v-list-item>
+                  <v-list-item>
+                    <template v-slot:prepend>
+                      <v-icon icon="mdi-check"></v-icon>
+                    </template>
+                    <v-list-item-title>상품 10kg: 40,000원</v-list-item-title>
                   </v-list-item>
                 </v-list>
               </v-card-text>
             </div>
           </v-expand-transition>
+
+          <v-card-actions>
+            <v-btn variant="text" @click="showDetails = !showDetails">
+              상세정보
+              <v-icon>{{ showDetails ? 'mdi-chevron-up' : 'mdi-chevron-down' }}</v-icon>
+            </v-btn>
+            <v-spacer></v-spacer>
+            <v-btn color="primary" variant="tonal" @click="openInquiryDialog">
+              구매문의
+            </v-btn>
+          </v-card-actions>
+        </v-card>
+      </v-col>
+
+      <!-- 표고버섯 -->
+      <v-col cols="12" sm="6" md="4">
+        <v-card>
+          <v-img
+            src="/images/specialties/mushroom.jpg"
+            height="200"
+            cover
+            class="align-end"
+          >
+            <v-card-title class="text-white bg-black bg-opacity-50">
+              백운 표고버섯
+            </v-card-title>
+          </v-img>
+
+          <v-card-text>
+            <v-row no-gutters>
+              <v-col cols="6">
+                <div class="text-subtitle-1 mb-1">수확시기</div>
+                <div class="text-body-2 mb-2">연중</div>
+              </v-col>
+              <v-col cols="6">
+                <div class="text-subtitle-1 mb-1">보관방법</div>
+                <div class="text-body-2 mb-2">냉장보관</div>
+              </v-col>
+            </v-row>
+            <p class="text-body-2 mt-4">
+              참나무 원목에서 자연 재배한 표고버섯으로, 향이 진하고 
+              영양이 풍부합니다.
+            </p>
+          </v-card-text>
+
+          <v-expand-transition>
+            <div v-show="showDetails2">
+              <v-divider></v-divider>
+              <v-card-text>
+                <div class="text-subtitle-1 mb-2">상품 정보</div>
+                <v-list density="compact">
+                  <v-list-item>
+                    <template v-slot:prepend>
+                      <v-icon icon="mdi-check"></v-icon>
+                    </template>
+                    <v-list-item-title>생표고 1kg: 20,000원</v-list-item-title>
+                  </v-list-item>
+                  <v-list-item>
+                    <template v-slot:prepend>
+                      <v-icon icon="mdi-check"></v-icon>
+                    </template>
+                    <v-list-item-title>건표고 500g: 35,000원</v-list-item-title>
+                  </v-list-item>
+                </v-list>
+              </v-card-text>
+            </div>
+          </v-expand-transition>
+
+          <v-card-actions>
+            <v-btn variant="text" @click="showDetails2 = !showDetails2">
+              상세정보
+              <v-icon>{{ showDetails2 ? 'mdi-chevron-up' : 'mdi-chevron-down' }}</v-icon>
+            </v-btn>
+            <v-spacer></v-spacer>
+            <v-btn color="primary" variant="tonal" @click="openInquiryDialog">
+              구매문의
+            </v-btn>
+          </v-card-actions>
+        </v-card>
+      </v-col>
+
+      <!-- 곶감 -->
+      <v-col cols="12" sm="6" md="4">
+        <v-card>
+          <v-img
+            src="/images/specialties/dried-persimmon.jpg"
+            height="200"
+            cover
+            class="align-end"
+          >
+            <v-card-title class="text-white bg-black bg-opacity-50">
+              백운 곶감
+            </v-card-title>
+          </v-img>
+
+          <v-card-text>
+            <v-row no-gutters>
+              <v-col cols="6">
+                <div class="text-subtitle-1 mb-1">수확시기</div>
+                <div class="text-body-2 mb-2">11월 ~ 12월</div>
+              </v-col>
+              <v-col cols="6">
+                <div class="text-subtitle-1 mb-1">보관방법</div>
+                <div class="text-body-2 mb-2">냉동보관</div>
+              </v-col>
+            </v-row>
+            <p class="text-body-2 mt-4">
+              청정지역에서 재배한 고품질 곶감으로, 당도가 높고 
+              쫄깃한 식감이 특징입니다.
+            </p>
+          </v-card-text>
+
+          <v-expand-transition>
+            <div v-show="showDetails3">
+              <v-divider></v-divider>
+              <v-card-text>
+                <div class="text-subtitle-1 mb-2">상품 정보</div>
+                <v-list density="compact">
+                  <v-list-item>
+                    <template v-slot:prepend>
+                      <v-icon icon="mdi-check"></v-icon>
+                    </template>
+                    <v-list-item-title>특품 1kg (20개): 45,000원</v-list-item-title>
+                  </v-list-item>
+                  <v-list-item>
+                    <template v-slot:prepend>
+                      <v-icon icon="mdi-check"></v-icon>
+                    </template>
+                    <v-list-item-title>선물세트 2kg: 85,000원</v-list-item-title>
+                  </v-list-item>
+                </v-list>
+              </v-card-text>
+            </div>
+          </v-expand-transition>
+
+          <v-card-actions>
+            <v-btn variant="text" @click="showDetails3 = !showDetails3">
+              상세정보
+              <v-icon>{{ showDetails3 ? 'mdi-chevron-up' : 'mdi-chevron-down' }}</v-icon>
+            </v-btn>
+            <v-spacer></v-spacer>
+            <v-btn color="primary" variant="tonal" @click="openInquiryDialog">
+              구매문의
+            </v-btn>
+          </v-card-actions>
         </v-card>
       </v-col>
     </v-row>
 
-    <v-card class="mt-8" elevation="1">
-      <v-card-title class="text-h5 font-heading">
-        구매 및 문의
-      </v-card-title>
-      <v-card-text class="font-body">
-        <p class="text-body-1">
-          백운마을의 특산물은 직거래를 원칙으로 하며, 신선도 유지를 위해 당일 수확 후 배송됩니다.
-          대량 구매나 직접 방문 구매를 원하시는 경우 아래 연락처로 문의해 주시기 바랍니다.
-        </p>
-        <v-list density="compact" class="mt-4">
-          <v-list-item>
-            <template v-slot:prepend>
-              <v-icon>mdi-phone</v-icon>
-            </template>
-            <v-list-item-title class="font-body">061-1234-5678 (평일 09:00-18:00)</v-list-item-title>
-          </v-list-item>
-          <v-list-item>
-            <template v-slot:prepend>
-              <v-icon>mdi-email</v-icon>
-            </template>
-            <v-list-item-title class="font-body">market@baekun.kr</v-list-item-title>
-          </v-list-item>
-        </v-list>
-      </v-card-text>
-    </v-card>
+    <!-- 구매 문의 다이얼로그 -->
+    <v-dialog v-model="inquiryDialog" max-width="500">
+      <v-card>
+        <v-card-title>구매 문의</v-card-title>
+        <v-card-text>
+          <p class="mb-4">아래 연락처로 문의해 주시기 바랍니다.</p>
+          <v-list>
+            <v-list-item>
+              <template v-slot:prepend>
+                <v-icon icon="mdi-phone"></v-icon>
+              </template>
+              <v-list-item-title>전화: 061-123-4567</v-list-item-title>
+            </v-list-item>
+            <v-list-item>
+              <template v-slot:prepend>
+                <v-icon icon="mdi-email"></v-icon>
+              </template>
+              <v-list-item-title>이메일: market@baegun.kr</v-list-item-title>
+            </v-list-item>
+          </v-list>
+        </v-card-text>
+        <v-card-actions>
+          <v-spacer></v-spacer>
+          <v-btn color="primary" text @click="inquiryDialog = false">닫기</v-btn>
+        </v-card-actions>
+      </v-card>
+    </v-dialog>
   </v-container>
 </template>
 
-<script>
-export default {
-  name: 'SpecialtiesView',
-  data() {
-    return {
-      products: [
-        {
-          id: 1,
-          name: '백운쌀',
-          image: '/images/rice.jpg',
-          season: '가을 수확',
-          description: '맑은 공기와 깨끗한 물로 재배한 백운마을의 대표 특산물입니다.',
-          availability: '10월 ~ 12월',
-          price: '40kg 기준 180,000원',
-          showDetails: false,
-          details: [
-            '친환경 인증 농법으로 재배',
-            '백운산의 맑은 물로 재배',
-            '밥맛이 좋고 찰기가 뛰어남',
-            '진공 포장으로 신선도 유지'
-          ]
-        },
-        {
-          id: 2,
-          name: '백운고구마',
-          image: '/images/sweet-potato.jpg',
-          season: '가을 수확',
-          description: '단맛이 뛰어나고 영양이 풍부한 백운마을 고구마입니다.',
-          availability: '9월 ~ 11월',
-          price: '10kg 기준 30,000원',
-          showDetails: false,
-          details: [
-            '무농약 재배',
-            '단맛이 뛰어난 호박고구마',
-            '찐고구마, 군고구마용으로 적합',
-            '저온 저장으로 신선도 유지'
-          ]
-        },
-        {
-          id: 3,
-          name: '백운도라지',
-          image: '/images/bellflower.jpg',
-          season: '봄 수확',
-          description: '3년 이상 재배한 약용 도라지로 약효가 뛰어납니다.',
-          availability: '3월 ~ 5월',
-          price: '1kg 기준 50,000원',
-          showDetails: false,
-          details: [
-            '3년 이상 재배',
-            '산지 직송 판매',
-            '약용 및 식용으로 사용 가능',
-            '진공 포장으로 장기 보관 가능'
-          ]
-        }
-      ]
-    }
-  }
+<script setup>
+import { ref } from 'vue'
+
+const showDetails = ref(false)
+const showDetails2 = ref(false)
+const showDetails3 = ref(false)
+const inquiryDialog = ref(false)
+
+const openInquiryDialog = () => {
+  inquiryDialog.value = true
 }
-</script> 
+</script>
+
+<style scoped>
+.font-heading {
+  font-family: var(--font-heading) !important;
+}
+
+.bg-opacity-50 {
+  background-color: rgba(0, 0, 0, 0.5);
+}
+
+.v-card-title {
+  font-family: var(--font-heading) !important;
+}
+
+.text-subtitle-1 {
+  font-family: var(--font-body) !important;
+  font-weight: 600;
+}
+
+.text-body-2 {
+  font-family: var(--font-body) !important;
+}
+</style> 
