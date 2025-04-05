@@ -1,3 +1,4 @@
+import '@mdi/font/css/materialdesignicons.css'
 import 'vuetify/styles'
 import { createVuetify } from 'vuetify'
 import { aliases, mdi } from 'vuetify/iconsets/mdi'
@@ -6,22 +7,30 @@ import { aliases, mdi } from 'vuetify/iconsets/mdi'
 const lightTheme = {
   dark: false,
   colors: {
-    primary: '#2E7D32', // 자연을 상징하는 녹색
-    secondary: '#795548', // 흙을 상징하는 갈색
-    accent: '#FDD835', // 수확을 상징하는 노란색
+    primary: '#98B9AB', // 파스텔 세이지 그린
+    secondary: '#D4B5B0', // 파스텔 테라코타
+    accent: '#F7E1D7', // 파스텔 피치
     background: '#FFFFFF',
     surface: '#FFFFFF',
     'surface-variant': '#F5F5F5',
-    error: '#B71C1C',
-    info: '#0288D1',
-    success: '#388E3C',
-    warning: '#F57F17',
+    error: '#FFB3B3', // 파스텔 레드
+    info: '#B3E0FF', // 파스텔 블루
+    success: '#B8D8BE', // 파스텔 그린
+    warning: '#FFE5B4', // 파스텔 옐로우
+    'on-primary': '#2C3532', // 진한 회색빛 그린 (primary 텍스트)
+    'on-secondary': '#4A403A', // 진한 브라운 (secondary 텍스트)
+    'on-accent': '#4F4846', // 진한 웜그레이 (accent 텍스트)
+    'on-surface': '#2C3532', // 진한 회색빛 그린 (일반 텍스트)
+    'on-error': '#802020', // 진한 레드 (error 텍스트)
+    'on-info': '#0D47A1', // 진한 블루 (info 텍스트)
+    'on-success': '#1B4332', // 진한 그린 (success 텍스트)
+    'on-warning': '#8B4513', // 진한 브라운 (warning 텍스트)
   },
   variables: {
     'border-color': '#E0E0E0',
     'border-opacity': 0.12,
-    'high-emphasis-opacity': 0.87,
-    'medium-emphasis-opacity': 0.60,
+    'high-emphasis-opacity': 1,
+    'medium-emphasis-opacity': 0.8,
     'disabled-opacity': 0.38,
     'idle-opacity': 0.04,
     'hover-opacity': 0.04,
@@ -40,16 +49,25 @@ const lightTheme = {
 const darkTheme = {
   dark: true,
   colors: {
-    primary: '#4CAF50',
-    secondary: '#8D6E63',
-    accent: '#FFE57F',
+    primary: '#B8D8BE', // 파스텔 그린 (다크모드)
+    secondary: '#E6C5C0', // 파스텔 테라코타 (다크모드)
+    accent: '#FFE5D9', // 파스텔 피치 (다크모드)
     background: '#121212',
     surface: '#212121',
     'surface-variant': '#1E1E1E',
-    error: '#CF6679',
-    info: '#64B5F6',
-    success: '#81C784',
-    warning: '#FFB74D',
+    error: '#FFB3B3', // 파스텔 레드
+    info: '#B3E0FF', // 파스텔 블루
+    success: '#C8E6CE', // 파스텔 그린
+    warning: '#FFE5B4', // 파스텔 옐로우
+    'on-primary': '#1A2421', // 매우 진한 회색빛 그린 (primary 텍스트)
+    'on-secondary': '#2D2724', // 매우 진한 브라운 (secondary 텍스트)
+    'on-accent': '#2D2A29', // 매우 진한 웜그레이 (accent 텍스트)
+    'on-background': '#FFFFFF', // 흰색 (배경 텍스트)
+    'on-surface': '#FFFFFF', // 흰색 (표면 텍스트)
+    'on-error': '#4D1313', // 매우 진한 레드 (error 텍스트)
+    'on-info': '#082B63', // 매우 진한 블루 (info 텍스트)
+    'on-success': '#10291E', // 매우 진한 그린 (success 텍스트)
+    'on-warning': '#543A0D', // 매우 진한 브라운 (warning 텍스트)
   },
   variables: {
     'border-color': '#FFFFFF',
@@ -71,6 +89,10 @@ const darkTheme = {
   }
 }
 
+// CSS 변수로 폰트 정의
+document.documentElement.style.setProperty('--font-heading', '"Pretendard Variable", "Noto Sans KR", sans-serif')
+document.documentElement.style.setProperty('--font-body', '"Pretendard Variable", "Noto Sans KR", sans-serif')
+
 export default createVuetify({
   icons: {
     defaultSet: 'mdi',
@@ -89,33 +111,94 @@ export default createVuetify({
   defaults: {
     VCard: {
       elevation: 2,
-      rounded: 'lg',
+      rounded: '0',
+      class: 'font-body',
+      VCardTitle: {
+        class: 'font-heading'
+      },
+      VCardText: {
+        class: 'font-body'
+      }
     },
     VBtn: {
-      rounded: 'lg',
+      rounded: '0',
       elevation: 0,
       fontWeight: 500,
+      class: 'font-body'
     },
     VTextField: {
       variant: 'outlined',
       density: 'comfortable',
-      rounded: 'lg',
+      rounded: '0',
+      class: 'font-body'
     },
     VTextarea: {
       variant: 'outlined',
       density: 'comfortable',
-      rounded: 'lg',
+      rounded: '0',
+      class: 'font-body'
     },
     VSelect: {
       variant: 'outlined',
       density: 'comfortable',
-      rounded: 'lg',
+      rounded: '0',
+      class: 'font-body'
     },
     VChip: {
-      rounded: 'lg',
+      rounded: '0',
+      class: 'font-body'
     },
     VAlert: {
-      rounded: 'lg',
+      rounded: '0',
+      VAlertTitle: {
+        class: 'font-heading'
+      }
     },
+    VAppBar: {
+      VToolbarTitle: {
+        class: 'font-heading'
+      }
+    },
+    VList: {
+      class: 'font-body',
+      VListItemTitle: {
+        class: 'font-heading'
+      },
+      VListItemSubtitle: {
+        class: 'font-body'
+      }
+    },
+    VToolbar: {
+      VToolbarTitle: {
+        class: 'font-heading'
+      }
+    },
+    VNavigationDrawer: {
+      class: 'font-body'
+    },
+    VMenu: {
+      class: 'font-body'
+    },
+    VDialog: {
+      VDialogTitle: {
+        class: 'font-heading'
+      }
+    },
+    typography: {
+      class: 'font-body',
+      h1: { class: 'font-heading' },
+      h2: { class: 'font-heading' },
+      h3: { class: 'font-heading' },
+      h4: { class: 'font-heading' },
+      h5: { class: 'font-heading' },
+      h6: { class: 'font-heading' },
+      subtitle1: { class: 'font-body' },
+      subtitle2: { class: 'font-body' },
+      body1: { class: 'font-body' },
+      body2: { class: 'font-body' },
+      button: { class: 'font-body' },
+      caption: { class: 'font-body' },
+      overline: { class: 'font-body' }
+    }
   },
 }) 

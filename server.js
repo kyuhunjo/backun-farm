@@ -4,17 +4,55 @@ import compression from 'compression';
 import helmet from 'helmet';
 import { fileURLToPath } from 'url';
 import fetch from 'node-fetch';
+import dotenv from 'dotenv';
+import { dirname } from 'path';
+import fs from 'fs';
 
 const __filename = fileURLToPath(import.meta.url);
-const __dirname = path.dirname(__filename);
+const __dirname = dirname(__filename);
+
+// .env 파일 직접 읽기
+const envPath = path.resolve(process.cwd(), '.env');
+console.log('Loading .env file from:', envPath);
+
+let WEATHER_API_KEY;
+try {
+  const envContent = fs.readFileSync(envPath, 'utf8');
+  console.log('Raw env content:', envContent);
+  console.log('Content length:', envContent.length);
+  console.log('Content bytes:', [...envContent].map(c => c.charCodeAt(0)));
+  
+  const envLines = envContent.split(/\r?\n/);
+  console.log('Env lines:', envLines);
+  
+  for (const line of envLines) {
+    console.log('Processing line:', line);
+    if (line.trim() === '') {
+      console.log('Skipping empty line');
+      continue;
+    }
+    const [key, ...valueParts] = line.split('=');
+    console.log('Key:', key, 'ValueParts:', valueParts);
+    if (key.trim() === 'WEATHER_API_KEY') {
+      WEATHER_API_KEY = valueParts.join('=').trim();
+      console.log('Found API Key:', WEATHER_API_KEY);
+      break;
+    }
+  }
+  
+  console.log('Final API Key:', WEATHER_API_KEY);
+  if (!WEATHER_API_KEY) {
+    throw new Error('WEATHER_API_KEY not found in .env file');
+  }
+} catch (error) {
+  console.error('Error reading .env file:', error);
+  process.exit(1);
+}
 
 const app = express();
 const port = process.env.PORT || 8083;
 
 console.log('Starting server with port:', port);
-
-// OpenWeatherMap API 키 설정
-const WEATHER_API_KEY = process.env.WEATHER_API_KEY;
 
 // 보안 미들웨어 설정 수정
 app.use(helmet({
@@ -59,19 +97,42 @@ app.get('/api/health', (req, res) => {
 app.get('/api/weather', async (req, res) => {
   try {
     const { lat, lon } = req.query;
-    const response = await fetch(
-      `https://api.openweathermap.org/data/3.0/onecall?lat=${lat}&lon=${lon}&exclude=minutely,hourly,alerts&units=metric&lang=kr&appid=${WEATHER_API_KEY}`
-    );
+    const url = `https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&units=metric&lang=kr&appid=${WEATHER_API_KEY}`;
+    console.log('Requesting weather data from:', url);
+    
+    const response = await fetch(url);
     
     if (!response.ok) {
-      throw new Error(`Weather API responded with status: ${response.status}`);
+      const errorText = await response.text();
+      console.error('Weather API error response:', errorText);
+      throw new Error(`Weather API responded with status: ${response.status}, message: ${errorText}`);
     }
     
     const data = await response.json();
-    res.json(data);
+    console.log('Weather API response:', data);
+    
+    // 응답 데이터 구조 변환
+    const weatherData = {
+      current: {
+        temp: data.main.temp,
+        humidity: data.main.humidity,
+        wind_speed: data.wind.speed,
+        weather: [{
+          description: data.weather[0].description
+        }]
+      },
+      daily: [{
+        temp: {
+          max: data.main.temp_max,
+          min: data.main.temp_min
+        }
+      }]
+    };
+    
+    res.json(weatherData);
   } catch (error) {
     console.error('날씨 API 호출 중 오류:', error);
-    res.status(500).json({ error: '날씨 정보를 가져오는데 실패했습니다.' });
+    res.status(500).json({ error: error.message || '날씨 정보를 가져오는데 실패했습니다.' });
   }
 });
 
