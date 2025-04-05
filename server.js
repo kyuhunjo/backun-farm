@@ -50,6 +50,11 @@ app.use((req, res, next) => {
   next();
 });
 
+// 헬스체크 엔드포인트
+app.get('/api/health', (req, res) => {
+  res.json({ status: 'ok' });
+});
+
 // 날씨 API 엔드포인트
 app.get('/api/weather', async (req, res) => {
   try {
@@ -57,6 +62,11 @@ app.get('/api/weather', async (req, res) => {
     const response = await fetch(
       `https://api.openweathermap.org/data/3.0/onecall?lat=${lat}&lon=${lon}&exclude=minutely,hourly,alerts&units=metric&lang=kr&appid=${WEATHER_API_KEY}`
     );
+    
+    if (!response.ok) {
+      throw new Error(`Weather API responded with status: ${response.status}`);
+    }
+    
     const data = await response.json();
     res.json(data);
   } catch (error) {

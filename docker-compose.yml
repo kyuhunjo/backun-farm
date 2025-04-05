@@ -8,10 +8,13 @@ services:
       - "3000:3000"
     environment:
       - NODE_ENV=development
+      - VITE_API_URL=http://backend:8083
     volumes:
       - .:/app
       - /app/node_modules
     command: npm run dev
+    depends_on:
+      - backend
 
   backend:
     build:
@@ -26,4 +29,9 @@ services:
     volumes:
       - .:/app
       - /app/node_modules
-    command: node server.js 
+    command: node server.js
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8083/api/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3 
