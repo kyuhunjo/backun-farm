@@ -15,7 +15,7 @@ dotenv.config();
 
 // 환경변수 설정
 const WEATHER_API_KEY = process.env.WEATHER_API_KEY;
-const MONGODB_URI = process.env.MONGODB_URI || 'mongodb://localhost:27017/backun_farm';
+const MONGODB_URI = process.env.MONGODB_URI || 'mongodb://172.30.1.14:27017/farm';
 const PORT = process.env.PORT || 8083;
 
 if (!WEATHER_API_KEY) {
