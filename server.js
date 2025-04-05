@@ -29,4 +29,4 @@ app.get('*', (req, res) => {
 
 app.listen(port, () => {
   console.log(`프론트엔드 서버가 포트 ${port}에서 실행 중입니다.`);
-}); 
+});

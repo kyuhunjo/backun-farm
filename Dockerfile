@@ -26,4 +26,4 @@ ENV NODE_ENV=production
 EXPOSE 8083
 
 # 서버 실행
-CMD ["node", "server.js"] 
+CMD ["node", "server.js"]
