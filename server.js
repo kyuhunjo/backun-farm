@@ -1,9 +1,13 @@
-const express = require('express');
-const path = require('path');
-const fs = require('fs');
-const https = require('https');
-const compression = require('compression');
-const helmet = require('helmet');
+import express from 'express';
+import path from 'path';
+import fs from 'fs';
+import https from 'https';
+import compression from 'compression';
+import helmet from 'helmet';
+import { fileURLToPath } from 'url';
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 
 const app = express();
 const port = process.env.PORT || 8083;

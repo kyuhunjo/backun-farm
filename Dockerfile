@@ -18,8 +18,8 @@ RUN npm run build
 FROM node:18-alpine
 WORKDIR /app
 
-# Express.js 의존성 설치
-COPY package.json ./
+# package.json 복사 및 서버 의존성 설치
+COPY package*.json ./
 RUN npm install express compression helmet
 
 # 빌드된 파일과 서버 설정 파일 복사
