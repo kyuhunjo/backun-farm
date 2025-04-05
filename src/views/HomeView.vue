@@ -154,9 +154,9 @@ import { useHomeStore } from '@/stores/home'
 const homeStore = useHomeStore()
 const weatherData = ref(null)
 
-// 백운마을의 위도와 경도 설정
-const VILLAGE_LATITUDE = 35.2100
-const VILLAGE_LONGITUDE = 128.5297
+// 화순군 백운마을의 위도와 경도 설정
+const VILLAGE_LATITUDE = 35.0647  // 화순군 백운마을 위도
+const VILLAGE_LONGITUDE = 126.9595  // 화순군 백운마을 경도
 
 // 날씨 정보 가져오기
 const fetchWeatherData = async () => {
