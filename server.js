@@ -36,8 +36,13 @@ app.use(compression());
 // 정적 파일 제공
 app.use(express.static(path.join(__dirname, 'dist')));
 
-// SPA를 위한 라우팅 설정
-app.get('*', (req, res) => {
+// SPA를 위한 라우팅 설정 - 와일드카드 경로를 문자열로 변경
+app.get('/', (req, res) => {
+  res.sendFile(path.join(__dirname, 'dist', 'index.html'));
+});
+
+// 다른 모든 경로도 index.html로 리다이렉트
+app.use((req, res) => {
   res.sendFile(path.join(__dirname, 'dist', 'index.html'));
 });
 
