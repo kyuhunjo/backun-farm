@@ -33,8 +33,7 @@ app.use(helmet({
   originAgentCluster: false,
   strictTransportSecurity: false,
   referrerPolicy: { policy: 'no-referrer' },
-  xssFilter: true,
-  hsts: false
+  xssFilter: true
 }));
 
 // CORS 설정 추가
