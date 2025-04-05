@@ -18,6 +18,36 @@
       </div>
     </v-parallax>
 
+    <!-- 날씨 정보 섹션 -->
+    <v-container class="py-6">
+      <v-card class="mx-auto" max-width="800">
+        <v-card-title class="text-center">
+          <v-icon icon="mdi-weather-partly-cloudy" class="mr-2"></v-icon>
+          오늘의 날씨
+        </v-card-title>
+        <v-card-text v-if="weatherData">
+          <v-row align="center" justify="center">
+            <v-col cols="12" sm="4" class="text-center">
+              <div class="text-h4 mb-2">{{ Math.round(weatherData.temperature) }}°C</div>
+              <div class="text-body-1">{{ weatherData.description }}</div>
+            </v-col>
+            <v-col cols="12" sm="4" class="text-center">
+              <div class="text-body-1 mb-2">습도: {{ weatherData.humidity }}%</div>
+              <div class="text-body-1">풍속: {{ weatherData.windSpeed }}m/s</div>
+            </v-col>
+            <v-col cols="12" sm="4" class="text-center">
+              <div class="text-body-1 mb-2">최고: {{ Math.round(weatherData.maxTemp) }}°C</div>
+              <div class="text-body-1">최저: {{ Math.round(weatherData.minTemp) }}°C</div>
+            </v-col>
+          </v-row>
+        </v-card-text>
+        <v-card-text v-else class="text-center">
+          <v-progress-circular indeterminate color="primary"></v-progress-circular>
+          날씨 정보를 불러오는 중...
+        </v-card-text>
+      </v-card>
+    </v-container>
+
     <!-- 마을 소개 섹션 -->
     <v-container class="py-12">
       <v-row>
@@ -118,10 +148,38 @@
 </template>
 
 <script setup>
-import { ref } from 'vue'
+import { ref, onMounted } from 'vue'
 import { useHomeStore } from '@/stores/home'
 
 const homeStore = useHomeStore()
+const weatherData = ref(null)
+
+// 백운마을의 위도와 경도 설정
+const VILLAGE_LATITUDE = 35.2100
+const VILLAGE_LONGITUDE = 128.5297
+
+// 날씨 정보 가져오기
+const fetchWeatherData = async () => {
+  try {
+    const response = await fetch(`/api/weather?lat=${VILLAGE_LATITUDE}&lon=${VILLAGE_LONGITUDE}`)
+    const data = await response.json()
+    
+    weatherData.value = {
+      temperature: data.current.temp,
+      description: data.current.weather[0].description,
+      humidity: data.current.humidity,
+      windSpeed: data.current.wind_speed,
+      maxTemp: data.daily[0].temp.max,
+      minTemp: data.daily[0].temp.min
+    }
+  } catch (error) {
+    console.error('날씨 정보를 가져오는데 실패했습니다:', error)
+  }
+}
+
+onMounted(() => {
+  fetchWeatherData()
+})
 
 // 이미지 경로 설정
 const mainImage = new URL('@/assets/images/20250402_123303.jpg', import.meta.url).href

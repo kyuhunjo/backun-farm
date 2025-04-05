@@ -3,6 +3,7 @@ import path from 'path';
 import compression from 'compression';
 import helmet from 'helmet';
 import { fileURLToPath } from 'url';
+import fetch from 'node-fetch';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -12,6 +13,9 @@ const port = process.env.PORT || 8083;
 
 console.log('Starting server with port:', port);
 
+// OpenWeatherMap API 키 설정
+const WEATHER_API_KEY = process.env.WEATHER_API_KEY;
+
 // 보안 미들웨어 설정 수정
 app.use(helmet({
   contentSecurityPolicy: {
@@ -20,7 +24,7 @@ app.use(helmet({
       scriptSrc: ["'self'", "'unsafe-inline'", "'unsafe-eval'"],
       styleSrc: ["'self'", "'unsafe-inline'", 'https:', 'http:'],
       imgSrc: ["'self'", 'data:', 'https:', 'http:'],
-      connectSrc: ["'self'", 'https:', 'http:', 'ws:', 'wss:'],
+      connectSrc: ["'self'", 'https:', 'http:', 'ws:', 'wss:', 'api.openweathermap.org'],
       fontSrc: ["'self'", 'https:', 'data:', 'http:'],
       objectSrc: ["'none'"],
       mediaSrc: ["'self'"],
@@ -44,6 +48,21 @@ app.use((req, res, next) => {
   // HTTPS 관련 헤더 제거
   res.removeHeader('Strict-Transport-Security');
   next();
+});
+
+// 날씨 API 엔드포인트
+app.get('/api/weather', async (req, res) => {
+  try {
+    const { lat, lon } = req.query;
+    const response = await fetch(
+      `https://api.openweathermap.org/data/3.0/onecall?lat=${lat}&lon=${lon}&exclude=minutely,hourly,alerts&units=metric&lang=kr&appid=${WEATHER_API_KEY}`
+    );
+    const data = await response.json();
+    res.json(data);
+  } catch (error) {
+    console.error('날씨 API 호출 중 오류:', error);
+    res.status(500).json({ error: '날씨 정보를 가져오는데 실패했습니다.' });
+  }
 });
 
 // gzip 압축
