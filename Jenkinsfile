@@ -3,7 +3,8 @@ pipeline {
 
     environment {
         APP_NAME = 'backun-farm-frontend'
-        IMAGE_NAME = "kyuhunjo/${APP_NAME}"
+        DOCKER_USERNAME = 'joe2424'
+        IMAGE_NAME = "${DOCKER_USERNAME}/${APP_NAME}"
         DOCKER_CREDENTIALS_ID = '0dd8e584-8e25-4817-b865-bb1e8901663b'
         NETWORK_NAME = 'myeongri'
         NODE_VERSION = '18.0.0'
