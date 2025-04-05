@@ -8,27 +8,21 @@
     "build": "vite build",
     "preview": "vite preview",
     "lint": "eslint . --ext .vue,.js,.jsx,.cjs,.mjs --fix --ignore-path .gitignore",
-    "init-db": "node src/scripts/initDb.js"
+    "start": "node server.js"
   },
   "dependencies": {
     "@mdi/font": "^7.3.67",
     "axios": "^1.8.4",
     "chart.js": "^4.4.1",
-    "compression": "^1.8.0",
-    "cors": "^2.8.5",
-    "dotenv": "^16.4.7",
+    "compression": "^1.7.4",
     "express": "^4.18.2",
-    "helmet": "^8.1.0",
-    "mongoose": "^8.2.0",
-    "multer": "^1.4.5-lts.1",
-    "node-fetch": "^3.3.2",
+    "helmet": "^7.1.0",
     "pinia": "^3.0.1",
     "vue": "^3.3.0",
     "vue-chartjs": "^5.3.0",
     "vue-router": "^4.0.13",
     "vuetify": "^3.4.0",
-    "webfontloader": "^1.6.28",
-    "xml2js": "^0.6.2"
+    "webfontloader": "^1.6.28"
   },
   "devDependencies": {
     "@vitejs/plugin-vue": "^4.6.2",

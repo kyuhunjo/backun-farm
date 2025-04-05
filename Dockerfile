@@ -7,19 +7,14 @@ COPY . .
 RUN npm run build
 
 # Production stage
-FROM nginx:stable-alpine as production-stage
-
-# Node.js 설치
-RUN apk add --update nodejs npm
-
-# 작업 디렉토리 설정
+FROM node:18-alpine as production-stage
 WORKDIR /app
 
-# 서버 의존성 설치
+# 프론트엔드 서버 의존성 설치
 COPY package*.json ./
-RUN npm install express compression helmet node-fetch
+RUN npm ci --production
 
-# 빌드된 파일과 서버 설정 파일 복사
+# 빌드된 파일 복사
 COPY --from=build-stage /app/dist ./dist
 COPY server.js ./
 
@@ -31,4 +26,4 @@ ENV NODE_ENV=production
 EXPOSE 8083
 
 # 서버 실행
-CMD ["node", "server.js"] 
+CMD ["node", "server.js"]
