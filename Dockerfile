@@ -12,7 +12,7 @@ WORKDIR /app
 
 # 프론트엔드 서버 의존성 설치
 COPY package*.json ./
-RUN npm ci --production
+RUN npm install --omit=dev
 
 # 빌드된 파일 복사
 COPY --from=build-stage /app/dist ./dist
