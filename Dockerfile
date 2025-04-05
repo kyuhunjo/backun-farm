@@ -26,14 +26,10 @@ RUN npm install express compression helmet
 COPY --from=builder /app/dist ./dist
 COPY server.js ./
 
-# SSL 인증서를 위한 디렉토리 생성
-RUN mkdir -p /etc/nginx/ssl
-
 # 포트 노출
-EXPOSE 8083 8443
+EXPOSE 8083
 
 # 서버 실행
 ENV NODE_ENV=production
 ENV PORT=8083
-ENV HTTPS_PORT=8443
 CMD ["node", "server.js"] 

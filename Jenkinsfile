@@ -6,12 +6,9 @@ pipeline {
         IMAGE_NAME = "kyuhunjo/${APP_NAME}"
         DEPLOY_DIR = '/deploy'
         HTTP_PORT = '8083'  // HTTP 포트
-        HTTPS_PORT = '8443'  // HTTPS 포트
         DOCKER_CREDENTIALS_ID = '0dd8e584-8e25-4817-b865-bb1e8901663b'
         NETWORK_NAME = 'myeongri'
         NODE_VERSION = '18.0.0'  // Vue3 지원을 위해 Node 18 사용
-        SSL_CERT_PATH = '/etc/nginx/ssl/imjoe24.com.pem'
-        SSL_KEY_PATH = '/etc/nginx/ssl/imjoe24.com.key'
     }
 
     stages {
@@ -56,11 +53,7 @@ pipeline {
                     --name ${APP_NAME} \
                     --network ${NETWORK_NAME} \
                     -p ${HTTP_PORT}:8083 \
-                    -p ${HTTPS_PORT}:8443 \
-                    -v ${SSL_CERT_PATH}:/etc/nginx/ssl/imjoe24.com.pem:ro \
-                    -v ${SSL_KEY_PATH}:/etc/nginx/ssl/imjoe24.com.key:ro \
                     -e PORT=8083 \
-                    -e HTTPS_PORT=8443 \
                     ${IMAGE_NAME}:${env.BUILD_NUMBER}
                     """
                 }
@@ -85,4 +78,4 @@ pipeline {
             echo '빌드 또는 배포 과정에서 오류가 발생했습니다.'
         }
     }
-} 
+}
