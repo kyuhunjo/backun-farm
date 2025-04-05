@@ -52,9 +52,26 @@ pipeline {
         stage('Deploy') {
             steps {
                 script {
-                    sh "docker stop ${APP_NAME} || true"
-                    sh "docker rm ${APP_NAME} || true"
+                    // 기존 컨테이너 정리
+                    sh """
+                    # 8083 포트를 사용하는 컨테이너 찾기
+                    PORT_CONTAINER=\$(docker ps -q --filter publish=8083)
+                    if [ ! -z "\$PORT_CONTAINER" ]; then
+                        echo "포트 8083을 사용하는 컨테이너를 중지하고 제거합니다..."
+                        docker stop \$PORT_CONTAINER
+                        docker rm \$PORT_CONTAINER
+                    fi
 
+                    # 이름으로 컨테이너 찾기
+                    NAME_CONTAINER=\$(docker ps -aq --filter name=${APP_NAME})
+                    if [ ! -z "\$NAME_CONTAINER" ]; then
+                        echo "이름이 ${APP_NAME}인 컨테이너를 중지하고 제거합니다..."
+                        docker stop \$NAME_CONTAINER
+                        docker rm \$NAME_CONTAINER
+                    fi
+                    """
+
+                    // 새 컨테이너 실행
                     sh """
                     docker run -d --restart unless-stopped \
                     --name ${APP_NAME} \
