@@ -11,42 +11,22 @@ import fs from 'fs';
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
 
-// .env 파일 직접 읽기
+// .env 파일 로딩 (옵션)
 const envPath = path.resolve(process.cwd(), '.env');
-console.log('Loading .env file from:', envPath);
+console.log('Looking for .env file at:', envPath);
 
-let WEATHER_API_KEY;
+let WEATHER_API_KEY = process.env.WEATHER_API_KEY || 'YOUR_DEFAULT_API_KEY';
 try {
-  const envContent = fs.readFileSync(envPath, 'utf8');
-  console.log('Raw env content:', envContent);
-  console.log('Content length:', envContent.length);
-  console.log('Content bytes:', [...envContent].map(c => c.charCodeAt(0)));
-  
-  const envLines = envContent.split(/\r?\n/);
-  console.log('Env lines:', envLines);
-  
-  for (const line of envLines) {
-    console.log('Processing line:', line);
-    if (line.trim() === '') {
-      console.log('Skipping empty line');
-      continue;
-    }
-    const [key, ...valueParts] = line.split('=');
-    console.log('Key:', key, 'ValueParts:', valueParts);
-    if (key.trim() === 'WEATHER_API_KEY') {
-      WEATHER_API_KEY = valueParts.join('=').trim();
-      console.log('Found API Key:', WEATHER_API_KEY);
-      break;
-    }
-  }
-  
-  console.log('Final API Key:', WEATHER_API_KEY);
-  if (!WEATHER_API_KEY) {
-    throw new Error('WEATHER_API_KEY not found in .env file');
+  if (fs.existsSync(envPath)) {
+    const envConfig = dotenv.parse(fs.readFileSync(envPath));
+    WEATHER_API_KEY = envConfig.WEATHER_API_KEY || WEATHER_API_KEY;
+    console.log('Loaded API key from .env file');
+  } else {
+    console.log('.env file not found, using default or environment variable');
   }
 } catch (error) {
-  console.error('Error reading .env file:', error);
-  process.exit(1);
+  console.warn('Warning: Error reading .env file:', error);
+  console.log('Continuing with default or environment variable');
 }
 
 const app = express();
@@ -97,6 +77,28 @@ app.get('/api/health', (req, res) => {
 app.get('/api/weather', async (req, res) => {
   try {
     const { lat, lon } = req.query;
+
+    // API 키가 기본값이면 더미 데이터 반환
+    if (WEATHER_API_KEY === 'YOUR_DEFAULT_API_KEY') {
+      console.log('Using dummy weather data (no API key)');
+      return res.json({
+        current: {
+          temp: 20,
+          humidity: 65,
+          wind_speed: 3.5,
+          weather: [{
+            description: '맑음'
+          }]
+        },
+        daily: [{
+          temp: {
+            max: 25,
+            min: 15
+          }
+        }]
+      });
+    }
+
     const url = `https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&units=metric&lang=kr&appid=${WEATHER_API_KEY}`;
     console.log('Requesting weather data from:', url);
     
