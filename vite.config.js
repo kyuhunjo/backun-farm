@@ -5,8 +5,8 @@ import vuetify from 'vite-plugin-vuetify'
 
 // https://vitejs.dev/config/
 export default defineConfig(({ mode }) => {
-  // 환경 변수 로드
-  const env = loadEnv(mode, process.cwd(), '')
+  // 환경 변수 로드 (VITE_ 접두사 변수 포함)
+  const env = loadEnv(mode, process.cwd(), ['VITE_'])
   const isDev = mode === 'development'
   const backendUrl = isDev ? 'http://localhost:8084' : 'https://hs-api.imjoe24.com'
 
@@ -47,7 +47,12 @@ export default defineConfig(({ mode }) => {
       } : {}
     },
     define: {
-      'process.env': env
+      // Vite 환경 변수 설정
+      __VUE_PROD_DEVTOOLS__: false,
+      'process.env': {
+        ...env,
+        NODE_ENV: mode
+      }
     }
   }
 }) 

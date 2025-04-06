@@ -4,7 +4,9 @@ WORKDIR /app
 
 # Build arguments
 ARG VITE_API_URL
+ARG VITE_GROQ_API_KEY
 ENV VITE_API_URL=${VITE_API_URL}
+ENV VITE_GROQ_API_KEY=${VITE_GROQ_API_KEY}
 
 COPY package*.json ./
 RUN npm install
@@ -29,7 +31,9 @@ ENV NODE_ENV=production
 
 # Build arguments for runtime
 ARG VITE_API_URL
+ARG VITE_GROQ_API_KEY
 ENV VITE_API_URL=${VITE_API_URL}
+ENV VITE_GROQ_API_KEY=${VITE_GROQ_API_KEY}
 
 # 포트 노출
 EXPOSE 8083

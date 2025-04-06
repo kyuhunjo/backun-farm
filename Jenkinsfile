@@ -59,7 +59,13 @@ pipeline {
                     echo "VITE_GROQ_API_KEY=${GROQ_API_KEY}" >> .env
                     """
                     
-                    dockerImage = docker.build("${IMAGE_NAME}:${env.BUILD_NUMBER}")
+                    // Docker 빌드 시 환경 변수 전달
+                    sh """
+                    docker build \
+                    --build-arg VITE_API_URL=http://${BACKEND_HOST}:${BACKEND_PORT} \
+                    --build-arg VITE_GROQ_API_KEY=${GROQ_API_KEY} \
+                    -t ${IMAGE_NAME}:${env.BUILD_NUMBER} .
+                    """
                 }
             }
         }
@@ -106,13 +112,14 @@ pipeline {
                     fi
                     """
 
-                    // 새 컨테이너 실행
+                    // 새 컨테이너 실행 (환경 변수 전달)
                     sh """
                     echo "새 컨테이너를 실행하고 네트워크에 연결합니다..."
                     docker run -d --restart unless-stopped \
                     --name ${APP_NAME} \
                     --network ${NETWORK_NAME} \
                     -p 8083:8083 \
+                    -e NODE_ENV=production \
                     -e VITE_API_URL=http://${BACKEND_HOST}:${BACKEND_PORT} \
                     -e VITE_GROQ_API_KEY=${GROQ_API_KEY} \
                     ${IMAGE_NAME}:${env.BUILD_NUMBER}

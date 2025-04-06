@@ -90,12 +90,19 @@ export const groqApi = axios.create({
   baseURL: 'https://api.groq.com/openai/v1',
   headers: {
     'Content-Type': 'application/json',
-    'Authorization': `Bearer ${import.meta.env.VITE_GROQ_API_KEY}`
+    'Authorization': `Bearer ${import.meta.env.VITE_GROQ_API_KEY || ''}`
   }
 });
 
+// API 키 확인 로깅
+console.log('Groq API Key 설정 여부:', !!import.meta.env.VITE_GROQ_API_KEY);
+
 export const chatWithAI = async (message, context = []) => {
   try {
+    if (!import.meta.env.VITE_GROQ_API_KEY) {
+      throw new Error('Groq API 키가 설정되지 않았습니다.');
+    }
+
     // 시스템 프롬프트 설정
     const systemMessage = {
       role: "system",
