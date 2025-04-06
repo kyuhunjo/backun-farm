@@ -3,17 +3,18 @@
     <v-row>
       <v-col cols="12">
         <v-card>
-          <v-card-title class="text-subtitle-1 font-weight-medium pa-4 d-flex align-center">
-            날씨 및 대기질 정보
+          <v-card-title class="text-h6 font-weight-medium pa-4 d-flex align-center bg-blue-lighten-5 border-b">
+            <v-icon icon="mdi-weather-partly-cloudy" class="me-2" color="blue-darken-1"></v-icon>
+            <span class="text-blue-darken-1 font-weight-bold">날씨 및 대기질 정보</span>
             <v-spacer></v-spacer>
             <v-btn
-              color="primary"
+              color="blue-darken-1"
               variant="tonal"
               :loading="isLoading"
               @click="refreshData"
               class="refresh-btn"
-              rounded="lg"
-              elevation="1"
+              rounded="0"
+              elevation="0"
             >
               <v-icon start>mdi-refresh</v-icon>
               새로고침
@@ -172,14 +173,19 @@ export default {
 </script>
 
 <style scoped>
+.border-b {
+  border-bottom: 1px solid rgba(0, 0, 0, 0.12);
+}
+
 .refresh-btn {
   min-width: 110px;
   transition: all 0.3s ease;
 }
 
 .refresh-btn:hover {
-  transform: scale(1.05);
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  transform: scale(1.02);
+  background-color: rgb(var(--v-theme-blue-darken-1));
+  color: white;
 }
 
 @media (max-width: 600px) {

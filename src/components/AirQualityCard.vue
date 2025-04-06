@@ -185,11 +185,10 @@ export default {
   background: linear-gradient(to right, rgba(255, 255, 255, 0.9), rgba(255, 255, 255, 0.95));
   backdrop-filter: blur(10px);
   height: 100%;
-  @apply bg-gray-50 rounded-lg p-3 transition-all duration-300;
+  border-radius: 0;
 }
 
 .air-quality-card:hover {
-  @apply bg-gray-100;
   transform: translateY(-2px);
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
 }
@@ -205,11 +204,12 @@ export default {
   left: 0;
   right: 0;
   bottom: 0;
-  background: rgba(255, 255, 255, 0.7);
   display: flex;
   align-items: center;
   justify-content: center;
+  background: rgba(255, 255, 255, 0.7);
   backdrop-filter: blur(2px);
+  border-radius: 0;
 }
 
 .air-quality-detail {
@@ -217,6 +217,7 @@ export default {
   border-width: 1px !important;
   height: 100%;
   min-height: 160px;
+  border-radius: 0;
 }
 
 .air-quality-detail:hover {

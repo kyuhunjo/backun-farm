@@ -1,268 +1,282 @@
 <template>
-  <v-card class="store-list-card">
-    <v-card-title class="text-h6">
-      직매장 목록
+  <v-card>
+    <v-card-title class="text-h6 font-weight-medium pa-4 d-flex align-center bg-blue-lighten-5 border-b">
+      <v-icon icon="mdi-store-marker" class="me-2" color="blue-darken-1"></v-icon>
+      <span class="text-blue-darken-1 font-weight-bold">직매장 목록</span>
       <v-spacer></v-spacer>
-      <v-btn
-        icon="mdi-refresh"
-        variant="text"
-        :loading="isLoading"
-        @click="refreshData"
-      ></v-btn>
+      <div class="d-flex align-center">
+        <v-select
+          v-model="selectedRegion"
+          :items="regions"
+          label="지역 선택"
+          single-line
+          hide-details
+          density="compact"
+          class="region-select me-4"
+          color="blue-darken-1"
+          bg-color="white"
+          rounded="0"
+          variant="outlined"
+          :menu-props="{ contentClass: 'region-select-menu' }"
+          @update:model-value="handleSearch"
+        ></v-select>
+        <v-btn
+          color="blue-darken-1"
+          variant="tonal"
+          :loading="isLoading"
+          @click="refreshData"
+          class="refresh-btn"
+          rounded="0"
+          elevation="0"
+        >
+          <v-icon start>mdi-refresh</v-icon>
+          새로고침
+        </v-btn>
+      </div>
     </v-card-title>
-
-    <!-- 검색 필터 -->
-    <v-card-text>
+    <v-card-text class="pa-4">
       <v-row>
-        <!-- 지역 검색 -->
-        <v-col cols="12" sm="6" md="4">
-          <v-select
-            v-model="selectedRegion"
-            :items="regions"
-            label="지역"
+        <v-col
+          v-for="store in paginatedStores"
+          :key="store.number"
+          cols="12"
+          sm="6"
+          md="4"
+          lg="3"
+        >
+          <v-card
             variant="outlined"
-            density="compact"
-            clearable
-            @update:model-value="onRegionChange"
-          ></v-select>
-        </v-col>
-        <v-col cols="12" sm="6" md="4">
-          <v-select
-            v-model="selectedDistrict"
-            :items="districts"
-            label="시/군/구"
-            variant="outlined"
-            density="compact"
-            clearable
-            :disabled="!selectedRegion"
-          ></v-select>
-        </v-col>
-        <!-- 키워드 검색 -->
-        <v-col cols="12" md="4">
-          <v-text-field
-            v-model="searchKeyword"
-            label="검색어"
-            variant="outlined"
-            density="compact"
-            append-inner-icon="mdi-magnify"
-            clearable
-            @click:append-inner="searchByKeyword"
-            @keyup.enter="searchByKeyword"
-          ></v-text-field>
-        </v-col>
-      </v-row>
-
-      <!-- 통계 정보 -->
-      <v-row v-if="stats" class="mt-2">
-        <v-col cols="12">
-          <v-card variant="outlined">
-            <v-card-text>
-              <div class="d-flex flex-wrap gap-4">
-                <div v-for="(count, region) in stats" :key="region" class="stat-item">
-                  <div class="text-subtitle-1">{{ region }}</div>
-                  <div class="text-h5">{{ count }}개</div>
-                </div>
+            class="store-card h-100"
+            :class="{ 'refresh-animation': isLoading }"
+          >
+            <v-card-item>
+              <div class="d-flex align-center mb-2">
+                <v-icon
+                  color="primary"
+                  class="me-2"
+                  icon="mdi-store"
+                ></v-icon>
+                <div class="text-h6 font-weight-bold">{{ store.storeName }}</div>
               </div>
+              <div class="text-subtitle-2 text-medium-emphasis mb-2">
+                {{ store.nhName }}
+              </div>
+            </v-card-item>
+
+            <v-card-text>
+              <div class="d-flex align-center mb-2">
+                <v-icon
+                  size="small"
+                  color="grey-darken-1"
+                  class="me-2"
+                >mdi-map-marker</v-icon>
+                <span class="text-body-2">{{ store.address }}</span>
+              </div>
+              
+              <div class="d-flex align-center mb-2">
+                <v-icon
+                  size="small"
+                  color="grey-darken-1"
+                  class="me-2"
+                >mdi-phone</v-icon>
+                <span class="text-body-2">{{ store.phoneNumber || '-' }}</span>
+              </div>
+
+              <div class="d-flex align-center mb-2">
+                <v-icon
+                  size="small"
+                  color="grey-darken-1"
+                  class="me-2"
+                >mdi-calendar</v-icon>
+                <span class="text-body-2">{{ formatDate(store.openDate) }}</span>
+              </div>
+
+              <v-chip
+                size="small"
+                color="primary"
+                variant="tonal"
+                class="me-2"
+              >
+                {{ store.region }}
+              </v-chip>
             </v-card-text>
           </v-card>
         </v-col>
       </v-row>
-
-      <!-- 직매장 목록 -->
-      <v-row class="mt-4">
-        <v-col cols="12">
-          <div v-if="isLoading" class="d-flex justify-center">
-            <v-progress-circular indeterminate></v-progress-circular>
-          </div>
-          <div v-else-if="stores.length === 0" class="text-center">
-            검색 결과가 없습니다.
-          </div>
-          <v-table v-else>
-            <thead>
-              <tr>
-                <th>이름</th>
-                <th>주소</th>
-                <th>연락처</th>
-                <th>운영시간</th>
-                <th>상세</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr v-for="store in stores" :key="store.id">
-                <td>{{ store.name }}</td>
-                <td>{{ store.address }}</td>
-                <td>{{ store.phone }}</td>
-                <td>{{ store.hours }}</td>
-                <td>
-                  <v-btn
-                    size="small"
-                    variant="text"
-                    color="primary"
-                    @click="showStoreDetail(store.id)"
-                  >
-                    상세보기
-                  </v-btn>
-                </td>
-              </tr>
-            </tbody>
-          </v-table>
-        </v-col>
-      </v-row>
+      
+      <div class="text-center pt-4">
+        <v-pagination
+          v-model="currentPage"
+          :length="totalPages"
+          :disabled="isLoading"
+        ></v-pagination>
+      </div>
     </v-card-text>
-
-    <!-- 상세 정보 다이얼로그 -->
-    <v-dialog v-model="showDialog" max-width="600">
-      <v-card v-if="selectedStore">
-        <v-card-title>
-          {{ selectedStore.name }}
-          <v-spacer></v-spacer>
-          <v-btn icon="mdi-close" variant="text" @click="showDialog = false"></v-btn>
-        </v-card-title>
-        <v-card-text>
-          <v-list>
-            <v-list-item>
-              <v-list-item-title>주소</v-list-item-title>
-              <v-list-item-subtitle>{{ selectedStore.address }}</v-list-item-subtitle>
-            </v-list-item>
-            <v-list-item>
-              <v-list-item-title>연락처</v-list-item-title>
-              <v-list-item-subtitle>{{ selectedStore.phone }}</v-list-item-subtitle>
-            </v-list-item>
-            <v-list-item>
-              <v-list-item-title>운영시간</v-list-item-title>
-              <v-list-item-subtitle>{{ selectedStore.hours }}</v-list-item-subtitle>
-            </v-list-item>
-            <v-list-item>
-              <v-list-item-title>취급품목</v-list-item-title>
-              <v-list-item-subtitle>{{ selectedStore.products }}</v-list-item-subtitle>
-            </v-list-item>
-            <v-list-item>
-              <v-list-item-title>주차 정보</v-list-item-title>
-              <v-list-item-subtitle>{{ selectedStore.parking }}</v-list-item-subtitle>
-            </v-list-item>
-          </v-list>
-        </v-card-text>
-      </v-card>
-    </v-dialog>
   </v-card>
 </template>
 
-<script setup>
-import { ref, onMounted } from 'vue';
-import { storeAPI, statsAPI } from '@/utils/api';
+<script>
+import { ref, onMounted, watch, computed } from 'vue'
+import api from '@/utils/api'
 
-// 상태 관리
-const isLoading = ref(false);
-const stores = ref([]);
-const selectedStore = ref(null);
-const showDialog = ref(false);
-const stats = ref(null);
+export default {
+  name: 'StoreList',
+  setup() {
+    const stores = ref([])
+    const isLoading = ref(false)
+    const currentPage = ref(1)
+    const totalPages = ref(1)
+    const selectedRegion = ref('')
+    const regions = ref([])
 
-// 검색 필터
-const searchKeyword = ref('');
-const selectedRegion = ref(null);
-const selectedDistrict = ref(null);
-const regions = ref(['서울', '경기', '인천', '강원', '충북', '충남', '대전', '세종', '전북', '전남', '광주', '경북', '경남', '대구', '울산', '부산', '제주']);
-const districts = ref([]);
+    const fetchStores = async () => {
+      isLoading.value = true
+      try {
+        const { data } = await api.get('/stores/region', {
+          params: { 
+            page: currentPage.value,
+            region: selectedRegion.value === '전체' ? '' : selectedRegion.value
+          }
+        })
+        if (data && Array.isArray(data)) {
+          stores.value = data
+          totalPages.value = Math.ceil(data.length / 12) // 한 페이지당 12개 항목
+          
+          // 모든 직매장에서 고유한 지역명 추출
+          if (!selectedRegion.value || selectedRegion.value === '전체') {
+            const uniqueRegions = [...new Set(data.map(store => store.region))]
+            regions.value = ['전체', ...uniqueRegions.filter(region => region).sort()]
+          }
+        } else {
+          stores.value = []
+          totalPages.value = 1
+        }
+      } catch (error) {
+        console.error('직매장 목록 조회 중 오류:', error)
+        stores.value = []
+        totalPages.value = 1
+      } finally {
+        isLoading.value = false
+      }
+    }
 
-// 데이터 조회 함수
-const fetchStores = async () => {
-  isLoading.value = true;
-  try {
-    const response = await storeAPI.getAllStores();
-    stores.value = response.data;
-  } catch (error) {
-    console.error('직매장 목록 조회 중 오류:', error);
-  } finally {
-    isLoading.value = false;
+    const handleSearch = () => {
+      currentPage.value = 1
+      fetchStores()
+    }
+
+    const formatDate = (dateString) => {
+      if (!dateString) return '-'
+      const date = new Date(dateString)
+      return `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, '0')}-${String(date.getDate()).padStart(2, '0')}`
+    }
+
+    const refreshData = () => {
+      selectedRegion.value = '전체'
+      currentPage.value = 1
+      fetchStores()
+    }
+
+    // 페이지 변경 감지
+    watch(currentPage, () => {
+      fetchStores()
+    })
+
+    // 계산된 페이지별 직매장 목록
+    const paginatedStores = computed(() => {
+      const startIndex = (currentPage.value - 1) * 12
+      const endIndex = startIndex + 12
+      return stores.value.slice(startIndex, endIndex)
+    })
+
+    onMounted(async () => {
+      selectedRegion.value = '전체'
+      await fetchStores()
+    })
+
+    return {
+      stores,
+      isLoading,
+      currentPage,
+      totalPages,
+      selectedRegion,
+      regions,
+      refreshData,
+      formatDate,
+      handleSearch,
+      paginatedStores
+    }
   }
-};
-
-const fetchStoresByRegion = async () => {
-  if (!selectedRegion.value) return;
-  isLoading.value = true;
-  try {
-    const response = await storeAPI.getStoresByRegion(
-      selectedRegion.value,
-      selectedDistrict.value
-    );
-    stores.value = response.data;
-  } catch (error) {
-    console.error('지역별 직매장 검색 중 오류:', error);
-  } finally {
-    isLoading.value = false;
-  }
-};
-
-const searchByKeyword = async () => {
-  if (!searchKeyword.value.trim()) return;
-  isLoading.value = true;
-  try {
-    const response = await storeAPI.searchStores(searchKeyword.value);
-    stores.value = response.data;
-  } catch (error) {
-    console.error('직매장 검색 중 오류:', error);
-  } finally {
-    isLoading.value = false;
-  }
-};
-
-const showStoreDetail = async (storeId) => {
-  isLoading.value = true;
-  try {
-    const response = await storeAPI.getStoreById(storeId);
-    selectedStore.value = response.data;
-    showDialog.value = true;
-  } catch (error) {
-    console.error('직매장 상세 정보 조회 중 오류:', error);
-  } finally {
-    isLoading.value = false;
-  }
-};
-
-const fetchRegionStats = async () => {
-  try {
-    const response = await statsAPI.getRegionStats();
-    stats.value = response.data;
-  } catch (error) {
-    console.error('지역별 통계 조회 중 오류:', error);
-  }
-};
-
-// 이벤트 핸들러
-const onRegionChange = () => {
-  selectedDistrict.value = null;
-  if (selectedRegion.value) {
-    // 실제로는 API에서 해당 지역의 시군구 목록을 가져와야 함
-    districts.value = ['시군구 데이터 필요'];
-  } else {
-    districts.value = [];
-  }
-  fetchStoresByRegion();
-};
-
-const refreshData = () => {
-  fetchStores();
-  fetchRegionStats();
-};
-
-// 초기 데이터 로드
-onMounted(() => {
-  refreshData();
-});
+}
 </script>
 
 <style scoped>
-.store-list-card {
-  height: 100%;
+.border-b {
+  border-bottom: 1px solid rgba(0, 0, 0, 0.12);
 }
 
-.stat-item {
-  text-align: center;
-  min-width: 100px;
+.store-card {
+  transition: all 0.3s ease;
+  border-radius: 0;
 }
 
-.gap-4 {
-  gap: 1rem;
+.store-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.region-select {
+  max-width: 180px;
+}
+
+.region-select :deep(.v-field) {
+  border-radius: 0;
+  background-color: rgb(var(--v-theme-blue-lighten-5)) !important;
+}
+
+.region-select :deep(.v-field__input) {
+  min-height: 36px !important;
+  padding-top: 0;
+  padding-bottom: 0;
+}
+
+.region-select :deep(.v-field__append-inner) {
+  padding-top: 6px;
+}
+
+.region-select-menu {
+  border-radius: 0 !important;
+}
+
+.refresh-btn {
+  min-width: 110px;
+  transition: all 0.3s ease;
+  height: 36px;
+}
+
+.refresh-btn:hover {
+  transform: scale(1.02);
+  background-color: rgb(var(--v-theme-blue-darken-1));
+  color: white;
+}
+
+.refresh-animation {
+  opacity: 0.7;
+  transform: scale(0.98);
+}
+
+@media (max-width: 600px) {
+  .region-select {
+    max-width: 140px;
+  }
+
+  .refresh-btn {
+    min-width: auto;
+    padding: 0 12px;
+  }
+  
+  .refresh-btn .v-btn__content {
+    gap: 4px;
+  }
 }
 </style> 

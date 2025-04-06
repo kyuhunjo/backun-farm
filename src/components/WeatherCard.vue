@@ -187,6 +187,7 @@ export default {
   background: linear-gradient(to right, rgba(255, 255, 255, 0.9), rgba(255, 255, 255, 0.95));
   backdrop-filter: blur(10px);
   height: 100%;
+  border-radius: 0;
 }
 
 .refresh-animation {
@@ -200,18 +201,18 @@ export default {
   left: 0;
   right: 0;
   bottom: 0;
-  background: rgba(255, 255, 255, 0.7);
   display: flex;
   align-items: center;
   justify-content: center;
+  background: rgba(255, 255, 255, 0.7);
   backdrop-filter: blur(2px);
+  border-radius: 0;
 }
 
 .forecast-container {
   display: grid;
-  grid-template-columns: repeat(5, 1fr);
-  gap: 12px;
-  margin-top: 8px;
+  grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+  gap: 1rem;
 }
 
 .forecast-item {
@@ -219,39 +220,23 @@ export default {
 }
 
 .forecast-day {
-  border-width: 1px !important;
+  border-radius: 0;
+  border-width: 1px;
+  border-style: solid;
   transition: all 0.3s ease;
-  height: 100%;
 }
 
 .forecast-day:hover {
   transform: translateY(-2px);
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
 }
 
 .forecast-day-content {
-  padding: 16px;
+  padding: 1rem;
   text-align: center;
 }
 
 .forecast-details {
   margin-top: auto;
-}
-
-@media (max-width: 1264px) {
-  .forecast-container {
-    grid-template-columns: repeat(3, 1fr);
-  }
-}
-
-@media (max-width: 600px) {
-  .forecast-container {
-    grid-template-columns: repeat(2, 1fr);
-  }
-  
-  .forecast-day-content {
-    padding: 12px;
-  }
 }
 
 .border-warning {
@@ -268,26 +253,14 @@ export default {
 
 .weather-details {
   flex: 1;
-  justify-content: space-around;
-  min-width: 300px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1.5rem;
 }
 
 .weather-detail-item {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
   text-align: center;
-  padding: 8px 16px;
-  border-radius: 8px;
-  transition: all 0.3s ease;
-}
-
-.weather-detail-item:hover {
-  background: rgba(var(--v-theme-primary), 0.05);
-}
-
-.gap-6 {
-  gap: 1.5rem;
+  min-width: 80px;
 }
 
 @media (max-width: 600px) {
@@ -298,15 +271,17 @@ export default {
   
   .weather-details {
     width: 100%;
-    justify-content: space-between;
+    margin-top: 1rem;
+    justify-content: space-around;
   }
   
-  .weather-detail-item {
-    padding: 4px 8px;
-  }
-  
-  .gap-6 {
+  .forecast-container {
+    grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
     gap: 0.5rem;
+  }
+  
+  .forecast-day-content {
+    padding: 0.75rem;
   }
 }
 </style> 

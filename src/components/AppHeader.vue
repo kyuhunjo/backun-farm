@@ -3,52 +3,54 @@
     <v-app-bar
       color="white"
       app
-      elevation="0"
+      elevation="1"
       rounded="0"
-      height="70"
-      class="border-b"
+      height="64"
     >
       <v-container class="d-flex align-center px-4">
         <router-link to="/" class="text-decoration-none d-flex align-center">
-          <span class="site-title text-primary font-weight-bold">백운마을</span>
+          <span class="site-title text-primary">백운마을</span>
         </router-link>
 
         <v-spacer></v-spacer>
 
         <!-- Desktop Navigation -->
-        <div class="d-none d-md-flex align-center">
+        <div class="d-none d-md-flex align-center gap-2">
           <v-menu
             open-on-hover
-            :offset="0"
-            transition="slide-y"
+            :close-delay="100"
+            :open-delay="0"
+            transition="slide-y-transition"
+            location="bottom"
           >
             <template v-slot:activator="{ props }">
               <v-btn
                 v-bind="props"
                 variant="text"
-                class="font-body mx-2"
+                class="px-3"
                 color="grey-darken-3"
+                height="40"
                 rounded="0"
               >
                 마을소개
-                <v-icon end>mdi-chevron-down</v-icon>
+                <v-icon end size="small" class="ms-1">mdi-chevron-down</v-icon>
               </v-btn>
             </template>
-            <v-card elevation="2" rounded="0" min-width="180" class="mt-2">
-              <v-list nav density="compact">
-                <v-list-item to="/village/history" class="font-body">
+            <v-card elevation="3" rounded="0" min-width="200" class="mt-1">
+              <v-list nav density="comfortable">
+                <v-list-item to="/village/history" rounded="0" class="mb-1">
                   <template #prepend>
                     <v-icon size="small" color="primary" class="me-2">mdi-history</v-icon>
                   </template>
                   <v-list-item-title>마을 역사</v-list-item-title>
                 </v-list-item>
-                <v-list-item to="/village/location" class="font-body">
+                <v-list-item to="/village/location" rounded="0" class="mb-1">
                   <template #prepend>
                     <v-icon size="small" color="primary" class="me-2">mdi-map-marker</v-icon>
                   </template>
                   <v-list-item-title>찾아오시는 길</v-list-item-title>
                 </v-list-item>
-                <v-list-item to="/village/specialties" class="font-body">
+                <v-list-item to="/village/specialties" rounded="0">
                   <template #prepend>
                     <v-icon size="small" color="primary" class="me-2">mdi-store</v-icon>
                   </template>
@@ -60,36 +62,39 @@
 
           <v-menu
             open-on-hover
-            :offset="0"
-            transition="slide-y"
+            :close-delay="100"
+            :open-delay="0"
+            transition="slide-y-transition"
+            location="bottom"
           >
             <template v-slot:activator="{ props }">
               <v-btn
                 v-bind="props"
                 variant="text"
-                class="font-body mx-2"
+                class="px-3"
                 color="grey-darken-3"
+                height="40"
                 rounded="0"
               >
                 농사 방법
-                <v-icon end>mdi-chevron-down</v-icon>
+                <v-icon end size="small" class="ms-1">mdi-chevron-down</v-icon>
               </v-btn>
             </template>
-            <v-card elevation="2" rounded="0" min-width="180" class="mt-2">
-              <v-list nav density="compact">
-                <v-list-item to="/farming/fern" class="font-body">
+            <v-card elevation="3" rounded="0" min-width="200" class="mt-1">
+              <v-list nav density="comfortable">
+                <v-list-item to="/farming/fern" rounded="0" class="mb-1">
                   <template #prepend>
                     <v-icon size="small" color="primary" class="me-2">mdi-sprout</v-icon>
                   </template>
                   <v-list-item-title>고사리 농사</v-list-item-title>
                 </v-list-item>
-                <v-list-item to="/farming/deodeok" class="font-body">
+                <v-list-item to="/farming/deodeok" rounded="0" class="mb-1">
                   <template #prepend>
                     <v-icon size="small" color="primary" class="me-2">mdi-flower</v-icon>
                   </template>
                   <v-list-item-title>더덕 농사</v-list-item-title>
                 </v-list-item>
-                <v-list-item to="/farming/persimmon" class="font-body">
+                <v-list-item to="/farming/persimmon" rounded="0">
                   <template #prepend>
                     <v-icon size="small" color="primary" class="me-2">mdi-fruit-cherries</v-icon>
                   </template>
@@ -98,6 +103,17 @@
               </v-list>
             </v-card>
           </v-menu>
+
+          <v-btn
+            to="/stores"
+            variant="text"
+            class="px-3"
+            color="grey-darken-3"
+            height="40"
+            rounded="0"
+          >
+            로컬푸드 직판매 정보
+          </v-btn>
         </div>
 
         <v-btn
@@ -125,7 +141,7 @@
       </div>
 
       <v-list nav>
-        <v-list-item to="/" class="mb-2 rounded-lg">
+        <v-list-item to="/" class="mb-2" rounded="0">
           <template #prepend>
             <v-icon color="primary" class="me-2">mdi-home</v-icon>
           </template>
@@ -139,7 +155,7 @@
           <template #activator="{ props }">
             <v-list-item
               v-bind="props"
-              class="rounded-lg"
+              rounded="0"
             >
               <template #prepend>
                 <v-icon color="primary" class="me-2">mdi-home-city</v-icon>
@@ -153,7 +169,8 @@
             :key="index"
             :to="item.to"
             :title="item.title"
-            class="rounded-lg ms-4"
+            class="ms-4"
+            rounded="0"
           >
             <template #prepend>
               <v-icon size="small" color="grey" class="me-2">mdi-chevron-right</v-icon>
@@ -168,7 +185,7 @@
           <template #activator="{ props }">
             <v-list-item
               v-bind="props"
-              class="rounded-lg"
+              rounded="0"
             >
               <template #prepend>
                 <v-icon color="primary" class="me-2">mdi-sprout</v-icon>
@@ -182,13 +199,21 @@
             :key="index"
             :to="item.to"
             :title="item.title"
-            class="rounded-lg ms-4"
+            class="ms-4"
+            rounded="0"
           >
             <template #prepend>
               <v-icon size="small" color="grey" class="me-2">mdi-chevron-right</v-icon>
             </template>
           </v-list-item>
         </v-list-group>
+
+        <v-list-item to="/stores" class="mb-2" rounded="0">
+          <template #prepend>
+            <v-icon color="primary" class="me-2">mdi-store-marker</v-icon>
+          </template>
+          <v-list-item-title class="font-body">로컬푸드 직판매 정보</v-list-item-title>
+        </v-list-item>
       </v-list>
     </v-navigation-drawer>
   </div>
@@ -232,14 +257,13 @@ onUnmounted(() => {
 </script>
 
 <style scoped>
-.border-b {
-  border-bottom: 1px solid rgba(0, 0, 0, 0.1);
-}
-
 .site-title {
   font-size: 1.4rem;
   font-weight: 700;
   letter-spacing: -0.5px;
+  background: linear-gradient(45deg, rgb(var(--v-theme-primary)), #1976D2);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
 }
 
 .v-list-item {
@@ -273,5 +297,9 @@ onUnmounted(() => {
 
 .v-list-item-title {
   font-size: 0.95rem !important;
+}
+
+.gap-2 {
+  gap: 0.5rem;
 }
 </style> 
