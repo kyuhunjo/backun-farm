@@ -31,22 +31,19 @@ export default defineConfig(({ mode }) => {
     server: {
       port: 3000,
       proxy: isDev ? {
-        '^/api/.*': {
+        '/api': {
           target: backendUrl,
           changeOrigin: true,
           secure: false,
           ws: true,
-          rewrite: (path) => path,
-          configure: (proxy, options) => {
-            proxy.on('proxyReq', (proxyReq, req) => {
-              console.log(`[Vite Proxy] Request: ${req.method} ${req.url} -> ${options.target}${req.url}`);
-            });
-            proxy.on('proxyRes', (proxyRes, req) => {
-              console.log(`[Vite Proxy] Response: ${proxyRes.statusCode} ${req.url}`);
-            });
-            proxy.on('error', (err) => {
-              console.error('[Vite Proxy] Error:', err);
-            });
+          onProxyReq: (proxyReq, req) => {
+            console.log(`[Dev Proxy] Request: ${req.method} ${req.url} -> ${backendUrl}${req.url}`);
+          },
+          onProxyRes: (proxyRes) => {
+            console.log(`[Dev Proxy] Response: ${proxyRes.statusCode}`);
+          },
+          onError: (err) => {
+            console.error('[Dev Proxy] Error:', err);
           }
         }
       } : {}
