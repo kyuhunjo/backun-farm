@@ -1,12 +1,13 @@
 import axios from 'axios';
 
-const isDev = import.meta.env.MODE === 'development';
-const baseURL = isDev
-  ? 'http://localhost:8084'
-  : (import.meta.env.VITE_API_URL || 'http://backun-farm-backend:8084');
+// baseURL을 항상 상대 경로로 설정하여 프록시를 통해 요청
+const baseURL = '/api';
 
+console.log('=== API 설정 정보 ===');
 console.log('API Mode:', import.meta.env.MODE);
 console.log('API Base URL:', baseURL);
+console.log('환경변수:', import.meta.env);
+console.log('==================');
 
 const api = axios.create({
   baseURL,
@@ -18,11 +19,16 @@ const api = axios.create({
 // 요청 인터셉터
 api.interceptors.request.use(
   (config) => {
-    console.log('API Request:', config.method.toUpperCase(), config.url);
+    console.log('=== API 요청 상세 정보 ===');
+    console.log('전체 URL:', config.baseURL + config.url);
+    console.log('메소드:', config.method.toUpperCase());
+    console.log('헤더:', config.headers);
+    console.log('데이터:', config.data);
+    console.log('========================');
     return config;
   },
   (error) => {
-    console.error('API Request Error:', error);
+    console.error('API 요청 에러:', error);
     return Promise.reject(error);
   }
 );
@@ -30,15 +36,26 @@ api.interceptors.request.use(
 // 응답 인터셉터
 api.interceptors.response.use(
   (response) => {
-    console.log('API Response:', response.status, response.config.url);
+    console.log('=== API 응답 상세 정보 ===');
+    console.log('상태:', response.status);
+    console.log('URL:', response.config.url);
+    console.log('데이터:', response.data);
+    console.log('========================');
     return response;
   },
   (error) => {
-    console.error('API Response Error:', error);
+    console.error('=== API 에러 상세 정보 ===');
     if (error.response) {
-      console.error('Error Status:', error.response.status);
-      console.error('Error Data:', error.response.data);
+      console.error('상태:', error.response.status);
+      console.error('데이터:', error.response.data);
+      console.error('헤더:', error.response.headers);
+    } else if (error.request) {
+      console.error('요청은 보냈으나 응답을 받지 못함:', error.request);
+    } else {
+      console.error('요청 설정 중 에러 발생:', error.message);
     }
+    console.error('전체 에러 객체:', error);
+    console.error('========================');
     return Promise.reject(error);
   }
 );

@@ -12,8 +12,11 @@ export default defineConfig(({ mode }) => {
     ? 'http://localhost:8084'
     : (env.VITE_API_URL || 'http://backun-farm-backend:8084')
 
+  console.log('=== Vite 설정 정보 ===')
   console.log('Mode:', mode)
   console.log('Backend URL:', backendUrl)
+  console.log('Environment:', env)
+  console.log('===================')
 
   return {
     plugins: [
@@ -33,15 +36,26 @@ export default defineConfig(({ mode }) => {
           changeOrigin: true,
           secure: false,
           ws: true,
+          rewrite: (path) => {
+            console.log('프록시 URL 변환:', path, '=>', path.replace(/^\/api/, ''))
+            return path.replace(/^\/api/, '')
+          },
           configure: (proxy) => {
             proxy.on('error', (err) => {
-              console.log('proxy error', err);
+              console.log('프록시 에러:', err);
             });
             proxy.on('proxyReq', (proxyReq, req) => {
-              console.log('Sending Request:', req.method, req.url);
+              console.log('프록시 요청 정보:');
+              console.log('  URL:', req.url);
+              console.log('  Method:', req.method);
+              console.log('  Headers:', proxyReq.getHeaders());
+              console.log('  Target:', backendUrl + req.url.replace(/^\/api/, ''));
             });
             proxy.on('proxyRes', (proxyRes, req) => {
-              console.log('Received Response:', proxyRes.statusCode, req.url);
+              console.log('프록시 응답 정보:');
+              console.log('  Status:', proxyRes.statusCode);
+              console.log('  URL:', req.url);
+              console.log('  Headers:', proxyRes.headers);
             });
           }
         }
