@@ -27,12 +27,20 @@ pipeline {
                 script {
                     // 기존 네트워크 확인 및 생성
                     sh """
+                    echo "Docker 네트워크 상태 확인 중..."
+                    docker network ls
+                    
+                    # 네트워크가 없으면 생성
                     if ! docker network ls | grep -q ${NETWORK_NAME}; then
                         echo "Docker 네트워크 '${NETWORK_NAME}'를 생성합니다..."
                         docker network create ${NETWORK_NAME}
                     else
                         echo "Docker 네트워크 '${NETWORK_NAME}'가 이미 존재합니다."
                     fi
+
+                    # 네트워크 상세 정보 확인
+                    echo "네트워크 상세 정보:"
+                    docker network inspect ${NETWORK_NAME} || true
                     """
                 }
             }
@@ -88,20 +96,31 @@ pipeline {
                         docker stop \$NAME_CONTAINER
                         docker rm \$NAME_CONTAINER
                     fi
+
+                    # 네트워크 재생성 (필요한 경우)
+                    if ! docker network ls | grep -q ${NETWORK_NAME}; then
+                        echo "Docker 네트워크 '${NETWORK_NAME}'를 재생성합니다..."
+                        docker network create ${NETWORK_NAME}
+                    fi
                     """
 
                     // 새 컨테이너 실행
                     sh """
+                    echo "새 컨테이너를 실행하고 네트워크에 연결합니다..."
                     docker run -d --restart unless-stopped \
                     --name ${APP_NAME} \
                     --network ${NETWORK_NAME} \
                     -p 8083:8083 \
                     -e VITE_API_URL=http://${BACKEND_HOST}:${BACKEND_PORT} \
                     ${IMAGE_NAME}:${env.BUILD_NUMBER}
-                    """
 
-                    // 네트워크 연결 확인
-                    sh """
+                    # 컨테이너가 네트워크에 연결되어 있는지 확인
+                    if ! docker network inspect ${NETWORK_NAME} | grep -q ${APP_NAME}; then
+                        echo "컨테이너를 네트워크에 수동으로 연결합니다..."
+                        docker network connect ${NETWORK_NAME} ${APP_NAME} || true
+                    fi
+
+                    # 네트워크 연결 상태 최종 확인
                     echo "컨테이너 네트워크 연결 상태 확인:"
                     docker network inspect ${NETWORK_NAME}
                     """
@@ -121,15 +140,25 @@ pipeline {
     post {
         success {
             echo '백운마을 프론트엔드가 Docker로 성공적으로 배포되었습니다.'
+            script {
+                sh """
+                echo "최종 네트워크 상태 확인:"
+                docker network ls
+                docker network inspect ${NETWORK_NAME}
+                echo "컨테이너 상태 확인:"
+                docker ps -a
+                """
+            }
         }
         failure {
             echo '빌드 또는 배포 과정에서 오류가 발생했습니다.'
             script {
-                // 실패 시 네트워크 상태 확인
                 sh """
                 echo "Docker 네트워크 상태 확인:"
                 docker network ls
                 docker network inspect ${NETWORK_NAME} || true
+                echo "컨테이너 상태 확인:"
+                docker ps -a
                 """
             }
         }
