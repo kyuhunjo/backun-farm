@@ -3,12 +3,14 @@ import { fileURLToPath } from 'url';
 import { dirname, join } from 'path';
 import compression from 'compression';
 import helmet from 'helmet';
+import { createProxyMiddleware } from 'http-proxy-middleware';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
 
 const app = express();
 const port = process.env.PORT || 8083;
+const apiUrl = process.env.VITE_API_URL || 'http://backun-farm-backend:8084';
 
 // 환경 변수 로깅
 console.log('=== 서버 환경 설정 ===');
@@ -23,6 +25,25 @@ app.use((req, res, next) => {
   next();
 });
 
+// API 프록시 설정
+const apiProxy = createProxyMiddleware('/api', {
+  target: apiUrl,
+  changeOrigin: true,
+  pathRewrite: {
+    '^/api': '', // '/api' 프리픽스 제거
+  },
+  onProxyReq: (proxyReq, req) => {
+    console.log(`프록시 요청: ${req.method} ${req.url} -> ${apiUrl}${req.url.replace('/api', '')}`);
+  },
+  onProxyRes: (proxyRes, req) => {
+    console.log(`프록시 응답: ${proxyRes.statusCode} ${req.url}`);
+  },
+  onError: (err, req, res) => {
+    console.error('프록시 에러:', err);
+    res.status(500).send('프록시 에러가 발생했습니다.');
+  }
+});
+
 // 보안 헤더 설정
 app.use(helmet({
   contentSecurityPolicy: false,
@@ -32,12 +53,16 @@ app.use(helmet({
 // gzip 압축
 app.use(compression());
 
+// API 프록시 미들웨어 적용
+app.use('/api', apiProxy);
+
 // 정적 파일 서빙
 app.use(express.static(join(__dirname, 'dist')));
 
 // API 프록시 설정 로깅
 console.log('=== 프록시 설정 ===');
 console.log('Static Directory:', join(__dirname, 'dist'));
+console.log('API Target:', apiUrl);
 console.log('==================');
 
 // SPA를 위한 라우팅 설정
