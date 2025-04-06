@@ -85,4 +85,52 @@ export const statsAPI = {
   }
 };
 
-export default api; 
+// Groq API 설정
+export const groqApi = axios.create({
+  baseURL: 'https://api.groq.com/openai/v1',
+  headers: {
+    'Content-Type': 'application/json',
+    'Authorization': `Bearer ${import.meta.env.VITE_GROQ_API_KEY}`
+  }
+});
+
+export const chatWithAI = async (message, context = []) => {
+  try {
+    // 시스템 프롬프트 설정
+    const systemMessage = {
+      role: "system",
+      content: `당신은 백운마을의 AI 도우미입니다. 
+마을의 특산물, 관광 정보, 직매장, 농산물 등에 대해 친절하게 안내해주세요.
+항상 한국어로 응답하며, 존댓말을 사용합니다.`
+    };
+
+    // 대화 히스토리 포맷팅
+    const messages = [
+      systemMessage,
+      ...context.map(msg => ({
+        role: msg.isUser ? "user" : "assistant",
+        content: msg.text
+      })),
+      {
+        role: "user",
+        content: message
+      }
+    ];
+
+    const response = await groqApi.post('/chat/completions', {
+      model: 'llama-3.2-90b-vision-preview',
+      messages: messages,
+      temperature: 0.7,
+      max_tokens: 1000,
+      top_p: 0.9,
+      stream: false
+    });
+
+    return response.data.choices[0].message.content;
+  } catch (error) {
+    console.error('AI 응답 오류:', error);
+    throw new Error('AI 응답을 받아오는데 실패했습니다.');
+  }
+};
+
+export default api;

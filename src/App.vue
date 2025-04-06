@@ -7,6 +7,7 @@
     <v-main>
       <router-view></router-view>
     </v-main>
+    <AiChatBot />
     <AppFooter />
   </v-app>
 </template>
@@ -15,6 +16,7 @@
 import { onErrorCaptured, computed } from 'vue'
 import AppHeader from '@/components/AppHeader.vue'
 import AppFooter from '@/components/AppFooter.vue'
+import AiChatBot from '@/components/AiChatBot.vue'
 
 const backgroundStyle = computed(() => ({
   backgroundImage: `url(${new URL('./assets/images/20250402_124827.jpg', import.meta.url).href})`,

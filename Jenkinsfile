@@ -11,6 +11,7 @@ pipeline {
         WEATHER_API_KEY = credentials('weather-api-key')
         AGRI_WEATHER_API_KEY = credentials('agri-weather-api-key')
         AIR_QUALITY_API_KEY = credentials('air-quality-api-key')
+        GROQ_API_KEY = credentials('groq-api-key')
         BACKEND_HOST = 'backun-farm-backend'
         BACKEND_PORT = '8084'
     }
@@ -55,6 +56,7 @@ pipeline {
                     echo "AGRI_WEATHER_API_KEY=${AGRI_WEATHER_API_KEY}" >> .env
                     echo "AIR_QUALITY_API_KEY=${AIR_QUALITY_API_KEY}" >> .env
                     echo "VITE_API_URL=http://${BACKEND_HOST}:${BACKEND_PORT}" >> .env
+                    echo "VITE_GROQ_API_KEY=${GROQ_API_KEY}" >> .env
                     """
                     
                     dockerImage = docker.build("${IMAGE_NAME}:${env.BUILD_NUMBER}")
@@ -112,6 +114,7 @@ pipeline {
                     --network ${NETWORK_NAME} \
                     -p 8083:8083 \
                     -e VITE_API_URL=http://${BACKEND_HOST}:${BACKEND_PORT} \
+                    -e VITE_GROQ_API_KEY=${GROQ_API_KEY} \
                     ${IMAGE_NAME}:${env.BUILD_NUMBER}
 
                     # 컨테이너가 네트워크에 연결되어 있는지 확인

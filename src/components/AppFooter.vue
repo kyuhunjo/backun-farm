@@ -1,100 +1,74 @@
 <template>
-  <v-footer class="bg-grey-darken-4">
+  <v-footer class="bg-grey-darken-3 py-2">
     <v-container>
       <v-row>
-        <v-col cols="12" sm="4">
-          <h3 class="text-h6 font-heading mb-4 text-white">백운마을</h3>
-          <p class="text-body-1 font-body text-grey-lighten-1">
+        <v-col cols="12" sm="5">
+          <div class="d-flex align-center mb-2">
+            <v-icon icon="mdi-home-variant" size="small" color="green-lighten-1" class="me-2"></v-icon>
+            <h3 class="text-h6 font-weight-bold text-green-lighten-1 mb-0">백운마을</h3>
+          </div>
+          <p class="text-body-2 text-grey-lighten-1 mb-0">
             전라남도 화순군 백운마을에 오신 것을 환영합니다.
-            자연과 함께하는 삶, 전통과 현대가 어우러진 우리 마을에서
-            새로운 시작을 준비하세요.
           </p>
         </v-col>
 
         <v-col cols="12" sm="4">
-          <h3 class="text-h6 font-heading mb-4 text-white">메뉴</h3>
-          <v-row>
-            <v-col cols="12">
-              <div class="text-subtitle-1 font-body text-white mb-2">마을 소개</div>
-              <v-list density="compact" bg-color="transparent" class="pa-0">
-                <v-list-item to="/village/history" class="font-body text-grey-lighten-1 px-0">
-                  <template v-slot:prepend>
-                    <v-icon icon="mdi-chevron-right" size="small"></v-icon>
-                  </template>
-                  마을 역사
-                </v-list-item>
-                <v-list-item to="/village/location" class="font-body text-grey-lighten-1 px-0">
-                  <template v-slot:prepend>
-                    <v-icon icon="mdi-chevron-right" size="small"></v-icon>
-                  </template>
-                  찾아오시는 길
-                </v-list-item>
-                <v-list-item to="/village/specialties" class="font-body text-grey-lighten-1 px-0">
-                  <template v-slot:prepend>
-                    <v-icon icon="mdi-chevron-right" size="small"></v-icon>
-                  </template>
-                  특산물
-                </v-list-item>
-              </v-list>
-            </v-col>
-
-            <v-col cols="12">
-              <div class="text-subtitle-1 font-body text-white mb-2">농사 방법</div>
-              <v-list density="compact" bg-color="transparent" class="pa-0">
-                <v-list-item to="/farming/fern" class="font-body text-grey-lighten-1 px-0">
-                  <template v-slot:prepend>
-                    <v-icon icon="mdi-chevron-right" size="small"></v-icon>
-                  </template>
-                  고사리 농사
-                </v-list-item>
-                <v-list-item to="/farming/deodeok" class="font-body text-grey-lighten-1 px-0">
-                  <template v-slot:prepend>
-                    <v-icon icon="mdi-chevron-right" size="small"></v-icon>
-                  </template>
-                  더덕 농사
-                </v-list-item>
-                <v-list-item to="/farming/persimmon" class="font-body text-grey-lighten-1 px-0">
-                  <template v-slot:prepend>
-                    <v-icon icon="mdi-chevron-right" size="small"></v-icon>
-                  </template>
-                  곶감 가공
-                </v-list-item>
-              </v-list>
-            </v-col>
-          </v-row>
+          <h3 class="text-subtitle-1 font-weight-bold text-green-lighten-1 mb-2 d-flex align-center">
+            <v-icon icon="mdi-menu" size="small" class="me-2"></v-icon>
+            빠른 메뉴
+          </h3>
+          <v-list density="compact" bg-color="transparent" class="pa-0">
+            <v-list-item to="/" class="footer-link px-1" color="white">
+              <template v-slot:prepend>
+                <v-icon icon="mdi-chevron-right" size="x-small" color="grey-lighten-1"></v-icon>
+              </template>
+              홈
+            </v-list-item>
+            <v-list-item to="/stores" class="footer-link px-1" color="white">
+              <template v-slot:prepend>
+                <v-icon icon="mdi-chevron-right" size="x-small" color="grey-lighten-1"></v-icon>
+              </template>
+              직매장
+            </v-list-item>
+            <v-list-item to="/products" class="footer-link px-1" color="white">
+              <template v-slot:prepend>
+                <v-icon icon="mdi-chevron-right" size="x-small" color="grey-lighten-1"></v-icon>
+              </template>
+              특산물
+            </v-list-item>
+          </v-list>
         </v-col>
 
-        <v-col cols="12" sm="4">
-          <h3 class="text-h6 font-heading mb-4 text-white">연락처</h3>
+        <v-col cols="12" sm="3">
+          <h3 class="text-subtitle-1 font-weight-bold text-green-lighten-1 mb-2 d-flex align-center">
+            <v-icon icon="mdi-contacts" size="small" class="me-2"></v-icon>
+            연락처
+          </h3>
           <v-list density="compact" bg-color="transparent" class="pa-0">
-            <v-list-item class="font-body text-grey-lighten-1 px-0 mb-2">
+            <v-list-item class="footer-contact px-1 mb-2">
               <template v-slot:prepend>
-                <v-icon icon="mdi-map-marker" color="primary"></v-icon>
+                <v-icon icon="mdi-map-marker" color="green-lighten-1" size="x-small"></v-icon>
               </template>
-              전라남도 화순군 백운면<br>
-              <span class="text-grey-lighten-2 text-caption ps-9">우편번호: 58112</span>
+              <div class="text-grey-lighten-1 text-body-2">
+                전라남도 화순군 백운면
+              </div>
             </v-list-item>
-            <v-list-item class="font-body text-grey-lighten-1 px-0 mb-2">
+            <v-list-item class="footer-contact px-1">
               <template v-slot:prepend>
-                <v-icon icon="mdi-phone" color="primary"></v-icon>
+                <v-icon icon="mdi-phone" color="green-lighten-1" size="x-small"></v-icon>
               </template>
-              061-1234-5678<br>
-              <span class="text-grey-lighten-2 text-caption ps-9">평일 09:00 - 18:00</span>
-            </v-list-item>
-            <v-list-item class="font-body text-grey-lighten-1 px-0">
-              <template v-slot:prepend>
-                <v-icon icon="mdi-email" color="primary"></v-icon>
-              </template>
-              info@baekun.kr
+              <div class="text-grey-lighten-1 text-body-2">
+                061-1234-5678
+              </div>
             </v-list-item>
           </v-list>
         </v-col>
       </v-row>
 
-      <v-divider class="my-6 border-opacity-25"></v-divider>
+      <v-divider class="my-2 border-opacity-25 border-grey-lighten-2"></v-divider>
 
       <v-row>
-        <v-col cols="12" class="text-center">
+        <v-col cols="12" class="text-center py-1">
           <div class="copyright text-grey-lighten-1">
             &copy; {{ new Date().getFullYear() }} 백운마을. All rights reserved.
           </div>
@@ -112,18 +86,40 @@ export default {
 
 <style scoped>
 .copyright {
-  font-size: 0.9rem;
+  font-size: 0.75rem;
 }
 
-.v-list-item {
-  min-height: 36px !important;
+.footer-link {
+  min-height: 28px !important;
+  color: rgb(var(--v-theme-grey-lighten-1)) !important;
+  transition: all 0.3s ease;
+  font-size: 0.875rem;
 }
 
-.v-list-item:hover {
-  color: white !important;
+.footer-link:hover {
+  color: rgb(var(--v-theme-green-lighten-1)) !important;
+  transform: translateX(4px);
 }
 
-.v-list-item:hover :deep(.v-icon) {
-  color: white !important;
+.footer-link:hover :deep(.v-icon) {
+  color: rgb(var(--v-theme-green-lighten-1)) !important;
+}
+
+.footer-contact {
+  min-height: 28px !important;
+}
+
+.footer-contact :deep(.v-list-item__content) {
+  padding: 2px 0;
+}
+
+@media (max-width: 600px) {
+  .v-footer {
+    padding: 12px 0;
+  }
+  
+  .copyright {
+    font-size: 0.75rem;
+  }
 }
 </style> 
