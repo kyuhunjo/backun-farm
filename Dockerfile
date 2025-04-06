@@ -1,6 +1,11 @@
 # Build stage
 FROM node:18-alpine as build-stage
 WORKDIR /app
+
+# Build arguments
+ARG VITE_API_URL
+ENV VITE_API_URL=${VITE_API_URL}
+
 COPY package*.json ./
 RUN npm install
 COPY . .
@@ -21,6 +26,10 @@ COPY server.js ./
 # 환경변수 설정
 ENV PORT=8083
 ENV NODE_ENV=production
+
+# Build arguments for runtime
+ARG VITE_API_URL
+ENV VITE_API_URL=${VITE_API_URL}
 
 # 포트 노출
 EXPOSE 8083
