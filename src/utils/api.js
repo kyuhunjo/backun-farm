@@ -45,4 +45,44 @@ api.interceptors.response.use(
   }
 );
 
+// 직매장 관련 API 함수들
+export const storeAPI = {
+  // 전체 직매장 목록 조회
+  getAllStores() {
+    return api.get('/stores');
+  },
+
+  // 지역별 직매장 검색
+  getStoresByRegion(region, district) {
+    return api.get('/stores/region', {
+      params: {
+        region,
+        district
+      }
+    });
+  },
+
+  // 직매장 상세 정보 조회
+  getStoreById(id) {
+    return api.get(`/stores/${id}`);
+  },
+
+  // 직매장 검색
+  searchStores(keyword) {
+    return api.get('/stores/search', {
+      params: {
+        keyword
+      }
+    });
+  }
+};
+
+// 통계 관련 API 함수들
+export const statsAPI = {
+  // 지역별 통계 조회
+  getRegionStats() {
+    return api.get('/stats/region');
+  }
+};
+
 export default api; 
