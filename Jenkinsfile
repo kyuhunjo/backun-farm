@@ -20,6 +20,22 @@ pipeline {
             }
         }
 
+        stage('Setup Network') {
+            steps {
+                script {
+                    // 기존 네트워크 확인 및 생성
+                    sh """
+                    if ! docker network ls | grep -q ${NETWORK_NAME}; then
+                        echo "Docker 네트워크 '${NETWORK_NAME}'를 생성합니다..."
+                        docker network create ${NETWORK_NAME}
+                    else
+                        echo "Docker 네트워크 '${NETWORK_NAME}'가 이미 존재합니다."
+                    fi
+                    """
+                }
+            }
+        }
+
         stage('Build') {
             steps {
                 script {
@@ -79,6 +95,12 @@ pipeline {
                     -p 8083:8083 \
                     ${IMAGE_NAME}:${env.BUILD_NUMBER}
                     """
+
+                    // 네트워크 연결 확인
+                    sh """
+                    echo "컨테이너 네트워크 연결 상태 확인:"
+                    docker network inspect ${NETWORK_NAME}
+                    """
                 }
             }
         }
@@ -98,6 +120,14 @@ pipeline {
         }
         failure {
             echo '빌드 또는 배포 과정에서 오류가 발생했습니다.'
+            script {
+                // 실패 시 네트워크 상태 확인
+                sh """
+                echo "Docker 네트워크 상태 확인:"
+                docker network ls
+                docker network inspect ${NETWORK_NAME} || true
+                """
+            }
         }
     }
 }
