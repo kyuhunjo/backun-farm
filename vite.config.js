@@ -7,7 +7,8 @@ import vuetify from 'vite-plugin-vuetify'
 export default defineConfig(({ mode }) => {
   // 환경 변수 로드
   const env = loadEnv(mode, process.cwd(), '')
-  const backendUrl = mode === 'development' 
+  const isDev = mode === 'development'
+  const backendUrl = isDev
     ? 'http://localhost:8084'
     : 'http://backun-farm-backend:8084'
 
@@ -29,16 +30,13 @@ export default defineConfig(({ mode }) => {
     },
     server: {
       port: 3000,
-      proxy: {
+      proxy: isDev ? {
         '^/api/.*': {
           target: backendUrl,
           changeOrigin: true,
           secure: false,
           ws: true,
-          rewrite: (path) => {
-            console.log(`[Vite Proxy] ${path} -> ${path}`);
-            return path;
-          },
+          rewrite: (path) => path,
           configure: (proxy, options) => {
             proxy.on('proxyReq', (proxyReq, req) => {
               console.log(`[Vite Proxy] Request: ${req.method} ${req.url} -> ${options.target}${req.url}`);
@@ -51,7 +49,7 @@ export default defineConfig(({ mode }) => {
             });
           }
         }
-      }
+      } : {}
     },
     define: {
       'process.env': env
