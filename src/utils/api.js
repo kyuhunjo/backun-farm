@@ -1,14 +1,11 @@
 import axios from 'axios';
 
-const isDev = import.meta.env.MODE === 'development';
-const baseURL = isDev
-  ? '/api'  // 개발 환경: Vite 프록시 사용
-  : '/api'; // 배포 환경: Express 프록시 사용
+// 항상 /api를 통해 요청하도록 설정
+const baseURL = '/api';
 
 console.log('=== API 설정 정보 ===');
 console.log('API Mode:', import.meta.env.MODE);
 console.log('API Base URL:', baseURL);
-console.log('환경변수:', import.meta.env);
 console.log('==================');
 
 const api = axios.create({
@@ -16,10 +13,7 @@ const api = axios.create({
   headers: {
     'Content-Type': 'application/json',
   },
-  // 타임아웃 설정
-  timeout: 10000,
-  // CORS 설정
-  withCredentials: false
+  timeout: 10000
 });
 
 // 요청 인터셉터
