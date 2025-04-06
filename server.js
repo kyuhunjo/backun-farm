@@ -1,11 +1,8 @@
 import express from 'express';
-import path from 'path';
+import { fileURLToPath } from 'url';
+import { dirname, join } from 'path';
 import compression from 'compression';
 import helmet from 'helmet';
-import dotenv from 'dotenv';
-import mongoose from 'mongoose';
-import multer from 'multer';
-import cors from 'cors';
 import { createProxyMiddleware } from 'http-proxy-middleware';
 
 const __filename = fileURLToPath(import.meta.url);
@@ -30,7 +27,7 @@ app.use(helmet({
 app.use(compression());
 
 // 정적 파일 서빙
-app.use(express.static(path.join(__dirname, 'dist')));
+app.use(express.static(join(__dirname, 'dist')));
 
 // 프록시 설정
 if (process.env.NODE_ENV === 'production') {
@@ -54,7 +51,7 @@ if (process.env.NODE_ENV === 'production') {
 
 // SPA를 위한 라우팅 설정
 app.get('*', (req, res) => {
-  res.sendFile(path.join(__dirname, 'dist', 'index.html'));
+  res.sendFile(join(__dirname, 'dist', 'index.html'));
 });
 
 app.listen(port, () => {
