@@ -11,6 +11,8 @@ pipeline {
         WEATHER_API_KEY = credentials('weather-api-key')
         AGRI_WEATHER_API_KEY = credentials('agri-weather-api-key')
         AIR_QUALITY_API_KEY = credentials('air-quality-api-key')
+        BACKEND_HOST = 'backun-farm-backend'
+        BACKEND_PORT = '8084'
     }
 
     stages {
@@ -44,6 +46,7 @@ pipeline {
                     echo "WEATHER_API_KEY=${WEATHER_API_KEY}" > .env
                     echo "AGRI_WEATHER_API_KEY=${AGRI_WEATHER_API_KEY}" >> .env
                     echo "AIR_QUALITY_API_KEY=${AIR_QUALITY_API_KEY}" >> .env
+                    echo "VITE_API_URL=http://${BACKEND_HOST}:${BACKEND_PORT}" >> .env
                     """
                     
                     dockerImage = docker.build("${IMAGE_NAME}:${env.BUILD_NUMBER}")
@@ -93,6 +96,7 @@ pipeline {
                     --name ${APP_NAME} \
                     --network ${NETWORK_NAME} \
                     -p 8083:8083 \
+                    -e VITE_API_URL=http://${BACKEND_HOST}:${BACKEND_PORT} \
                     ${IMAGE_NAME}:${env.BUILD_NUMBER}
                     """
 
