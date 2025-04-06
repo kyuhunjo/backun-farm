@@ -335,6 +335,7 @@ export default {
   .chat-bot-container {
     bottom: 5rem;
     right: 1rem;
+    left: 1rem;
   }
 
   .chat-bot-toggle {
@@ -342,10 +343,14 @@ export default {
   }
 
   .chat-bot-window {
-    width: calc(100vw - 2rem);
-    height: calc(100vh - 8rem);
-    bottom: 4rem;
-    right: 0;
+    position: fixed;
+    top: 1rem;
+    bottom: 5rem;
+    left: 1rem;
+    right: 1rem;
+    width: auto;
+    height: auto;
+    max-height: calc(100vh - 6rem);
   }
 }
 
