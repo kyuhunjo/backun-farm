@@ -20,34 +20,45 @@
       theme="dark"
     >
       <v-toolbar
-        color="primary"
+        class="chat-title-bar pa-0"
         elevation="0"
-        density="compact"
+        height="48"
       >
-        <v-icon size="20" class="me-2">mdi-message-text</v-icon>
-        <span class="text-subtitle-2 font-weight-medium">백운마을 도우미</span>
-        <v-spacer></v-spacer>
-        <v-btn
-          icon="mdi-close"
-          variant="text"
-          size="small"
-          @click="toggleChat"
-        >
-          <v-icon size="20">mdi-close</v-icon>
-        </v-btn>
+        <div class="d-flex align-center px-4 w-100">
+          <v-avatar
+            color="primary-lighten-1"
+            class="chat-avatar"
+            size="28"
+          >
+            <v-icon size="16">mdi-message-text</v-icon>
+          </v-avatar>
+          <span class="chat-title ms-2">백운마을 도우미</span>
+          <v-spacer></v-spacer>
+          <v-btn
+            icon="mdi-close"
+            variant="text"
+            size="small"
+            class="close-button"
+            @click="toggleChat"
+          >
+            <v-icon size="20">mdi-close</v-icon>
+          </v-btn>
+        </div>
       </v-toolbar>
 
-      <v-card-text class="chat-messages pa-4" ref="messageContainer">
-        <div
-          v-for="(message, index) in messages"
-          :key="index"
-          :class="['message-bubble mb-3', message.isUser ? 'user-message' : 'bot-message', message.isLoading ? 'isLoading' : '', message.isError ? 'isError' : '']"
-        >
-          <div class="message-content">
-            {{ message.text }}
-          </div>
-          <div class="message-time text-caption">
-            {{ message.time }}
+      <v-card-text class="chat-messages-container">
+        <div class="messages-scroll" ref="messageContainer">
+          <div
+            v-for="(message, index) in messages"
+            :key="index"
+            :class="['message-bubble mb-3', message.isUser ? 'user-message' : 'bot-message', message.isLoading ? 'isLoading' : '', message.isError ? 'isError' : '']"
+          >
+            <div class="message-content">
+              {{ message.text }}
+            </div>
+            <div class="message-time text-caption">
+              {{ message.time }}
+            </div>
           </div>
         </div>
       </v-card-text>
@@ -91,7 +102,7 @@ export default {
       isOpen: false,
       userInput: '',
       isLoading: false,
-      contextSize: 5, // 기억할 대화 컨텍스트 수
+      contextSize: 5,
       messages: []
     }
   },
@@ -99,28 +110,23 @@ export default {
     messages: {
       deep: true,
       handler() {
-        this.scrollToBottomWithDelay()
+        this.$nextTick(() => {
+          this.scrollToBottom()
+        })
       }
-    }
-  },
-  computed: {
-    // 최근 대화 컨텍스트 추출
-    recentContext() {
-      return this.messages.slice(-this.contextSize)
     }
   },
   methods: {
     toggleChat() {
       this.isOpen = !this.isOpen
       if (this.isOpen) {
-        // 챗봇 창을 열 때 메시지 초기화
         this.messages = [{
-          text: '안녕하세요! 백운마을 도우미입니다. 무엇을 도와드릴까요?',
+          text: '안녕하세요! 화순군 청풍면 백운마을 도우미입니다. 무엇을 도와드릴까요?',
           isUser: false,
           time: this.getCurrentTime()
         }]
         this.$nextTick(() => {
-          this.scrollToBottomWithDelay()
+          this.scrollToBottom()
         })
       }
     },
@@ -128,10 +134,17 @@ export default {
       const now = new Date()
       return `${now.getHours().toString().padStart(2, '0')}:${now.getMinutes().toString().padStart(2, '0')}`
     },
+    scrollToBottom() {
+      this.$nextTick(() => {
+        const container = this.$refs.messageContainer
+        if (container) {
+          container.scrollTop = container.scrollHeight
+        }
+      })
+    },
     async sendMessage() {
       if (!this.userInput.trim() || this.isLoading) return
 
-      // 사용자 메시지 추가
       const userMessage = this.userInput
       this.messages.push({
         text: userMessage,
@@ -139,82 +152,44 @@ export default {
         time: this.getCurrentTime()
       })
       this.userInput = ''
-      
+      this.scrollToBottom()
+
       try {
         this.isLoading = true
         
-        // AI 응답 대기 메시지
         const loadingMsgIndex = this.messages.push({
           text: '답변을 작성중입니다...',
           isUser: false,
           time: this.getCurrentTime(),
           isLoading: true
         }) - 1
+        this.scrollToBottom()
 
-        // AI 응답 요청 (컨텍스트 포함)
         const response = await chatWithAI(userMessage, this.recentContext)
         
-        // 대기 메시지를 실제 응답으로 교체
         this.messages[loadingMsgIndex] = {
           text: response,
           isUser: false,
           time: this.getCurrentTime()
         }
-
-        // 로컬 스토리지에 대화 내용 저장
-        this.saveMessages()
+        this.scrollToBottom()
       } catch (error) {
-        // 오류 메시지 표시
         this.messages.push({
           text: '죄송합니다. 응답을 받아오는데 실패했습니다.',
           isUser: false,
           time: this.getCurrentTime(),
           isError: true
         })
+        this.scrollToBottom()
       } finally {
         this.isLoading = false
-        this.scrollToBottomWithDelay()
-      }
-    },
-    scrollToBottom() {
-      const container = this.$refs.messageContainer
-      if (container) {
-        container.scrollTop = container.scrollHeight
-      }
-    },
-    scrollToBottomWithDelay() {
-      this.$nextTick(() => {
-        setTimeout(() => {
-          const container = this.$refs.messageContainer
-          if (container) {
-            container.scrollTop = container.scrollHeight
-          }
-        }, 100)
-      })
-    },
-    // 로컬 스토리지에 메시지 저장
-    saveMessages() {
-      try {
-        localStorage.setItem('chatMessages', JSON.stringify(this.messages))
-      } catch (e) {
-        console.error('메시지 저장 실패:', e)
-      }
-    },
-    // 로컬 스토리지에서 메시지 불러오기
-    loadMessages() {
-      try {
-        const savedMessages = localStorage.getItem('chatMessages')
-        if (savedMessages) {
-          this.messages = JSON.parse(savedMessages)
-        }
-      } catch (e) {
-        console.error('메시지 불러오기 실패:', e)
       }
     }
   },
-  mounted() {
-    // 컴포넌트 마운트 시 저장된 메시지 불러오기
-    this.loadMessages()
+  computed: {
+    recentContext() {
+      return this.messages.slice(-this.contextSize)
+    }
   }
 }
 </script>
@@ -258,19 +233,31 @@ export default {
   height: 520px;
   display: flex;
   flex-direction: column;
-  overflow: hidden;
   border: 1px solid rgba(255, 255, 255, 0.1);
   background: rgba(30, 30, 30, 0.95) !important;
   backdrop-filter: blur(12px);
   -webkit-backdrop-filter: blur(12px);
 }
 
-.chat-messages {
-  flex-grow: 1;
+.chat-messages-container {
+  flex: 1;
+  position: relative;
+  overflow: hidden;
+  padding: 0 !important;
+}
+
+.messages-scroll {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
   overflow-y: auto;
-  background: transparent;
-  padding-bottom: 8px;
-  -webkit-overflow-scrolling: touch;
+  overflow-x: hidden;
+  padding: 1rem;
+  padding-bottom: 2rem;
+  display: flex;
+  flex-direction: column;
 }
 
 .message-bubble {
@@ -279,8 +266,20 @@ export default {
   border-radius: 12px;
   position: relative;
   font-size: 0.9rem;
-  opacity: 1;
-  transition: opacity 0.3s ease;
+  margin-bottom: 1rem;
+  opacity: 0;
+  animation: fadeIn 0.3s ease forwards;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
 .message-content {
@@ -348,5 +347,38 @@ export default {
     bottom: 4rem;
     right: 0;
   }
+}
+
+.chat-title-bar {
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  background: linear-gradient(to right, rgba(var(--v-theme-primary), 0.2), rgba(var(--v-theme-primary), 0.1)) !important;
+}
+
+.chat-avatar {
+  background: rgba(255, 255, 255, 0.1) !important;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  flex-shrink: 0;
+}
+
+.chat-title {
+  font-size: 0.95rem;
+  font-weight: 500;
+  color: white;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  line-height: 1;
+}
+
+.close-button {
+  margin-right: -8px;
+  opacity: 0.7;
+  transition: all 0.2s ease;
+}
+
+.close-button:hover {
+  opacity: 1;
+  background: rgba(255, 255, 255, 0.1) !important;
 }
 </style>
