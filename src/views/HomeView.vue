@@ -46,6 +46,7 @@
 import { ref, onMounted, computed } from 'vue'
 import AirQualityCard from '@/components/AirQualityCard.vue'
 import WeatherCard from '@/components/WeatherCard.vue'
+import api from '@/utils/api'
 
 export default {
   name: 'HomeView',
@@ -114,9 +115,8 @@ export default {
 
     const fetchWeatherData = async () => {
       try {
-        const response = await fetch('/api/weather')
-        if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`)
-        weather.value = await response.json()
+        const { data } = await api.get('/weather')
+        weather.value = data
       } catch (error) {
         console.error('날씨 데이터 조회 중 오류:', error)
       }
@@ -124,9 +124,8 @@ export default {
 
     const fetchAirQualityData = async () => {
       try {
-        const response = await fetch('/api/air-quality')
-        if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`)
-        airQuality.value = await response.json()
+        const { data } = await api.get('/air-quality')
+        airQuality.value = data
       } catch (error) {
         console.error('대기질 데이터 조회 중 오류:', error)
       }
@@ -134,9 +133,8 @@ export default {
 
     const fetchForecastData = async () => {
       try {
-        const response = await fetch('/api/forecast')
-        if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`)
-        forecast.value = await response.json()
+        const { data } = await api.get('/forecast')
+        forecast.value = data
       } catch (error) {
         console.error('예보 데이터 조회 중 오류:', error)
         forecast.value = []

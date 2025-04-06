@@ -31,10 +31,27 @@ export default defineConfig(({ mode }) => {
     server: {
       port: 3000,
       proxy: {
-        '/api': {
+        '^/api/.*': {
           target: backendUrl,
           changeOrigin: true,
-          rewrite: (path) => path.replace(/^\/api/, '')
+          secure: false,
+          ws: true,
+          rewrite: (path) => {
+            const rewrittenPath = path.replace(/^\/api/, '');
+            console.log(`[Vite Proxy] ${path} -> ${rewrittenPath}`);
+            return rewrittenPath;
+          },
+          configure: (proxy, options) => {
+            proxy.on('proxyReq', (proxyReq, req) => {
+              console.log(`[Vite Proxy] Request: ${req.method} ${req.url} -> ${options.target}${req.url.replace(/^\/api/, '')}`);
+            });
+            proxy.on('proxyRes', (proxyRes, req) => {
+              console.log(`[Vite Proxy] Response: ${proxyRes.statusCode} ${req.url}`);
+            });
+            proxy.on('error', (err) => {
+              console.error('[Vite Proxy] Error:', err);
+            });
+          }
         }
       }
     },
