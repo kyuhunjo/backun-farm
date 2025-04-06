@@ -36,13 +36,12 @@ export default defineConfig(({ mode }) => {
           secure: false,
           ws: true,
           rewrite: (path) => {
-            const rewrittenPath = path.replace(/^\/api/, '');
-            console.log(`[Vite Proxy] ${path} -> ${rewrittenPath}`);
-            return rewrittenPath;
+            console.log(`[Vite Proxy] ${path} -> ${path}`);
+            return path;
           },
           configure: (proxy, options) => {
             proxy.on('proxyReq', (proxyReq, req) => {
-              console.log(`[Vite Proxy] Request: ${req.method} ${req.url} -> ${options.target}${req.url.replace(/^\/api/, '')}`);
+              console.log(`[Vite Proxy] Request: ${req.method} ${req.url} -> ${options.target}${req.url}`);
             });
             proxy.on('proxyRes', (proxyRes, req) => {
               console.log(`[Vite Proxy] Response: ${proxyRes.statusCode} ${req.url}`);
