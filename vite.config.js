@@ -37,12 +37,27 @@ export default defineConfig(({ mode }) => {
           secure: false,
           ws: true,
           rewrite: (path) => {
-            console.log('프록시 URL 변환:', path, '=>', path.replace(/^\/api/, ''))
-            return path.replace(/^\/api/, '')
+            const rewrittenPath = path.replace(/^\/api/, '');
+            console.log('프록시 URL 변환:', path, '=>', rewrittenPath);
+            return rewrittenPath;
           },
           configure: (proxy) => {
-            proxy.on('error', (err) => {
+            proxy.on('error', (err, req, res) => {
               console.log('프록시 에러:', err);
+              // 에러 발생 시 상세 정보 로깅
+              console.error('프록시 에러 상세 정보:', {
+                error: err.message,
+                url: req.url,
+                method: req.method,
+                headers: req.headers
+              });
+              // 프록시 에러 시 500 응답
+              if (!res.headersSent) {
+                res.writeHead(500, {
+                  'Content-Type': 'application/json'
+                });
+                res.end(JSON.stringify({ error: '프록시 에러가 발생했습니다.' }));
+              }
             });
             proxy.on('proxyReq', (proxyReq, req) => {
               console.log('프록시 요청 정보:');
@@ -56,6 +71,16 @@ export default defineConfig(({ mode }) => {
               console.log('  Status:', proxyRes.statusCode);
               console.log('  URL:', req.url);
               console.log('  Headers:', proxyRes.headers);
+              
+              // 404 에러 발생 시 상세 정보 로깅
+              if (proxyRes.statusCode === 404) {
+                console.error('404 에러 상세 정보:', {
+                  originalUrl: req.url,
+                  targetUrl: backendUrl + req.url.replace(/^\/api/, ''),
+                  method: req.method,
+                  headers: req.headers
+                });
+              }
             });
           }
         }

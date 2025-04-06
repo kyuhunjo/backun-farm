@@ -1,7 +1,9 @@
 import axios from 'axios';
 
-// baseURL을 항상 상대 경로로 설정하여 프록시를 통해 요청
-const baseURL = '/api';
+const isDev = import.meta.env.MODE === 'development';
+const baseURL = isDev
+  ? '/api'  // 개발 환경: Vite 프록시 사용
+  : '/api'; // 배포 환경: Express 프록시 사용
 
 console.log('=== API 설정 정보 ===');
 console.log('API Mode:', import.meta.env.MODE);
@@ -14,6 +16,10 @@ const api = axios.create({
   headers: {
     'Content-Type': 'application/json',
   },
+  // 타임아웃 설정
+  timeout: 10000,
+  // CORS 설정
+  withCredentials: false
 });
 
 // 요청 인터셉터
