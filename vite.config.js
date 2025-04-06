@@ -7,8 +7,7 @@ import vuetify from 'vite-plugin-vuetify'
 export default defineConfig(({ mode }) => {
   // 환경 변수 로드
   const env = loadEnv(mode, process.cwd(), '')
-  const isDev = mode === 'development'
-  const backendUrl = isDev 
+  const backendUrl = mode === 'development' 
     ? 'http://localhost:8084'
     : 'http://backun-farm-backend:8084'
 
