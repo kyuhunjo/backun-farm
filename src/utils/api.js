@@ -1,7 +1,7 @@
 import axios from 'axios';
 
 const isDevelopment = import.meta.env.MODE === 'development';
-const baseURL = isDevelopment ? '/api' : 'http://backun-farm-backend:8084/api';
+const baseURL = isDevelopment ? '/api' : 'https://hs-api.imjoe24.com/api';
 
 console.log('=== API 설정 ===');
 console.log('Mode:', import.meta.env.MODE);

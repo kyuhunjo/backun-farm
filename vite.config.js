@@ -8,9 +8,7 @@ export default defineConfig(({ mode }) => {
   // 환경 변수 로드
   const env = loadEnv(mode, process.cwd(), '')
   const isDev = mode === 'development'
-  const backendUrl = isDev
-    ? 'http://localhost:8084'
-    : 'http://backun-farm-backend:8084'
+  const backendUrl = isDev ? 'http://localhost:8084' : 'https://hs-api.imjoe24.com'
 
   console.log('=== Vite 설정 정보 ===')
   console.log('Mode:', mode)
