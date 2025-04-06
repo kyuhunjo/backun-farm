@@ -8,7 +8,7 @@ const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
 
 const app = express();
-const port = process.env.PORT || 8084;
+const port = process.env.PORT || 8083;
 
 // 환경 변수 로깅
 console.log('=== 서버 환경 설정 ===');
