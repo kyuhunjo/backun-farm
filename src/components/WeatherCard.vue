@@ -4,7 +4,7 @@
     <v-card-title class="text-subtitle-1 font-weight-medium pa-4">
       날씨 정보
       <div class="text-caption text-medium-emphasis mt-1">
-        {{ formatDateTime(weather.timestamp) }}
+        {{ weather.kstDateTime }}
       </div>
     </v-card-title>
     <v-card-text class="position-relative">
@@ -126,14 +126,7 @@ export default {
   setup() {
     const formatDateTime = (timestamp) => {
       if (!timestamp) return '';
-      const date = new Date(timestamp);
-      const year = date.getFullYear();
-      const month = date.getMonth() + 1;
-      const day = date.getDate();
-      const hours = date.getHours();
-      const minutes = date.getMinutes();
-      
-      return `${year}년 ${month}월 ${day}일 ${hours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}`;
+      return timestamp;
     }
 
     const getWeatherIcon = (iconCode) => {
