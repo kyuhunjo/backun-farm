@@ -11,9 +11,6 @@
               </span>
             </div>
             <v-spacer></v-spacer>
-            <div class="text-caption text-medium-emphasis">
-              {{ formatCoordinates(sunriseData.coordinates) }}
-            </div>
           </div>
 
           <v-row>
@@ -92,9 +89,9 @@
           <v-expansion-panels class="mt-4">
             <v-expansion-panel>
               <v-expansion-panel-title>
-                <div class="d-flex align-center">
+                <div class="d-flex align-center" style="background-color: #f5f5f5; padding: 10px; border-radius: 4px;">
                   <v-icon color="blue-grey" class="me-2">mdi-information</v-icon>
-                  상세 박명 정보
+                  <span class="text-h6 font-weight-bold">상세 박명 정보</span>
                 </div>
               </v-expansion-panel-title>
               <v-expansion-panel-text>
@@ -102,21 +99,27 @@
                   <v-col cols="12" md="4">
                     <div class="text-subtitle-2 font-weight-medium mb-2">시민 박명</div>
                     <div class="text-body-1">
+                      <v-icon color="amber" size="18" class="me-1">mdi-weather-sunset-up</v-icon>
                       아침: {{ formatTime(sunriseData.civilTwilight?.morning) }}<br>
+                      <v-icon color="deep-orange" size="18" class="me-1">mdi-weather-sunset-down</v-icon>
                       저녁: {{ formatTime(sunriseData.civilTwilight?.evening) }}
                     </div>
                   </v-col>
                   <v-col cols="12" md="4">
                     <div class="text-subtitle-2 font-weight-medium mb-2">항해 박명</div>
                     <div class="text-body-1">
+                      <v-icon color="blue" size="18" class="me-1">mdi-weather-sunset-up</v-icon>
                       아침: {{ formatTime(sunriseData.nauticalTwilight?.morning) }}<br>
+                      <v-icon color="deep-orange" size="18" class="me-1">mdi-weather-sunset-down</v-icon>
                       저녁: {{ formatTime(sunriseData.nauticalTwilight?.evening) }}
                     </div>
                   </v-col>
                   <v-col cols="12" md="4">
                     <div class="text-subtitle-2 font-weight-medium mb-2">천문 박명</div>
                     <div class="text-body-1">
+                      <v-icon color="purple" size="18" class="me-1">mdi-weather-sunset-up</v-icon>
                       아침: {{ formatTime(sunriseData.astronomicalTwilight?.morning) }}<br>
+                      <v-icon color="deep-orange" size="18" class="me-1">mdi-weather-sunset-down</v-icon>
                       저녁: {{ formatTime(sunriseData.astronomicalTwilight?.evening) }}
                     </div>
                   </v-col>
