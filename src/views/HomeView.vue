@@ -116,7 +116,7 @@ export default {
 
     const fetchWeatherData = async () => {
       try {
-        const { data } = await api.get('/weather')
+        const { data } = await api.get('/weather/current')
         weather.value = data
       } catch (error) {
         console.error('날씨 데이터 조회 중 오류:', error)
@@ -125,7 +125,7 @@ export default {
 
     const fetchAirQualityData = async () => {
       try {
-        const { data } = await api.get('/air-quality')
+        const { data } = await api.get('/air-quality/current')
         airQuality.value = data
       } catch (error) {
         console.error('대기질 데이터 조회 중 오류:', error)
@@ -134,7 +134,7 @@ export default {
 
     const fetchForecastData = async () => {
       try {
-        const { data } = await api.get('/forecast')
+        const { data } = await api.get('/weather/forecast')
         forecast.value = data
       } catch (error) {
         console.error('예보 데이터 조회 중 오류:', error)

@@ -117,7 +117,7 @@
 
 <script>
 import { ref, onMounted, watch, computed } from 'vue'
-import api from '@/utils/api'
+import { storeAPI } from '@/utils/api'
 
 export default {
   name: 'StoreList',
@@ -132,12 +132,10 @@ export default {
     const fetchStores = async () => {
       isLoading.value = true
       try {
-        const { data } = await api.get('/stores/region', {
-          params: { 
-            page: currentPage.value,
-            region: selectedRegion.value === '전체' ? '' : selectedRegion.value
-          }
-        })
+        const { data } = await storeAPI.getStoresByRegion(
+          selectedRegion.value === '전체' ? '' : selectedRegion.value,
+          null
+        )
         if (data && Array.isArray(data)) {
           stores.value = data
           totalPages.value = Math.ceil(data.length / 12) // 한 페이지당 12개 항목

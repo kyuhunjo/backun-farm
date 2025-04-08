@@ -49,12 +49,12 @@ api.interceptors.response.use(
 export const storeAPI = {
   // 전체 직매장 목록 조회
   getAllStores() {
-    return api.get('/stores');
+    return api.get('/local-food/stores');
   },
 
   // 지역별 직매장 검색
   getStoresByRegion(region, district) {
-    return api.get('/stores/region', {
+    return api.get('/local-food/stores/region', {
       params: {
         region,
         district
@@ -64,12 +64,12 @@ export const storeAPI = {
 
   // 직매장 상세 정보 조회
   getStoreById(id) {
-    return api.get(`/stores/${id}`);
+    return api.get(`/local-food/stores/${id}`);
   },
 
   // 직매장 검색
   searchStores(keyword) {
-    return api.get('/stores/search', {
+    return api.get('/local-food/stores/search', {
       params: {
         keyword
       }
