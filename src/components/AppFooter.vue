@@ -30,7 +30,7 @@
               </template>
               직매장
             </v-list-item>
-            <v-list-item to="/products" class="footer-link px-1" color="white">
+            <v-list-item to="/village/specialties" class="footer-link px-1" color="white">
               <template v-slot:prepend>
                 <v-icon icon="mdi-chevron-right" size="x-small" color="grey-lighten-1"></v-icon>
               </template>

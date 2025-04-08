@@ -114,6 +114,17 @@
           >
             로컬푸드 직판매 정보
           </v-btn>
+
+          <v-btn
+            to="/air-quality"
+            variant="text"
+            class="px-3"
+            color="grey-darken-3"
+            height="40"
+            rounded="0"
+          >
+            전라남도 대기질 현황
+          </v-btn>
         </div>
 
         <v-btn
@@ -210,9 +221,16 @@
 
         <v-list-item to="/stores" class="mb-2" rounded="0">
           <template #prepend>
-            <v-icon color="primary" class="me-2">mdi-store-marker</v-icon>
+            <v-icon color="primary" class="me-2">mdi-store</v-icon>
           </template>
           <v-list-item-title class="font-body">로컬푸드 직판매 정보</v-list-item-title>
+        </v-list-item>
+
+        <v-list-item to="/air-quality" class="mb-2" rounded="0">
+          <template #prepend>
+            <v-icon color="primary" class="me-2">mdi-weather-dust</v-icon>
+          </template>
+          <v-list-item-title class="font-body">전라남도 대기질 현황</v-list-item-title>
         </v-list-item>
       </v-list>
     </v-navigation-drawer>

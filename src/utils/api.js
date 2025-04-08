@@ -3,11 +3,6 @@ import axios from 'axios';
 const isDevelopment = import.meta.env.MODE === 'development';
 const baseURL = isDevelopment ? '/api' : 'https://hs-api.imjoe24.com/api';
 
-console.log('=== API 설정 ===');
-console.log('Mode:', import.meta.env.MODE);
-console.log('Base URL:', baseURL);
-console.log('===============');
-
 const api = axios.create({
   baseURL,
   timeout: 10000,
@@ -19,15 +14,19 @@ const api = axios.create({
 // 요청 인터셉터
 api.interceptors.request.use(
   (config) => {
-    console.log(`[API Request] ${config.method?.toUpperCase()} ${config.url}`);
-    console.log('Headers:', config.headers);
-    if (config.data) {
-      console.log('Data:', config.data);
+    // 일출/일몰 API 호출 시에만 로그 출력
+    if (config.url?.includes('sunrise')) {
+      console.log(`[일출/일몰 API 요청] ${config.method?.toUpperCase()} ${config.url}`);
+      if (config.params) {
+        console.log('Parameters:', config.params);
+      }
     }
     return config;
   },
   (error) => {
-    console.error('[API Request Error]', error);
+    if (error.config?.url?.includes('sunrise')) {
+      console.error('[일출/일몰 API 요청 오류]', error);
+    }
     return Promise.reject(error);
   }
 );
@@ -35,12 +34,17 @@ api.interceptors.request.use(
 // 응답 인터셉터
 api.interceptors.response.use(
   (response) => {
-    console.log(`[API Response] ${response.status} ${response.config.url}`);
-    console.log('Data:', response.data);
+    // 일출/일몰 API 응답 시에만 로그 출력
+    if (response.config.url?.includes('sunrise')) {
+      console.log(`[일출/일몰 API 응답] ${response.status}`);
+      console.log('Data:', response.data);
+    }
     return response;
   },
   (error) => {
-    console.error('[API Response Error]', error);
+    if (error.config?.url?.includes('sunrise')) {
+      console.error('[일출/일몰 API 응답 오류]', error);
+    }
     return Promise.reject(error);
   }
 );
@@ -94,9 +98,6 @@ export const groqApi = axios.create({
   }
 });
 
-// API 키 확인 로깅
-console.log('Groq API Key 설정 여부:', !!import.meta.env.VITE_GROQ_API_KEY);
-
 export const chatWithAI = async (message, context = []) => {
   try {
     if (!import.meta.env.VITE_GROQ_API_KEY) {
@@ -149,4 +150,60 @@ export const chatWithAI = async (message, context = []) => {
   }
 };
 
-export default api;
+// 대기질 관련 API 함수들
+export const airQualityAPI = {
+  // 현재 대기질 정보 조회
+  getCurrentAirQuality() {
+    return api.get('air-quality/current');
+  },
+
+  // 전체 측정소 데이터 조회
+  async getAllStations() {
+    try {
+      const response = await api.get('air-quality/all');
+      return response.data;
+    } catch (error) {
+      console.error('전체 측정소 데이터 조회 중 오류:', error);
+      throw error;
+    }
+  }
+};
+
+// 날씨 관련 API 함수들
+export const weatherAPI = {
+  // 현재 날씨 조회
+  getCurrentWeather() {
+    return api.get('weather/current');
+  },
+
+  // 날씨 예보 조회
+  getForecast() {
+    return api.get('weather/forecast');
+  },
+
+  // 일출/일몰 시간 조회
+  getSunriseSunset: async (date) => {
+    try {
+      // 화순 좌표 (126.9833330, 35.0666660)
+      const params = {
+        longitude: '12659',  // 126도 59분
+        latitude: '3503',    // 35도 3분
+        locdate: date
+      }
+      const { data } = await api.get('/sunrise/current', { params })
+      return data
+    } catch (error) {
+      console.error('일출/일몰 데이터 조회 실패:', error)
+      throw error
+    }
+  }
+};
+
+const apiObject = {
+  storeAPI,
+  statsAPI,
+  airQualityAPI,
+  weatherAPI
+};
+
+export default apiObject;
