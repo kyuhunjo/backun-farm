@@ -1,76 +1,62 @@
 <template>
-  <v-footer class="bg-grey-darken-3 py-2">
-    <v-container>
+  <v-footer class="bg-grey-darken-4">
+    <v-container class="py-2">
       <v-row>
-        <v-col cols="12" sm="5">
-          <div class="d-flex align-center mb-2">
-            <v-icon icon="mdi-home-variant" size="small" color="green-lighten-1" class="me-2"></v-icon>
-            <h3 class="text-h6 font-weight-bold text-green-lighten-1 mb-0">백운마을</h3>
+        <v-col cols="12" sm="5" class="d-flex flex-column justify-start">
+          <div class="d-flex align-center mb-3">
+            <v-icon icon="mdi-home-variant" color="white" size="large" class="me-2" />
+            <h3 class="text-h5 font-weight-bold white mb-0">백운마을</h3>
           </div>
-          <p class="text-body-2 text-grey-lighten-1 mb-0">
+          <p class="text-body-1 grey-lighten-3 mb-0">
             전라남도 화순군 백운마을에 오신 것을 환영합니다.
           </p>
         </v-col>
 
-        <v-col cols="12" sm="4">
-          <h3 class="text-subtitle-1 font-weight-bold text-green-lighten-1 mb-2 d-flex align-center">
-            <v-icon icon="mdi-menu" size="small" class="me-2"></v-icon>
+        <v-col cols="12" sm="3" class="d-flex flex-column justify-start">
+          <h3 class="text-subtitle-1 font-weight-bold white mb-4">
             빠른 메뉴
           </h3>
-          <v-list density="compact" bg-color="transparent" class="pa-0">
-            <v-list-item to="/" class="footer-link px-1" color="white">
-              <template v-slot:prepend>
-                <v-icon icon="mdi-chevron-right" size="x-small" color="grey-lighten-1"></v-icon>
-              </template>
-              홈
-            </v-list-item>
-            <v-list-item to="/stores" class="footer-link px-1" color="white">
-              <template v-slot:prepend>
-                <v-icon icon="mdi-chevron-right" size="x-small" color="grey-lighten-1"></v-icon>
-              </template>
-              직매장
-            </v-list-item>
-            <v-list-item to="/village/specialties" class="footer-link px-1" color="white">
-              <template v-slot:prepend>
-                <v-icon icon="mdi-chevron-right" size="x-small" color="grey-lighten-1"></v-icon>
-              </template>
-              특산물
-            </v-list-item>
-          </v-list>
+          <div class="quick-links">
+            <router-link to="/" class="footer-link d-flex align-center mb-3">
+              <v-icon icon="mdi-home" size="x-small" class="me-2" />
+              <span>홈</span>
+            </router-link>
+            <router-link to="/village/history" class="footer-link d-flex align-center mb-3">
+              <v-icon icon="mdi-history" size="x-small" class="me-2" />
+              <span>마을 역사</span>
+            </router-link>
+            <router-link to="/village/location" class="footer-link d-flex align-center mb-3">
+              <v-icon icon="mdi-map-marker" size="x-small" class="me-2" />
+              <span>찾아오시는 길</span>
+            </router-link>
+            <router-link to="/village/specialties" class="footer-link d-flex align-center mb-3">
+              <v-icon icon="mdi-store" size="x-small" class="me-2" />
+              <span>특산물</span>
+            </router-link>
+            <router-link to="/stores" class="footer-link d-flex align-center mb-3">
+              <v-icon icon="mdi-store" size="x-small" class="me-2" />
+              <span>로컬푸드 직판매 정보</span>
+            </router-link>
+            <router-link to="/air-quality" class="footer-link d-flex align-center">
+              <v-icon icon="mdi-weather-dust" size="x-small" class="me-2" />
+              <span>전라남도 대기질 현황</span>
+            </router-link>
+          </div>
         </v-col>
 
-        <v-col cols="12" sm="3">
-          <h3 class="text-subtitle-1 font-weight-bold text-green-lighten-1 mb-2 d-flex align-center">
-            <v-icon icon="mdi-contacts" size="small" class="me-2"></v-icon>
+        <v-col cols="12" sm="4" class="d-flex flex-column justify-start">
+          <h3 class="text-subtitle-1 font-weight-bold white mb-4">
             연락처
           </h3>
-          <v-list density="compact" bg-color="transparent" class="pa-0">
-            <v-list-item class="footer-contact px-1 mb-2">
-              <template v-slot:prepend>
-                <v-icon icon="mdi-map-marker" color="green-lighten-1" size="x-small"></v-icon>
-              </template>
-              <div class="text-grey-lighten-1 text-body-2">
-                전라남도 화순군 백운면
-              </div>
-            </v-list-item>
-            <v-list-item class="footer-contact px-1">
-              <template v-slot:prepend>
-                <v-icon icon="mdi-phone" color="green-lighten-1" size="x-small"></v-icon>
-              </template>
-              <div class="text-grey-lighten-1 text-body-2">
-                061-1234-5678
-              </div>
-            </v-list-item>
-          </v-list>
-        </v-col>
-      </v-row>
-
-      <v-divider class="my-2 border-opacity-25 border-grey-lighten-2"></v-divider>
-
-      <v-row>
-        <v-col cols="12" class="text-center py-1">
-          <div class="copyright text-grey-lighten-1">
-            &copy; {{ new Date().getFullYear() }} 백운마을. All rights reserved.
+          <div class="contact-info">
+            <div class="d-flex align-center mb-3">
+              <v-icon icon="mdi-map-marker" color="white" size="small" class="me-2" />
+              <span class="grey-lighten-3">전라남도 화순군 청풍면</span>
+            </div>
+            <div class="d-flex align-center">
+              <v-icon icon="mdi-phone" color="white" size="small" class="me-2" />
+              <span class="grey-lighten-3">010-5507-2725</span>
+            </div>
           </div>
         </v-col>
       </v-row>
@@ -85,41 +71,53 @@ export default {
 </script>
 
 <style scoped>
-.copyright {
-  font-size: 0.75rem;
-}
-
 .footer-link {
-  min-height: 28px !important;
-  color: rgb(var(--v-theme-grey-lighten-1)) !important;
-  transition: all 0.3s ease;
-  font-size: 0.875rem;
+  color: rgb(var(--v-theme-grey-lighten-3));
+  text-decoration: none;
+  transition: all 0.2s ease;
+  font-size: 0.9rem;
+  opacity: 0.9;
 }
 
 .footer-link:hover {
-  color: rgb(var(--v-theme-green-lighten-1)) !important;
+  color: white;
   transform: translateX(4px);
+  opacity: 1;
 }
 
-.footer-link:hover :deep(.v-icon) {
-  color: rgb(var(--v-theme-green-lighten-1)) !important;
+.footer-link:hover .v-icon {
+  color: white !important;
 }
 
-.footer-contact {
-  min-height: 28px !important;
+.contact-info {
+  font-size: 0.9rem;
+  opacity: 0.9;
 }
 
-.footer-contact :deep(.v-list-item__content) {
-  padding: 2px 0;
+.white {
+  color: white !important;
+}
+
+.grey-lighten-3 {
+  color: rgb(var(--v-theme-grey-lighten-3));
 }
 
 @media (max-width: 600px) {
   .v-footer {
-    padding: 12px 0;
+    padding: 0;
   }
-  
-  .copyright {
-    font-size: 0.75rem;
+
+  .v-col {
+    padding-top: 24px;
+    padding-bottom: 24px;
+  }
+
+  .mb-4 {
+    margin-bottom: 16px !important;
+  }
+
+  .contact-info, .footer-link {
+    font-size: 0.85rem;
   }
 }
 </style> 
