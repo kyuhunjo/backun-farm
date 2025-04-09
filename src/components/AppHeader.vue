@@ -40,19 +40,19 @@
               <v-list nav density="comfortable">
                 <v-list-item to="/village/history" rounded="0" class="mb-1">
                   <template #prepend>
-                    <v-icon size="small" color="primary" class="me-2">mdi-history</v-icon>
+                    <v-icon size="small" color="primary" class="me-1">mdi-history</v-icon>
                   </template>
                   <v-list-item-title>마을 역사</v-list-item-title>
                 </v-list-item>
                 <v-list-item to="/village/location" rounded="0" class="mb-1">
                   <template #prepend>
-                    <v-icon size="small" color="primary" class="me-2">mdi-map-marker</v-icon>
+                    <v-icon size="small" color="primary" class="me-1">mdi-map-marker</v-icon>
                   </template>
                   <v-list-item-title>찾아오시는 길</v-list-item-title>
                 </v-list-item>
                 <v-list-item to="/village/specialties" rounded="0">
                   <template #prepend>
-                    <v-icon size="small" color="primary" class="me-2">mdi-store</v-icon>
+                    <v-icon size="small" color="primary" class="me-1">mdi-store</v-icon>
                   </template>
                   <v-list-item-title>특산물</v-list-item-title>
                 </v-list-item>
@@ -84,19 +84,19 @@
               <v-list nav density="comfortable">
                 <v-list-item to="/farming/fern" rounded="0" class="mb-1">
                   <template #prepend>
-                    <v-icon size="small" color="primary" class="me-2">mdi-sprout</v-icon>
+                    <v-icon size="small" color="primary" class="me-1">mdi-sprout</v-icon>
                   </template>
                   <v-list-item-title>고사리 농사</v-list-item-title>
                 </v-list-item>
                 <v-list-item to="/farming/deodeok" rounded="0" class="mb-1">
                   <template #prepend>
-                    <v-icon size="small" color="primary" class="me-2">mdi-flower</v-icon>
+                    <v-icon size="small" color="primary" class="me-1">mdi-flower</v-icon>
                   </template>
                   <v-list-item-title>더덕 농사</v-list-item-title>
                 </v-list-item>
                 <v-list-item to="/farming/persimmon" rounded="0">
                   <template #prepend>
-                    <v-icon size="small" color="primary" class="me-2">mdi-fruit-cherries</v-icon>
+                    <v-icon size="small" color="primary" class="me-1">mdi-fruit-cherries</v-icon>
                   </template>
                   <v-list-item-title>곶감 가공</v-list-item-title>
                 </v-list-item>
@@ -157,32 +157,30 @@
       temporary
       :transition="'fade'"
       class="pa-4"
+      width="280"
     >
-      <div class="d-flex align-center mb-6">
-        <span class="text-h6 font-weight-bold">백운마을</span>
-      </div>
-
-      <v-list nav>
-        <v-list-item to="/" class="mb-2" rounded="0">
+      <v-list nav class="side-menu">
+        <v-list-item to="/" class="mb-1" rounded="0">
           <template #prepend>
-            <v-icon color="primary" class="me-2">mdi-home</v-icon>
+            <v-icon size="20" color="grey-darken-1">mdi-home</v-icon>
           </template>
-          <v-list-item-title class="font-body">홈</v-list-item-title>
+          <v-list-item-title>홈</v-list-item-title>
         </v-list-item>
 
         <v-list-group
           v-model="villageMenuOpen"
-          class="mb-2"
+          class="mb-1"
         >
           <template #activator="{ props }">
             <v-list-item
               v-bind="props"
               rounded="0"
+              class="px-0"
             >
               <template #prepend>
-                <v-icon color="primary" class="me-2">mdi-home-city</v-icon>
+                <v-icon size="20" color="grey-darken-1">mdi-home-city</v-icon>
               </template>
-              <v-list-item-title class="font-body">마을 소개</v-list-item-title>
+              <v-list-item-title>마을 소개</v-list-item-title>
             </v-list-item>
           </template>
           
@@ -190,29 +188,31 @@
             v-for="(item, index) in villageMenuItems"
             :key="index"
             :to="item.to"
-            :title="item.title"
             class="ms-4"
+            density="compact"
             rounded="0"
           >
             <template #prepend>
-              <v-icon size="small" color="grey" class="me-2">mdi-chevron-right</v-icon>
+              <v-icon size="18" color="grey-darken-1">{{ item.icon }}</v-icon>
             </template>
+            <span class="text-subtitle-2">{{ item.title }}</span>
           </v-list-item>
         </v-list-group>
 
         <v-list-group
           v-model="farmingMenuOpen"
-          class="mb-2"
+          class="mb-1"
         >
           <template #activator="{ props }">
             <v-list-item
               v-bind="props"
               rounded="0"
+              class="px-0"
             >
               <template #prepend>
-                <v-icon color="primary" class="me-2">mdi-sprout</v-icon>
+                <v-icon size="20" color="grey-darken-1">mdi-sprout</v-icon>
               </template>
-              <v-list-item-title class="font-body">농사 방법</v-list-item-title>
+              <v-list-item-title>농사 방법</v-list-item-title>
             </v-list-item>
           </template>
           
@@ -220,35 +220,36 @@
             v-for="(item, index) in farmingMenuItems"
             :key="index"
             :to="item.to"
-            :title="item.title"
             class="ms-4"
+            density="compact"
             rounded="0"
           >
             <template #prepend>
-              <v-icon size="small" color="grey" class="me-2">mdi-chevron-right</v-icon>
+              <v-icon size="18" color="grey-darken-1">{{ item.icon }}</v-icon>
             </template>
+            <span class="text-subtitle-2">{{ item.title }}</span>
           </v-list-item>
         </v-list-group>
 
-        <v-list-item to="/stores" class="mb-2" rounded="0">
+        <v-list-item to="/stores" class="mb-1" rounded="0">
           <template #prepend>
-            <v-icon color="primary" class="me-2">mdi-store</v-icon>
+            <v-icon size="20" color="grey-darken-1">mdi-store</v-icon>
           </template>
-          <v-list-item-title class="font-body">로컬푸드 직판매 정보</v-list-item-title>
+          <v-list-item-title>로컬푸드 직판매 정보</v-list-item-title>
         </v-list-item>
 
-        <v-list-item to="/air-quality" class="mb-2" rounded="0">
+        <v-list-item to="/air-quality" class="mb-1" rounded="0">
           <template #prepend>
-            <v-icon color="primary" class="me-2">mdi-weather-dust</v-icon>
+            <v-icon size="20" color="grey-darken-1">mdi-weather-dust</v-icon>
           </template>
-          <v-list-item-title class="font-body">전라남도 대기질 현황</v-list-item-title>
+          <v-list-item-title>전라남도 대기질 현황</v-list-item-title>
         </v-list-item>
 
-        <v-list-item to="/news" class="mb-2" rounded="0">
+        <v-list-item to="/news" class="mb-1" rounded="0">
           <template #prepend>
-            <v-icon color="primary" class="me-2">mdi-newspaper</v-icon>
+            <v-icon size="20" color="grey-darken-1">mdi-newspaper</v-icon>
           </template>
-          <v-list-item-title class="font-body">농림축산식품부 뉴스</v-list-item-title>
+          <v-list-item-title>농림축산식품부 뉴스</v-list-item-title>
         </v-list-item>
       </v-list>
     </v-navigation-drawer>
@@ -263,15 +264,15 @@ const villageMenuOpen = ref(false)
 const farmingMenuOpen = ref(false)
 
 const villageMenuItems = [
-  { title: '마을 역사', to: '/village/history' },
-  { title: '찾아오시는 길', to: '/village/location' },
-  { title: '특산물', to: '/village/specialties' }
+  { title: '마을 역사', to: '/village/history', icon: 'mdi-history' },
+  { title: '찾아오시는 길', to: '/village/location', icon: 'mdi-map-marker' },
+  { title: '특산물', to: '/village/specialties', icon: 'mdi-store' }
 ]
 
 const farmingMenuItems = [
-  { title: '고사리 농사', to: '/farming/fern' },
-  { title: '더덕 농사', to: '/farming/deodeok' },
-  { title: '곶감 가공', to: '/farming/persimmon' }
+  { title: '고사리 농사', to: '/farming/fern', icon: 'mdi-sprout' },
+  { title: '더덕 농사', to: '/farming/deodeok', icon: 'mdi-flower' },
+  { title: '곶감 가공', to: '/farming/persimmon', icon: 'mdi-fruit-cherries' }
 ]
 
 // 화면 크기 변경 감지 함수
@@ -337,5 +338,108 @@ onUnmounted(() => {
 
 .gap-2 {
   gap: 0.5rem;
+}
+
+.v-list-group__items {
+  margin-right: 0;
+  padding: 0;
+}
+
+.v-list-group__items .v-list-item {
+  padding-inline: 0;
+}
+
+.v-list-group .v-list-group__items .v-list-item__content {
+  padding: 0;
+}
+
+.v-list-group .v-list-item__content {
+  padding: 0;
+}
+
+.v-list-item {
+  padding: 0;
+}
+
+.v-navigation-drawer .v-list {
+  padding-right: 0;
+}
+
+:deep(.v-list-item__prepend) {
+  margin-right: 4px !important;
+  padding-right: 0 !important;
+  min-width: 24px !important;
+  max-width: 24px !important;
+}
+
+:deep(.v-list-item__append) {
+  margin-left: 4px !important;
+}
+
+:deep(.v-list-item__content) {
+  padding-left: 0 !important;
+}
+
+:deep(.v-list-item) {
+  min-height: 32px !important;
+  padding: 0 !important;
+}
+
+:deep(.v-list-item__spacer) {
+  width: 0 !important;
+}
+
+:deep(.v-list-group__items) {
+  padding-left: 24px !important;
+}
+
+.side-menu {
+  --list-item-height: 36px;
+}
+
+.side-menu :deep(.v-list-item) {
+  min-height: var(--list-item-height) !important;
+  padding: 0 !important;
+  opacity: 0.85;
+}
+
+.side-menu :deep(.v-list-item--active) {
+  opacity: 1;
+  background: transparent !important;
+  color: rgb(var(--v-theme-primary)) !important;
+}
+
+.side-menu :deep(.v-list-item--active) .v-icon {
+  color: rgb(var(--v-theme-primary)) !important;
+}
+
+.side-menu :deep(.v-list-item:hover) {
+  opacity: 1;
+  background: rgba(var(--v-theme-primary), 0.04) !important;
+}
+
+.side-menu :deep(.v-list-group__items) {
+  padding-left: 28px !important;
+  margin-top: 2px;
+  margin-bottom: 2px;
+}
+
+.side-menu :deep(.v-list-item__prepend) {
+  margin-right: 8px !important;
+}
+
+.side-menu :deep(.v-list-item__content) {
+  font-size: 0.95rem;
+  letter-spacing: -0.3px;
+  padding: 0 !important;
+}
+
+.side-menu :deep(.text-subtitle-2) {
+  font-size: 0.9rem !important;
+  opacity: 0.9;
+}
+
+.side-menu :deep(.v-list-group__items .v-list-item) {
+  min-height: 32px !important;
 }
 </style> 
