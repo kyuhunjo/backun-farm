@@ -17,6 +17,8 @@
         <!-- Desktop Navigation -->
         <div class="d-none d-md-flex align-center gap-2">
           <v-menu
+            v-for="(menu, index) in [VILLAGE_MENU, FARMING_MENU]"
+            :key="index"
             open-on-hover
             :close-delay="100"
             :open-delay="0"
@@ -32,109 +34,39 @@
                 height="40"
                 rounded="0"
               >
-                마을소개
+                {{ menu.title }}
                 <v-icon end size="small" class="ms-1">mdi-chevron-down</v-icon>
               </v-btn>
             </template>
             <v-card elevation="3" rounded="0" min-width="200" class="mt-1">
               <v-list nav density="comfortable">
-                <v-list-item to="/village/history" rounded="0" class="mb-1">
+                <v-list-item
+                  v-for="(item, itemIndex) in menu.items"
+                  :key="itemIndex"
+                  :to="item.to"
+                  rounded="0"
+                  :class="{ 'mb-1': itemIndex !== menu.items.length - 1 }"
+                >
                   <template #prepend>
-                    <v-icon size="small" color="primary" class="me-1">mdi-history</v-icon>
+                    <v-icon size="small" color="primary" class="me-1">{{ item.icon }}</v-icon>
                   </template>
-                  <v-list-item-title>마을 역사</v-list-item-title>
-                </v-list-item>
-                <v-list-item to="/village/location" rounded="0" class="mb-1">
-                  <template #prepend>
-                    <v-icon size="small" color="primary" class="me-1">mdi-map-marker</v-icon>
-                  </template>
-                  <v-list-item-title>찾아오시는 길</v-list-item-title>
-                </v-list-item>
-                <v-list-item to="/village/specialties" rounded="0">
-                  <template #prepend>
-                    <v-icon size="small" color="primary" class="me-1">mdi-store</v-icon>
-                  </template>
-                  <v-list-item-title>특산물</v-list-item-title>
-                </v-list-item>
-              </v-list>
-            </v-card>
-          </v-menu>
-
-          <v-menu
-            open-on-hover
-            :close-delay="100"
-            :open-delay="0"
-            transition="slide-y-transition"
-            location="bottom"
-          >
-            <template v-slot:activator="{ props }">
-              <v-btn
-                v-bind="props"
-                variant="text"
-                class="px-3"
-                color="grey-darken-3"
-                height="40"
-                rounded="0"
-              >
-                농사 방법
-                <v-icon end size="small" class="ms-1">mdi-chevron-down</v-icon>
-              </v-btn>
-            </template>
-            <v-card elevation="3" rounded="0" min-width="200" class="mt-1">
-              <v-list nav density="comfortable">
-                <v-list-item to="/farming/fern" rounded="0" class="mb-1">
-                  <template #prepend>
-                    <v-icon size="small" color="primary" class="me-1">mdi-sprout</v-icon>
-                  </template>
-                  <v-list-item-title>고사리 농사</v-list-item-title>
-                </v-list-item>
-                <v-list-item to="/farming/deodeok" rounded="0" class="mb-1">
-                  <template #prepend>
-                    <v-icon size="small" color="primary" class="me-1">mdi-flower</v-icon>
-                  </template>
-                  <v-list-item-title>더덕 농사</v-list-item-title>
-                </v-list-item>
-                <v-list-item to="/farming/persimmon" rounded="0">
-                  <template #prepend>
-                    <v-icon size="small" color="primary" class="me-1">mdi-fruit-cherries</v-icon>
-                  </template>
-                  <v-list-item-title>곶감 가공</v-list-item-title>
+                  <v-list-item-title>{{ item.title }}</v-list-item-title>
                 </v-list-item>
               </v-list>
             </v-card>
           </v-menu>
 
           <v-btn
-            to="/stores"
+            v-for="(item, index) in MAIN_MENU"
+            :key="index"
+            :to="item.to"
             variant="text"
             class="px-3"
             color="grey-darken-3"
             height="40"
             rounded="0"
           >
-            로컬푸드 직판매 정보
-          </v-btn>
-
-          <v-btn
-            to="/air-quality"
-            variant="text"
-            class="px-3"
-            color="grey-darken-3"
-            height="40"
-            rounded="0"
-          >
-            전라남도 대기질 현황
-          </v-btn>
-
-          <v-btn
-            to="/news"
-            variant="text"
-            class="px-3"
-            color="grey-darken-3"
-            height="40"
-            rounded="0"
-          >
-            농림축산식품부 뉴스
+            {{ item.title }}
           </v-btn>
         </div>
 
@@ -178,14 +110,14 @@
               class="px-0"
             >
               <template #prepend>
-                <v-icon size="20" color="grey-darken-1">mdi-home-city</v-icon>
+                <v-icon size="20" color="grey-darken-1">{{ VILLAGE_MENU.icon }}</v-icon>
               </template>
-              <v-list-item-title>마을 소개</v-list-item-title>
+              <v-list-item-title>{{ VILLAGE_MENU.title }}</v-list-item-title>
             </v-list-item>
           </template>
           
           <v-list-item
-            v-for="(item, index) in villageMenuItems"
+            v-for="(item, index) in VILLAGE_MENU.items"
             :key="index"
             :to="item.to"
             class="ms-4"
@@ -210,14 +142,14 @@
               class="px-0"
             >
               <template #prepend>
-                <v-icon size="20" color="grey-darken-1">mdi-sprout</v-icon>
+                <v-icon size="20" color="grey-darken-1">{{ FARMING_MENU.icon }}</v-icon>
               </template>
-              <v-list-item-title>농사 방법</v-list-item-title>
+              <v-list-item-title>{{ FARMING_MENU.title }}</v-list-item-title>
             </v-list-item>
           </template>
           
           <v-list-item
-            v-for="(item, index) in farmingMenuItems"
+            v-for="(item, index) in FARMING_MENU.items"
             :key="index"
             :to="item.to"
             class="ms-4"
@@ -231,25 +163,17 @@
           </v-list-item>
         </v-list-group>
 
-        <v-list-item to="/stores" class="mb-1" rounded="0">
+        <v-list-item
+          v-for="(item, index) in MAIN_MENU"
+          :key="index"
+          :to="item.to"
+          class="mb-1"
+          rounded="0"
+        >
           <template #prepend>
-            <v-icon size="20" color="grey-darken-1">mdi-store</v-icon>
+            <v-icon size="20" color="grey-darken-1">{{ item.icon }}</v-icon>
           </template>
-          <v-list-item-title>로컬푸드 직판매 정보</v-list-item-title>
-        </v-list-item>
-
-        <v-list-item to="/air-quality" class="mb-1" rounded="0">
-          <template #prepend>
-            <v-icon size="20" color="grey-darken-1">mdi-weather-dust</v-icon>
-          </template>
-          <v-list-item-title>전라남도 대기질 현황</v-list-item-title>
-        </v-list-item>
-
-        <v-list-item to="/news" class="mb-1" rounded="0">
-          <template #prepend>
-            <v-icon size="20" color="grey-darken-1">mdi-newspaper</v-icon>
-          </template>
-          <v-list-item-title>농림축산식품부 뉴스</v-list-item-title>
+          <v-list-item-title>{{ item.title }}</v-list-item-title>
         </v-list-item>
       </v-list>
     </v-navigation-drawer>
@@ -258,22 +182,11 @@
 
 <script setup>
 import { ref, onMounted, onUnmounted } from 'vue'
+import { VILLAGE_MENU, FARMING_MENU, MAIN_MENU } from '@/constants/menu'
 
 const drawer = ref(false)
 const villageMenuOpen = ref(false)
 const farmingMenuOpen = ref(false)
-
-const villageMenuItems = [
-  { title: '마을 역사', to: '/village/history', icon: 'mdi-history' },
-  { title: '찾아오시는 길', to: '/village/location', icon: 'mdi-map-marker' },
-  { title: '특산물', to: '/village/specialties', icon: 'mdi-store' }
-]
-
-const farmingMenuItems = [
-  { title: '고사리 농사', to: '/farming/fern', icon: 'mdi-sprout' },
-  { title: '더덕 농사', to: '/farming/deodeok', icon: 'mdi-flower' },
-  { title: '곶감 가공', to: '/farming/persimmon', icon: 'mdi-fruit-cherries' }
-]
 
 // 화면 크기 변경 감지 함수
 const handleResize = () => {

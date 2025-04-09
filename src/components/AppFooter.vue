@@ -15,50 +15,25 @@
             </v-col>
 
             <v-col cols="12" sm="3" class="d-flex flex-column justify-start">
-              <h3 class="text-subtitle-1 font-weight-bold white mb-4">
-                빠른 메뉴
-              </h3>
-              <div class="quick-links">
-                <router-link to="/" class="footer-link d-flex align-center mb-3">
-                  <v-icon icon="mdi-home" size="x-small" class="me-2" />
-                  <span>홈</span>
-                </router-link>
-                <router-link to="/village/history" class="footer-link d-flex align-center mb-3">
-                  <v-icon icon="mdi-history" size="x-small" class="me-2" />
-                  <span>마을 역사</span>
-                </router-link>
-                <router-link to="/village/location" class="footer-link d-flex align-center mb-3">
-                  <v-icon icon="mdi-map-marker" size="x-small" class="me-2" />
-                  <span>찾아오시는 길</span>
-                </router-link>
-                <router-link to="/village/specialties" class="footer-link d-flex align-center mb-3">
-                  <v-icon icon="mdi-store" size="x-small" class="me-2" />
-                  <span>특산물</span>
-                </router-link>
-                <router-link to="/stores" class="footer-link d-flex align-center mb-3">
-                  <v-icon icon="mdi-store" size="x-small" class="me-2" />
-                  <span>로컬푸드 직판매 정보</span>
-                </router-link>
-                <router-link to="/air-quality" class="footer-link d-flex align-center">
-                  <v-icon icon="mdi-weather-dust" size="x-small" class="me-2" />
-                  <span>전라남도 대기질 현황</span>
+              <h4 class="text-h6 font-weight-bold white mb-4">퀵메뉴</h4>
+              <div class="d-flex flex-column gap-2">
+                <router-link
+                  v-for="(menu, index) in allMenus"
+                  :key="index"
+                  :to="menu.to || menu.items?.[0].to"
+                  class="footer-link d-flex align-center"
+                >
+                  <v-icon :icon="menu.icon" size="small" color="grey-lighten-3" class="me-2" />
+                  {{ menu.title }}
                 </router-link>
               </div>
             </v-col>
 
             <v-col cols="12" sm="4" class="d-flex flex-column justify-start">
-              <h3 class="text-subtitle-1 font-weight-bold white mb-4">
-                연락처
-              </h3>
-              <div class="contact-info">
-                <div class="d-flex align-center mb-3">
-                  <v-icon icon="mdi-map-marker" color="white" size="small" class="me-2" />
-                  <span class="grey-lighten-3">전라남도 화순군 청풍면</span>
-                </div>
-                <div class="d-flex align-center">
-                  <v-icon icon="mdi-phone" color="white" size="small" class="me-2" />
-                  <span class="grey-lighten-3">010-5507-2725</span>
-                </div>
+              <h4 class="text-h6 font-weight-bold white mb-4">연락처</h4>
+              <div class="contact-info grey-lighten-3">
+                <p class="mb-1">전라남도 화순군 청풍면</p>
+                <p>010-5507-2725</p>
               </div>
             </v-col>
           </v-row>
@@ -68,10 +43,19 @@
   </v-footer>
 </template>
 
-<script>
-export default {
-  name: 'AppFooter'
-}
+<script setup>
+import { VILLAGE_MENU, FARMING_MENU, MAIN_MENU } from '@/constants/menu'
+
+const allMenus = [
+  {
+    title: '홈',
+    to: '/',
+    icon: 'mdi-home'
+  },
+  VILLAGE_MENU,
+  FARMING_MENU,
+  ...MAIN_MENU
+]
 </script>
 
 <style scoped>
