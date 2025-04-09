@@ -199,11 +199,26 @@ export const weatherAPI = {
   }
 };
 
+// 농림축산식품부 뉴스 관련 API 함수들
+export const newsAPI = {
+  // 뉴스 목록 조회
+  getNews: async () => {
+    try {
+      const response = await api.get('/mafra/news');
+      return response.data;
+    } catch (error) {
+      console.error('농림축산식품부 뉴스 조회 실패:', error);
+      throw error;
+    }
+  }
+};
+
 const apiObject = {
   storeAPI,
   statsAPI,
   airQualityAPI,
-  weatherAPI
+  weatherAPI,
+  newsAPI
 };
 
 export default apiObject;

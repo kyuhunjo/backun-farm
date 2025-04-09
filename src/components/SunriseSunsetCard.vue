@@ -13,120 +13,113 @@
             <v-spacer></v-spacer>
           </div>
 
-          <v-row>
-            <!-- 일출/일몰 시간 -->
-            <v-col cols="12" sm="6">
-              <v-card variant="outlined" class="time-card">
-                <div class="d-flex align-center pa-4">
-                  <div class="time-info flex-grow-1">
-                    <div class="d-flex align-center mb-2">
-                      <v-icon color="amber-darken-2" size="28" class="me-2">mdi-weather-sunset-up</v-icon>
-                      <span class="text-subtitle-1 font-weight-medium">일출</span>
-                    </div>
-                    <div class="text-h4 font-weight-bold">{{ formatTime(sunriseData.sunrise) }}</div>
-                    <div class="text-caption text-medium-emphasis mt-1">
-                      시민 박명: {{ formatTime(sunriseData.civilTwilight?.morning) }}
-                    </div>
-                  </div>
+          <!-- 일출/일몰/월출/월몰 시간 -->
+          <div class="time-blocks-container mb-4">
+            <div class="time-block-wrapper">
+              <div class="time-block">
+                <div class="d-flex align-center justify-center mb-2">
+                  <v-icon color="amber-darken-2" size="20" class="me-2">mdi-weather-sunset-up</v-icon>
+                  <span class="text-subtitle-2">일출</span>
                 </div>
-              </v-card>
-            </v-col>
+                <div class="time-content text-center">
+                  <div class="text-h5 font-weight-bold mb-1">{{ formatTime(sunriseData.sunrise) }}</div>
+                  <div class="text-caption text-medium-emphasis">시민 박명 {{ formatTime(sunriseData.civilTwilight?.morning) }}</div>
+                </div>
+              </div>
 
-            <v-col cols="12" sm="6">
-              <v-card variant="outlined" class="time-card">
-                <div class="d-flex align-center pa-4">
-                  <div class="time-info flex-grow-1">
-                    <div class="d-flex align-center mb-2">
-                      <v-icon color="deep-orange" size="28" class="me-2">mdi-weather-sunset-down</v-icon>
-                      <span class="text-subtitle-1 font-weight-medium">일몰</span>
-                    </div>
-                    <div class="text-h4 font-weight-bold">{{ formatTime(sunriseData.sunset) }}</div>
-                    <div class="text-caption text-medium-emphasis mt-1">
-                      시민 박명: {{ formatTime(sunriseData.civilTwilight?.evening) }}
-                    </div>
-                  </div>
+              <div class="time-block">
+                <div class="d-flex align-center justify-center mb-2">
+                  <v-icon color="deep-orange" size="20" class="me-2">mdi-weather-sunset-down</v-icon>
+                  <span class="text-subtitle-2">일몰</span>
                 </div>
-              </v-card>
-            </v-col>
+                <div class="time-content text-center">
+                  <div class="text-h5 font-weight-bold mb-1">{{ formatTime(sunriseData.sunset) }}</div>
+                  <div class="text-caption text-medium-emphasis">시민 박명 {{ formatTime(sunriseData.civilTwilight?.evening) }}</div>
+                </div>
+              </div>
+            </div>
 
-            <!-- 월출/월몰 시간 -->
-            <v-col cols="12" sm="6">
-              <v-card variant="outlined" class="time-card">
-                <div class="d-flex align-center pa-4">
-                  <div class="time-info flex-grow-1">
-                    <div class="d-flex align-center mb-2">
-                      <v-icon color="blue-grey" size="28" class="me-2">mdi-weather-night</v-icon>
-                      <span class="text-subtitle-1 font-weight-medium">월출</span>
-                    </div>
-                    <div class="text-h4 font-weight-bold">{{ formatTime(sunriseData.moonrise) }}</div>
-                    <div class="text-caption text-medium-emphasis mt-1">
-                      월남중: {{ formatTime(sunriseData.moontransit) }}
-                    </div>
-                  </div>
+            <div class="time-block-wrapper">
+              <div class="time-block">
+                <div class="d-flex align-center justify-center mb-2">
+                  <v-icon color="blue-grey" size="20" class="me-2">mdi-weather-night</v-icon>
+                  <span class="text-subtitle-2">월출</span>
                 </div>
-              </v-card>
-            </v-col>
+                <div class="time-content text-center">
+                  <div class="text-h5 font-weight-bold mb-1">{{ formatTime(sunriseData.moonrise) }}</div>
+                  <div class="text-caption text-medium-emphasis">월남중 {{ formatTime(sunriseData.moontransit) }}</div>
+                </div>
+              </div>
 
-            <v-col cols="12" sm="6">
-              <v-card variant="outlined" class="time-card">
-                <div class="d-flex align-center pa-4">
-                  <div class="time-info flex-grow-1">
-                    <div class="d-flex align-center mb-2">
-                      <v-icon color="blue-grey-darken-1" size="28" class="me-2">mdi-weather-night</v-icon>
-                      <span class="text-subtitle-1 font-weight-medium">월몰</span>
-                    </div>
-                    <div class="text-h4 font-weight-bold">{{ formatTime(sunriseData.moonset) }}</div>
-                    <div class="text-caption text-medium-emphasis mt-1">
-                      일남중: {{ formatTime(sunriseData.suntransit) }}
-                    </div>
-                  </div>
+              <div class="time-block">
+                <div class="d-flex align-center justify-center mb-2">
+                  <v-icon color="blue-grey-darken-1" size="20" class="me-2">mdi-weather-night</v-icon>
+                  <span class="text-subtitle-2">월몰</span>
                 </div>
-              </v-card>
-            </v-col>
-          </v-row>
+                <div class="time-content text-center">
+                  <div class="text-h5 font-weight-bold mb-1">{{ formatTime(sunriseData.moonset) }}</div>
+                  <div class="text-caption text-medium-emphasis">일남중 {{ formatTime(sunriseData.suntransit) }}</div>
+                </div>
+              </div>
+            </div>
+          </div>
 
           <!-- 박명 정보 -->
-          <v-expansion-panels class="mt-4">
-            <v-expansion-panel>
-              <v-expansion-panel-title>
-                <div class="d-flex align-center" style="background-color: #f5f5f5; padding: 10px; border-radius: 4px;">
-                  <v-icon color="blue-grey" class="me-2">mdi-information</v-icon>
-                  <span class="text-h6 font-weight-bold">상세 박명 정보</span>
+          <div class="twilight-info">
+            <div class="d-flex align-center mb-3">
+              <v-icon color="blue-grey" size="20" class="me-2">mdi-information</v-icon>
+              <span class="text-subtitle-1 font-weight-medium">상세 박명 정보</span>
+            </div>
+            <div class="twilight-list">
+              <div class="twilight-item">
+                <div class="d-flex align-center justify-center">
+                  <v-icon color="amber" size="16" class="me-2">mdi-weather-sunset</v-icon>
+                  <span class="text-body-1 me-3">시민</span>
+                  <div class="time-group">
+                    <span class="text-caption text-medium-emphasis me-1">아침</span>
+                    <span class="text-body-2">{{ formatTime(sunriseData.civilTwilight?.morning) }}</span>
+                  </div>
+                  <div class="divider mx-3"></div>
+                  <div class="time-group">
+                    <span class="text-caption text-medium-emphasis me-1">저녁</span>
+                    <span class="text-body-2">{{ formatTime(sunriseData.civilTwilight?.evening) }}</span>
+                  </div>
                 </div>
-              </v-expansion-panel-title>
-              <v-expansion-panel-text>
-                <v-row>
-                  <v-col cols="12" md="4">
-                    <div class="text-subtitle-2 font-weight-medium mb-2">시민 박명</div>
-                    <div class="text-body-1">
-                      <v-icon color="amber" size="18" class="me-1">mdi-weather-sunset-up</v-icon>
-                      아침: {{ formatTime(sunriseData.civilTwilight?.morning) }}<br>
-                      <v-icon color="deep-orange" size="18" class="me-1">mdi-weather-sunset-down</v-icon>
-                      저녁: {{ formatTime(sunriseData.civilTwilight?.evening) }}
-                    </div>
-                  </v-col>
-                  <v-col cols="12" md="4">
-                    <div class="text-subtitle-2 font-weight-medium mb-2">항해 박명</div>
-                    <div class="text-body-1">
-                      <v-icon color="blue" size="18" class="me-1">mdi-weather-sunset-up</v-icon>
-                      아침: {{ formatTime(sunriseData.nauticalTwilight?.morning) }}<br>
-                      <v-icon color="deep-orange" size="18" class="me-1">mdi-weather-sunset-down</v-icon>
-                      저녁: {{ formatTime(sunriseData.nauticalTwilight?.evening) }}
-                    </div>
-                  </v-col>
-                  <v-col cols="12" md="4">
-                    <div class="text-subtitle-2 font-weight-medium mb-2">천문 박명</div>
-                    <div class="text-body-1">
-                      <v-icon color="purple" size="18" class="me-1">mdi-weather-sunset-up</v-icon>
-                      아침: {{ formatTime(sunriseData.astronomicalTwilight?.morning) }}<br>
-                      <v-icon color="deep-orange" size="18" class="me-1">mdi-weather-sunset-down</v-icon>
-                      저녁: {{ formatTime(sunriseData.astronomicalTwilight?.evening) }}
-                    </div>
-                  </v-col>
-                </v-row>
-              </v-expansion-panel-text>
-            </v-expansion-panel>
-          </v-expansion-panels>
+              </div>
+
+              <div class="twilight-item">
+                <div class="d-flex align-center justify-center">
+                  <v-icon color="blue" size="16" class="me-2">mdi-weather-sunset</v-icon>
+                  <span class="text-body-1 me-3">항해</span>
+                  <div class="time-group">
+                    <span class="text-caption text-medium-emphasis me-1">아침</span>
+                    <span class="text-body-2">{{ formatTime(sunriseData.nauticalTwilight?.morning) }}</span>
+                  </div>
+                  <div class="divider mx-3"></div>
+                  <div class="time-group">
+                    <span class="text-caption text-medium-emphasis me-1">저녁</span>
+                    <span class="text-body-2">{{ formatTime(sunriseData.nauticalTwilight?.evening) }}</span>
+                  </div>
+                </div>
+              </div>
+
+              <div class="twilight-item">
+                <div class="d-flex align-center justify-center">
+                  <v-icon color="purple" size="16" class="me-2">mdi-weather-sunset</v-icon>
+                  <span class="text-body-1 me-3">천문</span>
+                  <div class="time-group">
+                    <span class="text-caption text-medium-emphasis me-1">아침</span>
+                    <span class="text-body-2">{{ formatTime(sunriseData.astronomicalTwilight?.morning) }}</span>
+                  </div>
+                  <div class="divider mx-3"></div>
+                  <div class="time-group">
+                    <span class="text-caption text-medium-emphasis me-1">저녁</span>
+                    <span class="text-body-2">{{ formatTime(sunriseData.astronomicalTwilight?.evening) }}</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
         </v-col>
       </v-row>
       <div v-if="isLoading" class="loading-overlay">
@@ -209,14 +202,68 @@ export default {
   border-radius: 0;
 }
 
-.time-card {
-  transition: all 0.3s ease;
-  height: 100%;
+.time-blocks-container {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
 }
 
-.time-card:hover {
+.time-block-wrapper {
+  display: flex;
+  gap: 12px;
+}
+
+.time-block {
+  flex: 1;
+  padding: 16px;
+  background-color: rgba(var(--v-theme-surface), 0.8);
+  border-radius: 8px;
+  transition: all 0.3s ease;
+  display: flex;
+  flex-direction: column;
+}
+
+.time-block:hover {
   transform: translateY(-2px);
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.time-content {
+  padding: 0;
+}
+
+.twilight-info {
+  background-color: rgba(var(--v-theme-surface), 0.5);
+  border-radius: 8px;
+  padding: 16px;
+  margin-top: 8px;
+}
+
+.twilight-list {
+  display: flex;
+  flex-direction: row;
+  gap: 16px;
+  justify-content: space-between;
+}
+
+.twilight-item {
+  flex: 1;
+  background-color: rgba(var(--v-theme-surface), 0.3);
+  padding: 12px;
+  border-radius: 8px;
+  text-align: center;
+}
+
+.time-group {
+  display: inline-flex;
+  align-items: center;
+  white-space: nowrap;
+}
+
+.divider {
+  width: 1px;
+  height: 16px;
+  background-color: rgba(var(--v-theme-on-surface), 0.12);
 }
 
 .loading-overlay {
@@ -234,5 +281,84 @@ export default {
 .refresh-animation {
   transition: all 0.3s ease;
   transform: scale(0.98);
+}
+
+@media (min-width: 901px) {
+  .time-blocks-container {
+    flex-direction: row;
+    gap: 12px;
+  }
+
+  .time-block-wrapper {
+    flex: 1;
+    gap: 12px;
+  }
+}
+
+@media (max-width: 900px) {
+  .twilight-list {
+    flex-direction: column;
+    gap: 8px;
+  }
+
+  .twilight-item {
+    padding: 8px;
+  }
+}
+
+@media (max-width: 600px) {
+  .time-blocks-container {
+    gap: 12px;
+  }
+
+  .time-block-wrapper {
+    gap: 8px;
+  }
+
+  .time-block {
+    padding: 12px;
+  }
+
+  .time-content {
+    padding: 0;
+  }
+
+  .time-block .text-h5 {
+    font-size: 1.15rem !important;
+    line-height: 1.3;
+  }
+
+  .time-block .text-subtitle-2 {
+    font-size: 0.875rem !important;
+  }
+
+  .time-block .text-caption {
+    font-size: 0.75rem !important;
+    line-height: 1.2;
+  }
+
+  .time-group {
+    min-width: auto;
+  }
+}
+
+@media (max-width: 360px) {
+  .twilight-item .d-flex {
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .divider {
+    display: none;
+  }
+
+  .time-group {
+    margin: 0;
+  }
+
+  .time-group + .time-group {
+    margin-top: 4px;
+  }
 }
 </style> 

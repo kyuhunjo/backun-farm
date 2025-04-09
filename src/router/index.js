@@ -68,6 +68,14 @@ const router = createRouter({
           component: () => import('@/views/farming/PersimmonMethodView.vue')
         }
       ]
+    },
+    {
+      path: '/news',
+      name: 'news',
+      component: () => import('../views/NewsView.vue'),
+      meta: {
+        title: '농림축산식품부 뉴스'
+      }
     }
   ],
   scrollBehavior(to, from, savedPosition) {

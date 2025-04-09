@@ -125,6 +125,17 @@
           >
             전라남도 대기질 현황
           </v-btn>
+
+          <v-btn
+            to="/news"
+            variant="text"
+            class="px-3"
+            color="grey-darken-3"
+            height="40"
+            rounded="0"
+          >
+            농림축산식품부 뉴스
+          </v-btn>
         </div>
 
         <v-btn
@@ -231,6 +242,13 @@
             <v-icon color="primary" class="me-2">mdi-weather-dust</v-icon>
           </template>
           <v-list-item-title class="font-body">전라남도 대기질 현황</v-list-item-title>
+        </v-list-item>
+
+        <v-list-item to="/news" class="mb-2" rounded="0">
+          <template #prepend>
+            <v-icon color="primary" class="me-2">mdi-newspaper</v-icon>
+          </template>
+          <v-list-item-title class="font-body">농림축산식품부 뉴스</v-list-item-title>
         </v-list-item>
       </v-list>
     </v-navigation-drawer>

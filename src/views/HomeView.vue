@@ -1,5 +1,5 @@
 <template>
-  <v-container fluid>
+  <v-container>
     <!-- 날씨 및 대기질 정보 -->
     <v-row>
       <v-col cols="12">
