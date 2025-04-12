@@ -169,6 +169,33 @@ export const airQualityAPI = {
   }
 };
 
+// 요양시설 관련 API 함수들
+export const facilitiesAPI = {
+  // 전체 시설 목록 조회
+  async getAllFacilities() {
+    try {
+      const response = await api.get('/facilities');
+      return response.data;
+    } catch (error) {
+      console.error('전체 시설 목록 조회 중 오류:', error);
+      throw error;
+    }
+  },
+
+  // 주변 시설 검색
+  async searchNearbyFacilities(latitude, longitude, radius = 5) {
+    try {
+      const response = await api.get('/facilities/search', {
+        params: { latitude, longitude, radius }
+      });
+      return response.data;
+    } catch (error) {
+      console.error('주변 시설 검색 중 오류:', error);
+      throw error;
+    }
+  }
+};
+
 // 날씨 관련 API 함수들
 export const weatherAPI = {
   // 현재 날씨 조회
@@ -217,6 +244,7 @@ const apiObject = {
   storeAPI,
   statsAPI,
   airQualityAPI,
+  facilitiesAPI,
   weatherAPI,
   newsAPI
 };

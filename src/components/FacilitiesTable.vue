@@ -184,7 +184,7 @@
 
 <script setup>
 import { ref, computed } from 'vue'
-import axios from 'axios'
+import { facilitiesAPI } from '@/utils/api'
 
 const facilities = ref([])
 const isLoading = ref(false)
@@ -228,17 +228,15 @@ const filteredFacilities = computed(() => {
 const fetchFacilities = async () => {
   try {
     isLoading.value = true
-    const response = await axios.get('/api/facilities')
-    console.log('API Response:', response.data) // 디버깅용 로그
-    if (response.data.success) {
-      facilities.value = response.data.data || []
-      console.log('Facilities:', facilities.value) // 디버깅용 로그
+    const response = await facilitiesAPI.getAllFacilities()
+    if (response.success) {
+      facilities.value = response.data || []
     } else {
       showError('시설 정보를 불러오는데 실패했습니다.')
       facilities.value = []
     }
   } catch (error) {
-    console.error('API Error:', error) // 디버깅용 로그
+    console.error('API Error:', error)
     showError('시설 정보를 불러오는데 실패했습니다.')
     facilities.value = []
   } finally {
@@ -251,17 +249,16 @@ const searchNearbyFacilities = async () => {
     isSearching.value = true
     const position = await getCurrentPosition()
     const { latitude, longitude } = position.coords
-    const response = await axios.get(`/api/facilities/search?latitude=${latitude}&longitude=${longitude}&radius=5`)
-    console.log('Search Response:', response.data) // 디버깅용 로그
-    if (response.data.success) {
-      facilities.value = response.data.data || []
+    const response = await facilitiesAPI.searchNearbyFacilities(latitude, longitude)
+    if (response.success) {
+      facilities.value = response.data || []
       showSuccess(`현재 위치 기준 5km 반경의 시설을 검색했습니다. (총 ${facilities.value.length}개)`)
     } else {
       showError('주변 시설 검색에 실패했습니다.')
       facilities.value = []
     }
   } catch (error) {
-    console.error('Search Error:', error) // 디버깅용 로그
+    console.error('Search Error:', error)
     if (error.message === 'User denied Geolocation') {
       showError('위치 정보 접근이 거부되었습니다.')
     } else {
