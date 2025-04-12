@@ -48,6 +48,8 @@
             variant="outlined"
             class="store-card h-100 d-flex flex-column"
             :class="{ 'refresh-animation': isLoading }"
+            :href="getNaverMapUrl(store)"
+            target="_blank"
           >
             <div class="flex-grow-1">
               <v-card-item>
@@ -181,6 +183,11 @@ export default {
       return stores.value.slice(startIndex, endIndex)
     })
 
+    const getNaverMapUrl = (store) => {
+      const query = encodeURIComponent(`${store.storeName} ${store.address}`)
+      return `https://map.naver.com/v5/search/${query}?c=15,0,0,0,dh`
+    }
+
     onMounted(async () => {
       selectedRegion.value = '전체'
       await fetchStores()
@@ -196,7 +203,8 @@ export default {
       refreshData,
       formatDate,
       handleSearch,
-      paginatedStores
+      paginatedStores,
+      getNaverMapUrl
     }
   }
 }
@@ -208,13 +216,14 @@ export default {
 }
 
 .store-card {
-  transition: all 0.3s ease;
+  cursor: pointer;
+  transition: all 0.2s ease-in-out;
   border-radius: 0;
 }
 
 .store-card:hover {
   transform: translateY(-2px);
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1) !important;
 }
 
 .region-select {
