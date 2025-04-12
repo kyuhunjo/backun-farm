@@ -4,8 +4,7 @@
     <v-card-title class="text-subtitle-1 font-weight-medium pa-4">
       대기질 정보
       <div class="text-caption text-medium-emphasis mt-1">
-        {{ airQuality.stationName }} 측정소
-        <span class="text-caption text-grey ms-2">{{ formatDateTime(airQuality.dataTime) }}</span>
+        {{ airQuality.stationName }} 측정소 {{ formatDateTime(airQuality.dataTime) }}
       </div>
     </v-card-title>
     <v-card-text class="position-relative">
@@ -323,6 +322,21 @@ export default {
   border-color: rgb(var(--v-theme-grey)) !important;
 }
 
+.border-b {
+  border-bottom: 1px solid rgba(0, 0, 0, 0.12);
+}
+
+.refresh-btn {
+  min-width: 110px;
+  transition: all 0.3s ease;
+}
+
+.refresh-btn:hover {
+  transform: scale(1.02);
+  background-color: rgb(var(--v-theme-blue-darken-1));
+  color: white;
+}
+
 @media (max-width: 768px) {
   .air-quality-card {
     @apply p-2;
@@ -348,6 +362,15 @@ export default {
   
   .air-quality-detail .text-subtitle-2 {
     font-size: 0.8125rem !important;
+  }
+
+  .refresh-btn {
+    min-width: auto;
+    padding: 0 12px;
+  }
+  
+  .refresh-btn .v-btn__content {
+    gap: 4px;
   }
 }
 </style> 

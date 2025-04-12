@@ -1,20 +1,25 @@
 <template>
   <div class="news-view">
-    <v-container>
+    <v-container class="py-4">
       <v-row>
         <v-col cols="12">
-          <NewsCard
-            v-if="newsData"
-            :title="newsData.title"
-            :link="newsData.link"
-            :items="newsData.items"
-            :class="{ 'refresh-animation': isLoading }"
-          />
-          <v-skeleton-loader
-            v-else
-            type="card"
-            class="mt-4"
-          ></v-skeleton-loader>
+          <div class="news-container">
+            <NewsCard
+              v-if="newsData"
+              :title="newsData.title"
+              :link="newsData.link"
+              :items="newsData.items"
+              :is-loading="isLoading"
+              :class="{ 'refresh-animation': isLoading }"
+              @refresh="fetchNews"
+            />
+            <v-skeleton-loader
+              v-else
+              type="card-avatar, article, actions"
+              :loading="isLoading"
+              class="mt-4"
+            ></v-skeleton-loader>
+          </div>
         </v-col>
       </v-row>
     </v-container>
@@ -58,7 +63,8 @@ export default {
 
     return {
       newsData,
-      isLoading
+      isLoading,
+      fetchNews
     };
   }
 };
@@ -67,12 +73,16 @@ export default {
 <style scoped>
 .news-view {
   min-height: 100vh;
-  padding: 1rem 0;
-  background-color: var(--v-background-base);
+  background-color: rgb(var(--v-theme-grey-lighten-4));
+}
+
+.news-container {
+  max-width: 1600px;
+  margin: 0 auto;
 }
 
 .refresh-animation {
   transition: all 0.3s ease;
-  transform: scale(0.98);
+  opacity: 0.7;
 }
 </style> 

@@ -1,46 +1,82 @@
 <template>
-  <v-card variant="outlined" class="news-card">
-    <v-card-text>
-      <div class="d-flex align-center mb-4">
-        <div class="text-h6 font-weight-medium">{{ title }}</div>
-        <v-spacer></v-spacer>
-        <v-btn
-          variant="text"
-          color="primary"
-          :href="link"
-          target="_blank"
-          class="text-none"
-        >
-          자세히 보기
-          <v-icon class="ms-1">mdi-open-in-new</v-icon>
-        </v-btn>
+  <div>
+    <div class="d-flex flex-column mb-6">
+      <div class="d-flex align-center justify-space-between mb-2">
+        <div class="d-flex align-center">
+          <h2 class="text-h5 font-weight-bold mb-0">농림축산식품부 뉴스</h2>
+        </div>
+        <div class="d-flex align-center">
+          <v-btn
+            prepend-icon="mdi-refresh"
+            color="grey"
+            variant="tonal"
+            class="me-2"
+            :loading="isLoading"
+            @click="$emit('refresh')"
+          >
+            새로고침
+          </v-btn>
+          <v-btn
+            :href="link"
+            target="_blank"
+            prepend-icon="mdi-open-in-new"
+            color="primary"
+            variant="tonal"
+          >
+            더보기
+          </v-btn>
+        </div>
       </div>
+      <p class="text-subtitle-1 text-medium-emphasis mb-0">
+        농림축산식품부의 최신 소식을 확인할 수 있습니다.
+      </p>
+    </div>
 
-      <v-list lines="two">
-        <v-list-item
-          v-for="(item, index) in items"
-          :key="index"
+    <v-row>
+      <v-col
+        v-for="(item, index) in items"
+        :key="index"
+        cols="12"
+        sm="6"
+        md="4"
+        lg="3"
+      >
+        <v-card
+          variant="outlined"
+          class="h-100 d-flex flex-column news-card"
           :href="item.link"
           target="_blank"
-          class="mb-2"
         >
-          <template v-slot:prepend>
-            <v-icon color="primary" class="me-2">mdi-newspaper</v-icon>
-          </template>
-          
-          <v-list-item-title class="text-subtitle-1 mb-1">
-            {{ item.title }}
-          </v-list-item-title>
-          
-          <v-list-item-subtitle class="d-flex align-center text-caption">
-            <span class="text-medium-emphasis">{{ formatDate(item.pubDate) }}</span>
-            <v-divider vertical class="mx-2"></v-divider>
-            <span class="text-medium-emphasis">{{ item.author }}</span>
-          </v-list-item-subtitle>
-        </v-list-item>
-      </v-list>
-    </v-card-text>
-  </v-card>
+          <div class="flex-grow-1">
+            <v-card-item>
+              <div class="d-flex mb-2">
+                <v-icon
+                  color="primary"
+                  icon="mdi-newspaper"
+                  class="me-2 mt-1"
+                  size="20"
+                ></v-icon>
+                <div class="text-subtitle-1 font-weight-medium">{{ item.title }}</div>
+              </div>
+            </v-card-item>
+
+            <v-card-text>
+              <div class="d-flex flex-column">
+                <div class="d-flex align-center mb-2">
+                  <v-icon size="small" color="grey-darken-1" class="me-2">mdi-calendar</v-icon>
+                  <span class="text-body-2">{{ formatDate(item.pubDate) }}</span>
+                </div>
+                <div class="d-flex align-center">
+                  <v-icon size="small" color="grey-darken-1" class="me-2">mdi-account</v-icon>
+                  <span class="text-body-2">{{ item.author || '농림축산식품부' }}</span>
+                </div>
+              </div>
+            </v-card-text>
+          </div>
+        </v-card>
+      </v-col>
+    </v-row>
+  </div>
 </template>
 
 <script>
@@ -58,8 +94,13 @@ export default {
     items: {
       type: Array,
       default: () => []
+    },
+    isLoading: {
+      type: Boolean,
+      default: false
     }
   },
+  emits: ['refresh'],
   setup() {
     const formatDate = (dateStr) => {
       if (!dateStr) return '';
@@ -76,11 +117,25 @@ export default {
 
 <style scoped>
 .news-card {
-  height: 100%;
-  border-radius: 0;
+  cursor: pointer;
+  transition: all 0.2s ease-in-out;
+  border: 1px solid rgba(var(--v-border-color), 0.12);
+  background-color: rgb(var(--v-theme-surface));
 }
 
-.v-list-item:hover {
-  background-color: rgba(var(--v-theme-primary), 0.05);
+.news-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1) !important;
+  border-color: rgb(var(--v-theme-primary));
+}
+
+.text-truncate-2 {
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  line-height: 1.4;
+  height: 2.8em;
 }
 </style> 

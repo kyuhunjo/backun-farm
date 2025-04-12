@@ -1,10 +1,9 @@
 <template>
   <div>
-    <div class="d-flex flex-column flex-sm-row align-sm-center justify-space-between mb-6">
-      <div class="d-flex flex-column mb-4 mb-sm-0">
-        <h2 class="text-h5 font-weight-bold mb-2">화순군 노인시설 현황</h2>
-        <p class="text-subtitle-1 text-medium-emphasis mb-0">
-          화순군 내 노인복지시설 정보를 조회하고 주변 시설을 검색할 수 있습니다.
+    <div class="d-flex flex-column mb-6">
+      <div class="d-flex align-center justify-space-between mb-2">
+        <div class="d-flex align-center">
+          <h2 class="text-h5 font-weight-bold mb-0">화순군 요양시설</h2>
           <v-chip
             v-if="facilities.length > 0"
             color="primary"
@@ -14,18 +13,7 @@
           >
             총 {{ facilities.length }}개소
           </v-chip>
-        </p>
-      </div>
-      <div class="d-flex align-center gap-2">
-        <v-btn
-          prepend-icon="mdi-map-search"
-          color="primary"
-          variant="tonal"
-          :loading="isSearching"
-          @click="searchNearbyFacilities"
-        >
-          현재 위치 기준 검색
-        </v-btn>
+        </div>
         <v-btn
           prepend-icon="mdi-refresh"
           color="grey"
@@ -36,6 +24,9 @@
           새로고침
         </v-btn>
       </div>
+      <p class="text-subtitle-1 text-medium-emphasis mb-0">
+        화순군 요양시설 정보를 조회할 수 있습니다.
+      </p>
     </div>
 
     <v-card class="mb-4 pa-4 bg-grey-lighten-4">
@@ -92,7 +83,7 @@
 
     <v-row>
       <v-col
-        v-for="facility in filteredFacilities"
+        v-for="facility in paginatedFacilities"
         :key="facility.id"
         cols="12"
         sm="6"
@@ -140,24 +131,22 @@
 
           <div class="mt-auto">
             <v-divider></v-divider>
-            <v-card-text class="pt-3">
-              <div class="d-flex gap-2">
-                <v-chip
-                  size="small"
-                  :color="getTypeColor(facility.type)"
-                  variant="flat"
-                  class="me-2"
-                >
-                  {{ facility.type }}
-                </v-chip>
-                <v-chip
-                  size="small"
-                  color="grey"
-                  variant="flat"
-                >
-                  {{ facility.serviceType }}
-                </v-chip>
-              </div>
+            <v-card-text class="pt-3 d-flex justify-end">
+              <v-chip
+                size="small"
+                :color="getServiceTypeColor(facility.serviceType)"
+                variant="tonal"
+                class="me-2"
+              >
+                {{ facility.serviceType }}
+              </v-chip>
+              <v-chip
+                :color="getTypeColor(facility.type)"
+                variant="tonal"
+                size="small"
+              >
+                {{ facility.type }}
+              </v-chip>
             </v-card-text>
           </div>
         </v-card>
@@ -166,9 +155,12 @@
     
     <div class="text-center pt-4">
       <v-pagination
-        v-model="itemsPerPage"
-        :length="Math.ceil(filteredFacilities.length / 10)"
+        v-model="currentPage"
+        :length="totalPages"
         :disabled="isLoading"
+        show-first
+        show-last
+        :total-visible="$vuetify.display.xs ? 5 : 7"
       ></v-pagination>
     </div>
 
@@ -188,8 +180,8 @@ import { facilitiesAPI } from '@/utils/api'
 
 const facilities = ref([])
 const isLoading = ref(false)
-const isSearching = ref(false)
-const itemsPerPage = ref(10)
+const currentPage = ref(1)
+const itemsPerPage = 12
 const snackbar = ref({
   show: false,
   text: '',
@@ -225,6 +217,16 @@ const filteredFacilities = computed(() => {
   })
 })
 
+const totalPages = computed(() => {
+  return Math.ceil(filteredFacilities.value.length / itemsPerPage)
+})
+
+const paginatedFacilities = computed(() => {
+  const start = (currentPage.value - 1) * itemsPerPage
+  const end = start + itemsPerPage
+  return filteredFacilities.value.slice(start, end)
+})
+
 const fetchFacilities = async () => {
   try {
     isLoading.value = true
@@ -244,50 +246,25 @@ const fetchFacilities = async () => {
   }
 }
 
-const searchNearbyFacilities = async () => {
-  try {
-    isSearching.value = true
-    const position = await getCurrentPosition()
-    const { latitude, longitude } = position.coords
-    const response = await facilitiesAPI.searchNearbyFacilities(latitude, longitude)
-    if (response.success) {
-      facilities.value = response.data || []
-      showSuccess(`현재 위치 기준 5km 반경의 시설을 검색했습니다. (총 ${facilities.value.length}개)`)
-    } else {
-      showError('주변 시설 검색에 실패했습니다.')
-      facilities.value = []
-    }
-  } catch (error) {
-    console.error('Search Error:', error)
-    if (error.message === 'User denied Geolocation') {
-      showError('위치 정보 접근이 거부되었습니다.')
-    } else {
-      showError('주변 시설 검색에 실패했습니다.')
-    }
-    facilities.value = []
-  } finally {
-    isSearching.value = false
-  }
-}
-
-const getCurrentPosition = () => {
-  return new Promise((resolve, reject) => {
-    if (!navigator.geolocation) {
-      reject(new Error('Geolocation is not supported'))
-      return
-    }
-    navigator.geolocation.getCurrentPosition(resolve, reject)
-  })
-}
-
 const getTypeColor = (type) => {
   const colors = {
-    '노인의료복지시설': 'blue',
-    '재가노인복지시설': 'indigo',
-    '노인여가복지시설': 'deep-purple',
-    '노인주거복지시설': 'purple'
+    '노인의료복지시설': 'indigo-darken-1',
+    '재가노인복지시설': 'deep-purple-darken-1',
+    '노인여가복지시설': 'purple-darken-1',
+    '노인주거복지시설': 'blue-darken-1'
   }
   return colors[type] || 'grey'
+}
+
+const getServiceTypeColor = (serviceType) => {
+  const colors = {
+    '방문요양': 'teal-darken-1',
+    '주야간보호': 'cyan-darken-2',
+    '단기보호': 'light-blue-darken-2',
+    '방문목욕': 'blue-grey-darken-1',
+    '방문간호': 'green-darken-1'
+  }
+  return colors[serviceType] || 'grey'
 }
 
 const formatDate = (dateString) => {
@@ -307,21 +284,7 @@ const getNaverMapUrl = (facility) => {
 }
 
 const applyFilters = () => {
-  // 필터 적용 시 페이지를 1페이지로 리셋
-  if (itemsPerPage.value > 0) {
-    const table = document.querySelector('.v-data-table')
-    if (table) {
-      table.__vueParentComponent.ctx.page = 1
-    }
-  }
-}
-
-const showSuccess = (text) => {
-  snackbar.value = {
-    show: true,
-    text,
-    color: 'success'
-  }
+  currentPage.value = 1
 }
 
 const showError = (text) => {

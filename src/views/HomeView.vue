@@ -34,7 +34,11 @@
 
               <!-- 대기질 정보 -->
               <v-col cols="12" md="6">
-                <AirQualityCard :airQuality="airQuality" :isLoading="isLoading" />
+                <AirQualityCard 
+                  :airQuality="airQuality" 
+                  :isLoading="isLoading"
+                  @refresh="fetchAirQualityData"
+                />
               </v-col>
             </v-row>
           </v-card-text>
@@ -155,9 +159,9 @@ export default {
         .sort((a, b) => a.dt - b.dt)
         .slice(0, 5)
         .map(item => {
-          const date = new Date(item.dt * 1000)
+          const timestamp = item.dt * 1000
           return {
-            date,
+            date: new Date(timestamp),
             minTemp: item.main.temp_min,
             maxTemp: item.main.temp_max,
             description: item.weather[0].description,
@@ -264,9 +268,12 @@ export default {
     return {
       airQuality,
       weather,
-      forecast: groupedForecast,
-      sunriseData,
+      forecast,
       isLoading,
+      sunriseData,
+      groupedForecast,
+      fetchAirQualityData,
+      fetchWeatherData,
       refreshData
     }
   }

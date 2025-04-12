@@ -64,33 +64,33 @@
               <v-card
                 variant="outlined"
                 class="forecast-day"
-                :class="`border-${day.maxTemp > 15 ? 'warning' : 'info'}`"
+                :class="`border-${day.main.temp_max > 15 ? 'warning' : 'info'}`"
               >
                 <div class="forecast-day-content">
                   <div class="text-subtitle-2 font-weight-medium mb-2">
-                    {{ formatDate(day.date) }}
+                    {{ formatDate(new Date(day.dt * 1000)) }}
                   </div>
                   <v-icon
-                    :color="day.maxTemp > 15 ? 'warning' : 'info'"
+                    :color="day.main.temp_max > 15 ? 'warning' : 'info'"
                     size="32"
                     class="mb-2"
                   >
-                    {{ getWeatherIcon(day.icons[0]) }}
+                    {{ getWeatherIcon(day.weather[0].icon) }}
                   </v-icon>
                   <div class="text-h6 font-weight-bold mb-1">
-                    {{ Math.round(day.maxTemp) }}°
+                    {{ Math.round(day.main.temp_max) }}°
                   </div>
                   <div class="text-body-2 text-medium-emphasis">
-                    {{ Math.round(day.minTemp) }}°
+                    {{ Math.round(day.main.temp_min) }}°
                   </div>
                   <div class="forecast-details text-caption text-medium-emphasis mt-2">
                     <div class="d-flex align-center justify-center mb-1">
                       <v-icon size="14" color="primary" class="me-1">mdi-water-percent</v-icon>
-                      {{ day.humidity }}%
+                      {{ day.main.humidity }}%
                     </div>
                     <div class="d-flex align-center justify-center">
                       <v-icon size="14" color="primary" class="me-1">mdi-weather-windy</v-icon>
-                      {{ day.windSpeed }}m/s
+                      {{ day.wind.speed }}m/s
                     </div>
                   </div>
                 </div>
@@ -162,7 +162,10 @@ export default {
     }
 
     const formatDate = (date) => {
-      return `${date.getMonth() + 1}월 ${date.getDate()}일`
+      if (!date || !(date instanceof Date) || isNaN(date)) {
+        return '날짜 없음';
+      }
+      return `${date.getMonth() + 1}월 ${date.getDate()}일`;
     }
 
     return {

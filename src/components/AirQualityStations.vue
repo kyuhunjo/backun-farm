@@ -1,29 +1,5 @@
 <template>
   <v-card class="air-quality-stations">
-    <v-card-title class="d-flex align-center bg-blue-lighten-5 border-b">
-      <div class="d-flex align-center">
-        <v-icon icon="mdi-weather-dust" class="me-2" color="blue-darken-1" />
-        <span class="text-blue-darken-1 font-weight-bold">전라남도 대기질 측정소</span>
-        <div class="time-info ms-4">
-          <v-icon icon="mdi-clock-outline" size="small" class="me-1" />
-          {{ stations.length > 0 ? stations[0].dataTime + ' 기준' : '' }}
-        </div>
-      </div>
-      <v-spacer />
-      <v-btn
-        color="blue-darken-1"
-        variant="tonal"
-        @click="fetchData"
-        :loading="loading"
-        class="refresh-btn"
-        rounded="0"
-        elevation="0"
-      >
-        <v-icon start>mdi-refresh</v-icon>
-        새로고침
-      </v-btn>
-    </v-card-title>
-
     <v-card-text class="pa-0">
       <div class="table-container">
         <v-fade-transition>
@@ -159,6 +135,7 @@ import { airQualityAPI } from '@/utils/api';
 
 const stations = ref([]);
 const loading = ref(false);
+const emit = defineEmits(['update:stations', 'update:loading']);
 
 const getGradeColor = (grade) => {
   const gradeNum = parseInt(grade);
@@ -171,6 +148,7 @@ const getGradeColor = (grade) => {
 
 const fetchData = async () => {
   loading.value = true;
+  emit('update:loading', true);
   stations.value = []; // 데이터 초기화로 트랜지션 효과 강화
   try {
     const response = await airQualityAPI.getAllStations();
@@ -178,13 +156,17 @@ const fetchData = async () => {
       stations.value = response.items
         .filter(station => station.pm10Value !== '-' || station.pm25Value !== '-')
         .sort((a, b) => a.stationName.localeCompare(b.stationName));
+      emit('update:stations', stations.value);
     } else {
       console.error('측정소 데이터가 올바르지 않습니다:', response);
+      emit('update:stations', []);
     }
   } catch (error) {
     console.error('측정소 데이터 조회 실패:', error);
+    emit('update:stations', []);
   } finally {
     loading.value = false;
+    emit('update:loading', false);
   }
 };
 
@@ -276,6 +258,9 @@ onMounted(() => {
   width: 100%;
   min-width: 1000px;
   border-collapse: separate;
+  border: 1px solid rgba(var(--v-border-color), 0.12);
+  border-radius: 8px;
+  overflow: hidden;
 }
 
 thead {
@@ -299,7 +284,7 @@ tbody {
   font-size: 0.875rem;
   color: rgba(var(--v-theme-on-surface), 0.87);
   border-bottom: 1px solid rgba(var(--v-border-color), 0.12);
-  border-right: 1px solid rgba(var(--v-border-color), 0.08);
+  background-color: rgb(var(--v-theme-grey-lighten-4));
   position: relative;
 }
 
@@ -310,7 +295,8 @@ tbody {
   left: 0;
   right: 0;
   bottom: 0;
-  background-color: rgb(var(--v-theme-blue-lighten-5));
+  background-color: rgb(var(--v-theme-grey-lighten-4));
+  border-bottom: 2px solid rgb(var(--v-theme-primary));
   z-index: -1;
 }
 
@@ -340,14 +326,12 @@ tbody {
   transition: background-color 0.2s ease;
   position: relative;
   z-index: 1;
-}
-
-tr:hover .header-content {
-  background-color: rgb(var(--v-theme-blue-lighten-4));
+  font-weight: 600;
+  color: rgba(var(--v-theme-on-surface), 0.87);
 }
 
 .header-content .v-icon {
-  color: rgb(var(--v-theme-blue-darken-1));
+  color: rgb(var(--v-theme-primary));
   margin-right: 8px;
 }
 
