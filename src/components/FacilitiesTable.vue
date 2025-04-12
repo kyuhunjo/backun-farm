@@ -96,6 +96,7 @@
         <v-card
           variant="outlined"
           class="h-100 d-flex flex-column facility-card"
+          :class="{ 'refresh-animation': isLoading }"
           :href="getNaverMapUrl(facility)"
           target="_blank"
         >
@@ -235,8 +236,16 @@ const paginatedFacilities = computed(() => {
 const fetchFacilities = async () => {
   try {
     isLoading.value = true
+    filters.value = {
+      type: null,
+      serviceType: null,
+      establishmentType: null,
+      search: ''
+    }
+    currentPage.value = 1
+    
     const response = await facilitiesAPI.getAllFacilities()
-    if (response.success) {
+    if (response && response.success) {
       facilities.value = response.data || []
     } else {
       showError('시설 정보를 불러오는데 실패했습니다.')
@@ -355,6 +364,24 @@ fetchFacilities()
 .facility-card:hover {
   transform: translateY(-2px);
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1) !important;
+}
+
+.refresh-animation {
+  animation: refresh-pulse 1s infinite;
+  pointer-events: none;
+  opacity: 0.7;
+}
+
+@keyframes refresh-pulse {
+  0% {
+    opacity: 0.7;
+  }
+  50% {
+    opacity: 0.5;
+  }
+  100% {
+    opacity: 0.7;
+  }
 }
 
 .pagination-custom :deep(.v-pagination__item) {

@@ -59,10 +59,13 @@
                 <div class="text-subtitle-1 font-weight-medium">{{ item.title }}</div>
               </div>
             </v-card-item>
+          </div>
 
-            <v-card-text>
-              <div class="d-flex flex-column">
-                <div class="d-flex align-center mb-2">
+          <div class="mt-auto">
+            <v-divider></v-divider>
+            <v-card-text class="pt-3">
+              <div class="d-flex justify-space-between align-center">
+                <div class="d-flex align-center">
                   <v-icon size="small" color="grey-darken-1" class="me-2">mdi-calendar</v-icon>
                   <span class="text-body-2">{{ formatDate(item.pubDate) }}</span>
                 </div>
