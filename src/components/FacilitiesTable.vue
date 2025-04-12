@@ -160,7 +160,9 @@
         :disabled="isLoading"
         show-first
         show-last
-        :total-visible="$vuetify.display.xs ? 5 : 7"
+        :total-visible="$vuetify.display.xs ? 3 : $vuetify.display.sm ? 5 : 7"
+        density="compact"
+        class="pagination-custom"
       ></v-pagination>
     </div>
 
@@ -350,5 +352,15 @@ fetchFacilities()
 .facility-card:hover {
   transform: translateY(-2px);
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1) !important;
+}
+
+.pagination-custom :deep(.v-pagination__item) {
+  min-width: 34px;
+  padding: 0 6px;
+  font-size: 14px;
+}
+
+.pagination-custom :deep(.v-pagination__navigation) {
+  min-width: 34px;
 }
 </style> 

@@ -122,7 +122,9 @@
         :disabled="isLoading"
         show-first
         show-last
-        :total-visible="$vuetify.display.xs ? 5 : 7"
+        :total-visible="$vuetify.display.xs ? 3 : $vuetify.display.sm ? 5 : 7"
+        density="compact"
+        class="pagination-custom"
       ></v-pagination>
     </div>
   </div>
@@ -263,5 +265,15 @@ onMounted(async () => {
   width: 100% !important;
   display: flex !important;
   justify-content: flex-end !important;
+}
+
+.pagination-custom :deep(.v-pagination__item) {
+  min-width: 34px;
+  padding: 0 6px;
+  font-size: 14px;
+}
+
+.pagination-custom :deep(.v-pagination__navigation) {
+  min-width: 34px;
 }
 </style> 
