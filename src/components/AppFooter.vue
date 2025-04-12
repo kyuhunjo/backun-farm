@@ -18,7 +18,7 @@
               <h4 class="text-h6 font-weight-bold white mb-4">퀵메뉴</h4>
               <div class="d-flex flex-column gap-2">
                 <router-link
-                  v-for="(menu, index) in allMenus"
+                  v-for="(menu, index) in menuItems"
                   :key="index"
                   :to="menu.to || menu.items?.[0].to"
                   class="footer-link d-flex align-center"
@@ -44,18 +44,9 @@
 </template>
 
 <script setup>
-import { VILLAGE_MENU, FARMING_MENU, MAIN_MENU } from '@/constants/menu'
+import { FOOTER_MENU } from '@/constants/menu'
 
-const allMenus = [
-  {
-    title: '홈',
-    to: '/',
-    icon: 'mdi-home'
-  },
-  VILLAGE_MENU,
-  FARMING_MENU,
-  ...MAIN_MENU
-]
+const menuItems = FOOTER_MENU
 </script>
 
 <style scoped>

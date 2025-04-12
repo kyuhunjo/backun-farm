@@ -1,7 +1,5 @@
 import { createRouter, createWebHistory } from 'vue-router'
 import HomeView from '../views/HomeView.vue'
-import VillageInfoView from '../views/village/VillageInfoView.vue'
-import FarmingMethodsView from '../views/farming/FarmingMethodsView.vue'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -12,62 +10,19 @@ const router = createRouter({
       component: HomeView
     },
     {
-      path: '/air-quality',
-      name: 'air-quality',
-      component: () => import('@/views/AirQualityView.vue')
-    },
-    {
       path: '/stores',
       name: 'stores',
-      component: () => import('@/views/StoreListView.vue')
+      component: () => import('../views/StoreListView.vue')
     },
     {
-      path: '/village',
-      name: 'village',
-      component: VillageInfoView,
-      children: [
-        {
-          path: 'history',
-          name: 'village-history',
-          component: () => import('@/views/village/HistoryView.vue')
-        },
-        {
-          path: 'location',
-          name: 'village-location',
-          component: () => import('@/views/village/LocationView.vue')
-        },
-        {
-          path: 'specialties',
-          name: 'village-specialties',
-          component: () => import('@/views/village/SpecialtiesView.vue')
-        }
-      ]
+      path: '/air-quality',
+      name: 'air-quality',
+      component: () => import('../views/AirQualityView.vue')
     },
     {
-      path: '/farming',
-      component: FarmingMethodsView,
-      children: [
-        {
-          path: '',
-          name: 'farming',
-          redirect: '/farming/fern'
-        },
-        {
-          path: 'fern',
-          name: 'farming-fern',
-          component: () => import('@/views/farming/FernMethodView.vue')
-        },
-        {
-          path: 'deodeok',
-          name: 'farming-deodeok',
-          component: () => import('@/views/farming/DeodeokMethodView.vue')
-        },
-        {
-          path: 'persimmon',
-          name: 'farming-persimmon',
-          component: () => import('@/views/farming/PersimmonMethodView.vue')
-        }
-      ]
+      path: '/facilities',
+      name: 'facilities',
+      component: () => import('../views/FacilitiesView.vue')
     },
     {
       path: '/news',

@@ -16,48 +16,8 @@
 
         <!-- Desktop Navigation -->
         <div class="d-none d-md-flex align-center gap-2">
-          <v-menu
-            v-for="(menu, index) in [VILLAGE_MENU, FARMING_MENU]"
-            :key="index"
-            open-on-hover
-            :close-delay="100"
-            :open-delay="0"
-            transition="slide-y-transition"
-            location="bottom"
-          >
-            <template v-slot:activator="{ props }">
-              <v-btn
-                v-bind="props"
-                variant="text"
-                class="px-3"
-                color="grey-darken-3"
-                height="40"
-                rounded="0"
-              >
-                {{ menu.title }}
-                <v-icon end size="small" class="ms-1">mdi-chevron-down</v-icon>
-              </v-btn>
-            </template>
-            <v-card elevation="3" rounded="0" min-width="200" class="mt-1">
-              <v-list nav density="comfortable">
-                <v-list-item
-                  v-for="(item, itemIndex) in menu.items"
-                  :key="itemIndex"
-                  :to="item.to"
-                  rounded="0"
-                  :class="{ 'mb-1': itemIndex !== menu.items.length - 1 }"
-                >
-                  <template #prepend>
-                    <v-icon size="small" color="primary" class="me-1">{{ item.icon }}</v-icon>
-                  </template>
-                  <v-list-item-title>{{ item.title }}</v-list-item-title>
-                </v-list-item>
-              </v-list>
-            </v-card>
-          </v-menu>
-
           <v-btn
-            v-for="(item, index) in MAIN_MENU"
+            v-for="(item, index) in menuItems"
             :key="index"
             :to="item.to"
             variant="text"
@@ -92,79 +52,8 @@
       width="280"
     >
       <v-list nav class="side-menu">
-        <v-list-item to="/" class="mb-1" rounded="0">
-          <template #prepend>
-            <v-icon size="20" color="grey-darken-1">mdi-home</v-icon>
-          </template>
-          <v-list-item-title>홈</v-list-item-title>
-        </v-list-item>
-
-        <v-list-group
-          v-model="villageMenuOpen"
-          class="mb-1"
-        >
-          <template #activator="{ props }">
-            <v-list-item
-              v-bind="props"
-              rounded="0"
-              class="px-0"
-            >
-              <template #prepend>
-                <v-icon size="20" color="grey-darken-1">{{ VILLAGE_MENU.icon }}</v-icon>
-              </template>
-              <v-list-item-title>{{ VILLAGE_MENU.title }}</v-list-item-title>
-            </v-list-item>
-          </template>
-          
-          <v-list-item
-            v-for="(item, index) in VILLAGE_MENU.items"
-            :key="index"
-            :to="item.to"
-            class="ms-4"
-            density="compact"
-            rounded="0"
-          >
-            <template #prepend>
-              <v-icon size="18" color="grey-darken-1">{{ item.icon }}</v-icon>
-            </template>
-            <span class="text-subtitle-2">{{ item.title }}</span>
-          </v-list-item>
-        </v-list-group>
-
-        <v-list-group
-          v-model="farmingMenuOpen"
-          class="mb-1"
-        >
-          <template #activator="{ props }">
-            <v-list-item
-              v-bind="props"
-              rounded="0"
-              class="px-0"
-            >
-              <template #prepend>
-                <v-icon size="20" color="grey-darken-1">{{ FARMING_MENU.icon }}</v-icon>
-              </template>
-              <v-list-item-title>{{ FARMING_MENU.title }}</v-list-item-title>
-            </v-list-item>
-          </template>
-          
-          <v-list-item
-            v-for="(item, index) in FARMING_MENU.items"
-            :key="index"
-            :to="item.to"
-            class="ms-4"
-            density="compact"
-            rounded="0"
-          >
-            <template #prepend>
-              <v-icon size="18" color="grey-darken-1">{{ item.icon }}</v-icon>
-            </template>
-            <span class="text-subtitle-2">{{ item.title }}</span>
-          </v-list-item>
-        </v-list-group>
-
         <v-list-item
-          v-for="(item, index) in MAIN_MENU"
+          v-for="(item, index) in menuItems"
           :key="index"
           :to="item.to"
           class="mb-1"
@@ -182,11 +71,10 @@
 
 <script setup>
 import { ref, onMounted, onUnmounted } from 'vue'
-import { VILLAGE_MENU, FARMING_MENU, MAIN_MENU } from '@/constants/menu'
+import { MAIN_MENU } from '@/constants/menu'
 
 const drawer = ref(false)
-const villageMenuOpen = ref(false)
-const farmingMenuOpen = ref(false)
+const menuItems = MAIN_MENU
 
 // 화면 크기 변경 감지 함수
 const handleResize = () => {

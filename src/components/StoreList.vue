@@ -46,60 +46,54 @@
         >
           <v-card
             variant="outlined"
-            class="store-card h-100"
+            class="store-card h-100 d-flex flex-column"
             :class="{ 'refresh-animation': isLoading }"
           >
-            <v-card-item>
-              <div class="d-flex align-center mb-2">
-                <v-icon
+            <div class="flex-grow-1">
+              <v-card-item>
+                <div class="d-flex align-center mb-2">
+                  <v-icon
+                    color="primary"
+                    icon="mdi-store"
+                    class="me-2"
+                  ></v-icon>
+                  <div class="text-h6 font-weight-bold">{{ store.storeName }}</div>
+                </div>
+                <div class="text-subtitle-2 text-medium-emphasis mb-2">
+                  {{ store.nhName }}
+                </div>
+              </v-card-item>
+
+              <v-card-text>
+                <div class="d-flex flex-column">
+                  <div class="d-flex align-center mb-2">
+                    <v-icon size="small" color="grey-darken-1" class="me-2">mdi-map-marker</v-icon>
+                    <span class="text-body-2">{{ store.address }}</span>
+                  </div>
+                  <div class="d-flex align-center mb-2">
+                    <v-icon size="small" color="grey-darken-1" class="me-2">mdi-phone</v-icon>
+                    <span class="text-body-2">{{ store.phoneNumber || '-' }}</span>
+                  </div>
+                  <div class="d-flex align-center">
+                    <v-icon size="small" color="grey-darken-1" class="me-2">mdi-calendar</v-icon>
+                    <span class="text-body-2">{{ formatDate(store.openDate) }}</span>
+                  </div>
+                </div>
+              </v-card-text>
+            </div>
+
+            <div class="mt-auto">
+              <v-divider></v-divider>
+              <v-card-text class="pt-3">
+                <v-chip
+                  size="small"
                   color="primary"
-                  class="me-2"
-                  icon="mdi-store"
-                ></v-icon>
-                <div class="text-h6 font-weight-bold">{{ store.storeName }}</div>
-              </div>
-              <div class="text-subtitle-2 text-medium-emphasis mb-2">
-                {{ store.nhName }}
-              </div>
-            </v-card-item>
-
-            <v-card-text>
-              <div class="d-flex align-center mb-2">
-                <v-icon
-                  size="small"
-                  color="grey-darken-1"
-                  class="me-2"
-                >mdi-map-marker</v-icon>
-                <span class="text-body-2">{{ store.address }}</span>
-              </div>
-              
-              <div class="d-flex align-center mb-2">
-                <v-icon
-                  size="small"
-                  color="grey-darken-1"
-                  class="me-2"
-                >mdi-phone</v-icon>
-                <span class="text-body-2">{{ store.phoneNumber || '-' }}</span>
-              </div>
-
-              <div class="d-flex align-center mb-2">
-                <v-icon
-                  size="small"
-                  color="grey-darken-1"
-                  class="me-2"
-                >mdi-calendar</v-icon>
-                <span class="text-body-2">{{ formatDate(store.openDate) }}</span>
-              </div>
-
-              <v-chip
-                size="small"
-                color="primary"
-                variant="tonal"
-                class="me-2"
-              >
-                {{ store.region }}
-              </v-chip>
-            </v-card-text>
+                  variant="tonal"
+                >
+                  {{ store.region }}
+                </v-chip>
+              </v-card-text>
+            </div>
           </v-card>
         </v-col>
       </v-row>
