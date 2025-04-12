@@ -4,15 +4,6 @@
       <div class="d-flex align-center justify-space-between mb-2">
         <div class="d-flex align-center">
           <h2 class="text-h5 font-weight-bold mb-0">화순군 요양시설</h2>
-          <v-chip
-            v-if="facilities.length > 0"
-            color="primary"
-            variant="flat"
-            size="small"
-            class="font-weight-medium ms-2"
-          >
-            총 {{ facilities.length }}개소
-          </v-chip>
         </div>
         <v-btn
           prepend-icon="mdi-refresh"
@@ -27,6 +18,18 @@
       <p class="text-subtitle-1 text-medium-emphasis mb-0">
         화순군 요양시설 정보를 조회할 수 있습니다.
       </p>
+    </div>
+
+    <div class="d-flex justify-end mb-2">
+      <v-chip
+        v-if="facilities.length > 0"
+        color="primary"
+        variant="flat"
+        size="small"
+        class="font-weight-medium"
+      >
+        총 {{ facilities.length }}개소
+      </v-chip>
     </div>
 
     <v-card class="mb-4 pa-4 bg-grey-lighten-4">

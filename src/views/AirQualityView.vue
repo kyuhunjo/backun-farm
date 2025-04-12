@@ -4,19 +4,6 @@
       <div class="d-flex align-center justify-space-between mb-2">
         <div class="d-flex align-center">
           <h2 class="text-h5 font-weight-bold mb-0">전라남도 대기질</h2>
-          <v-chip
-            v-if="stations.length > 0"
-            color="primary"
-            variant="flat"
-            size="small"
-            class="font-weight-medium ms-2"
-          >
-            총 {{ stations.length }}개 지역
-          </v-chip>
-          <div v-if="stations.length > 0" class="ms-4 text-medium-emphasis">
-            <v-icon icon="mdi-clock-outline" size="small" class="me-1" />
-            {{ stations[0].dataTime }} 기준
-          </div>
         </div>
         <v-btn
           prepend-icon="mdi-refresh"
@@ -31,6 +18,22 @@
       <p class="text-subtitle-1 text-medium-emphasis mb-0">
         전라남도 실시간 대기질 정보를 조회할 수 있습니다.
       </p>
+    </div>
+
+    <div class="d-flex justify-space-between align-center mb-2">
+      <div v-if="stations.length > 0" class="text-medium-emphasis">
+        <v-icon icon="mdi-clock-outline" size="small" class="me-1" />
+        {{ stations[0].dataTime }} 기준
+      </div>
+      <v-chip
+        v-if="stations.length > 0"
+        color="primary"
+        variant="flat"
+        size="small"
+        class="font-weight-medium"
+      >
+        총 {{ stations.length }}개 지역
+      </v-chip>
     </div>
 
     <v-row>
