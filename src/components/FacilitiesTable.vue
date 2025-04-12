@@ -28,7 +28,7 @@
         size="small"
         class="font-weight-medium"
       >
-        총 {{ facilities.length }}개소
+        총 {{ filteredFacilities.length }}개소
       </v-chip>
     </div>
 
@@ -219,6 +219,7 @@ const filteredFacilities = computed(() => {
     if (filters.value.type && facility.type !== filters.value.type) return false
     if (filters.value.serviceType && facility.serviceType !== filters.value.serviceType) return false
     if (filters.value.establishmentType && facility.establishmentType !== filters.value.establishmentType) return false
+    if (filters.value.search && !facility.name.toLowerCase().includes(filters.value.search.toLowerCase())) return false
     return true
   })
 })
