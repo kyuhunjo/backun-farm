@@ -31,6 +31,14 @@ const router = createRouter({
       meta: {
         title: '농림축산식품부 뉴스'
       }
+    },
+    {
+      path: '/helpers',
+      name: 'helpers',
+      component: () => import('@/views/HelpersView.vue'),
+      meta: {
+        title: '일손 모집'
+      }
     }
   ],
   scrollBehavior(to, from, savedPosition) {

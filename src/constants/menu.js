@@ -18,6 +18,11 @@ export const MAIN_MENU = [
     title: '농림축산식품부 뉴스',
     to: '/news',
     icon: 'mdi-newspaper'
+  },
+  {
+    title: '일손 모집',
+    to: '/helpers',
+    icon: 'mdi-account-group'
   }
 ]
 
