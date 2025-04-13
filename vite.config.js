@@ -35,13 +35,13 @@ export default defineConfig(({ mode }) => {
           secure: false,
           ws: true,
           onProxyReq: (proxyReq, req) => {
-            console.log(`[Dev Proxy] Request: ${req.method} ${req.url} -> ${backendUrl}${req.url}`);
+            console.log(`[Dev Proxy] Request: ${req.method} ${req.url} -> ${backendUrl}${req.url}`)
           },
           onProxyRes: (proxyRes) => {
-            console.log(`[Dev Proxy] Response: ${proxyRes.statusCode}`);
+            console.log(`[Dev Proxy] Response: ${proxyRes.statusCode}`)
           },
           onError: (err) => {
-            console.error('[Dev Proxy] Error:', err);
+            console.error('[Dev Proxy] Error:', err)
           }
         }
       } : {}

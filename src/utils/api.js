@@ -1,10 +1,17 @@
 import axios from 'axios';
 
-const isDevelopment = import.meta.env.MODE === 'development';
-const baseURL = isDevelopment ? '/api' : 'https://hs-api.imjoe24.com/api';
+const getBaseUrl = () => {
+  // 프로덕션 환경
+  if (import.meta.env.PROD) {
+    return 'https://hs-api.imjoe24.com/api'
+  }
+  
+  // 개발 환경
+  return '/api'
+}
 
 const api = axios.create({
-  baseURL,
+  baseURL: getBaseUrl(),
   timeout: 10000,
   headers: {
     'Content-Type': 'application/json',
