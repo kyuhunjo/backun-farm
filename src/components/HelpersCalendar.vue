@@ -238,8 +238,8 @@
       :loading="loading"
       @submit="handleEventSubmit"
       @close="() => {
-        showEventModal = false
-        editingEvent.value = null
+        showEventModal = false;
+        editingEvent = null;
       }"
     />
   </div>
