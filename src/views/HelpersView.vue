@@ -168,8 +168,11 @@ const fetchHelpers = async () => {
       showSnackbar('일손 모집 정보가 갱신되었습니다.')
     }
   } catch (error) {
-    console.error('API Error:', error)
-    showSnackbar('일손 모집 정보를 불러오는데 실패했습니다.', 'error')
+    console.error('일손 모집 데이터 로딩 실패:', {
+      message: error.message,
+      userMessage: error.userMessage
+    })
+    showSnackbar(error.userMessage || '일손 모집 정보를 불러오는데 실패했습니다.', 'error')
   } finally {
     isLoading.value = false
   }
@@ -189,8 +192,11 @@ const handleEventSubmit = async (eventData) => {
       await fetchHelpers() // 목록 새로고침
     }
   } catch (error) {
-    console.error('API Error:', error)
-    showSnackbar('일손 모집 저장에 실패했습니다.', 'error')
+    console.error('일손 모집 저장 실패:', {
+      message: error.message,
+      userMessage: error.userMessage
+    })
+    showSnackbar(error.userMessage || '일손 모집 저장에 실패했습니다.', 'error')
   } finally {
     isLoading.value = false
   }
