@@ -240,13 +240,42 @@ export const newsAPI = {
   }
 };
 
+// 일손모집 관련 API 함수들
+export const jobsAPI = {
+  // 전체 일손모집 목록 조회
+  getAllJobs() {
+    return api.get('/jobs')
+  },
+
+  // 일손모집 등록
+  createJob(jobData) {
+    return api.post('/jobs', jobData)
+  },
+
+  // 일손모집 수정
+  updateJob(id, jobData) {
+    return api.put(`/jobs/${id}`, jobData)
+  },
+
+  // 일손모집 상태 변경
+  updateJobStatus(id, status) {
+    return api.patch(`/jobs/${id}/status`, { status })
+  },
+
+  // 일손모집 삭제
+  deleteJob(id) {
+    return api.delete(`/jobs/${id}`)
+  }
+}
+
 const apiObject = {
   storeAPI,
   statsAPI,
   airQualityAPI,
   facilitiesAPI,
   weatherAPI,
-  newsAPI
+  newsAPI,
+  jobsAPI
 };
 
 export default apiObject;

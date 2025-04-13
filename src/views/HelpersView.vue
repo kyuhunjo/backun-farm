@@ -120,22 +120,22 @@
 
 <script setup>
 import { ref, computed } from 'vue'
+import { useApi } from '@/composables/useApi'
 import HelpersCalendar from '@/components/HelpersCalendar.vue'
 import HelpersEventModal from '@/components/HelpersEventModal.vue'
-import { api } from '@/services/api'
 import { useSnackbar } from '@/composables/useSnackbar'
 
+const { api } = useApi()
 const { snackbar, showSnackbar } = useSnackbar()
 const calendar = ref(null)
+const events = ref([])
 const isLoading = ref(false)
 const showEventModal = ref(false)
-const editingEvent = ref(null)
-const currentMonth = ref(new Date())
-const events = ref([])
 const showDeleteDialog = ref(false)
+const editingEvent = ref(null)
 const deletingEventId = ref(null)
+const currentMonth = ref(new Date())
 
-// 현재 월의 이벤트 개수를 계산하는 computed 속성
 const currentMonthEvents = computed(() => {
   return events.value.filter(event => {
     const eventStart = new Date(event.startDate)
@@ -144,7 +144,8 @@ const currentMonthEvents = computed(() => {
   })
 })
 
-// 월 변경 핸들러
+const totalEvents = computed(() => events.value.length)
+
 const handleMonthChange = (newMonth) => {
   currentMonth.value = newMonth
 }
@@ -152,7 +153,7 @@ const handleMonthChange = (newMonth) => {
 const fetchHelpers = async () => {
   try {
     isLoading.value = true
-    const response = await api.get('/jobs')
+    const response = await api.jobsAPI.getAllJobs()
     if (response.data.success && Array.isArray(response.data.data)) {
       events.value = response.data.data.map(job => ({
         id: job._id,
@@ -181,15 +182,18 @@ const fetchHelpers = async () => {
 const handleEventSubmit = async (eventData) => {
   isLoading.value = true
   try {
-    const endpoint = eventData.id ? `/jobs/${eventData.id}` : '/jobs'
-    const method = eventData.id ? 'put' : 'post'
+    let response
+    if (eventData.id) {
+      response = await api.jobsAPI.updateJob(eventData.id, eventData)
+    } else {
+      response = await api.jobsAPI.createJob(eventData)
+    }
     
-    const response = await api[method](endpoint, eventData)
     if (response.data.success) {
       showSnackbar(eventData.id ? '일손 모집이 수정되었습니다.' : '일손 모집이 등록되었습니다.')
       showEventModal.value = false
       editingEvent.value = null
-      await fetchHelpers() // 목록 새로고침
+      await fetchHelpers()
     }
   } catch (error) {
     console.error('일손 모집 저장 실패:', {
@@ -210,10 +214,10 @@ const resetEventModal = () => {
 const handleStatusUpdate = async ({ id, status }) => {
   isLoading.value = true
   try {
-    const response = await api.patch(`/jobs/${id}/status`, { status })
+    const response = await api.jobsAPI.updateJobStatus(id, status)
     if (response.data.success) {
       showSnackbar('모집 상태가 변경되었습니다.')
-      await fetchHelpers() // 목록 새로고침
+      await fetchHelpers()
     }
   } catch (error) {
     console.error('API Error:', error)
@@ -231,7 +235,7 @@ const handleDelete = async (id) => {
 const confirmDelete = async () => {
   try {
     isLoading.value = true
-    const response = await api.delete(`/jobs/${deletingEventId.value}`)
+    const response = await api.jobsAPI.deleteJob(deletingEventId.value)
     if (response.data.success) {
       showSnackbar('일손 모집이 삭제되었습니다.')
       await fetchHelpers()
