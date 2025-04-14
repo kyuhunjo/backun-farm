@@ -109,44 +109,11 @@ const getApkUrl = () => {
   return `${baseUrl}/app-debug.apk`
 }
 
-const handleDownload = async () => {
-  try {
-    const apkUrl = getApkUrl()
-    
-    if (/Android/i.test(navigator.userAgent)) {
-      // 안드로이드에서는 새 창에서 열기
-      window.open(apkUrl, '_blank')
-    } else {
-      // 다른 환경에서는 다운로드
-      const response = await fetch(apkUrl)
-      
-      if (!response.ok) {
-        throw new Error(`HTTP error! status: ${response.status}`)
-      }
-      
-      const blob = await response.blob()
-      const url = window.URL.createObjectURL(blob)
-      const link = document.createElement('a')
-      link.href = url
-      link.download = 'BaekunFarm.apk'
-      
-      // iOS Safari에서의 동작을 위한 추가 처리
-      if (/iPad|iPhone|iPod/.test(navigator.userAgent)) {
-        link.target = '_blank'
-        link.rel = 'noopener'
-      }
-      
-      document.body.appendChild(link)
-      link.click()
-      document.body.removeChild(link)
-      window.URL.revokeObjectURL(url)
-    }
-  } catch (error) {
-    console.error('앱 다운로드 중 오류가 발생했습니다:', error)
-    // 오류 발생 시 직접 다운로드 시도
-    const apkUrl = getApkUrl()
-    window.open(apkUrl, '_blank')
-  }
+const handleDownload = () => {
+  const apkUrl = getApkUrl()
+  
+  // 모든 환경에서 동일하게 새 창에서 직접 열기
+  window.location.href = apkUrl
 }
 
 // 화면 크기 변경 감지 함수
