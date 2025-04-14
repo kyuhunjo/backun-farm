@@ -101,21 +101,8 @@ const drawer = ref(false)
 const menuItems = MAIN_MENU
 const downloadMenu = DOWNLOAD_MENU
 
-const downloadApp = async () => {
-  try {
-    const response = await fetch('/app-debug.apk')
-    const blob = await response.blob()
-    const url = window.URL.createObjectURL(new Blob([blob], { type: 'application/vnd.android.package-archive' }))
-    const link = document.createElement('a')
-    link.href = url
-    link.download = 'farm-helper.apk'
-    document.body.appendChild(link)
-    link.click()
-    document.body.removeChild(link)
-    window.URL.revokeObjectURL(url)
-  } catch (error) {
-    console.error('앱 다운로드 중 오류가 발생했습니다:', error)
-  }
+const downloadApp = () => {
+  window.location.href = '/app-debug.apk'
 }
 
 // 화면 크기 변경 감지 함수
