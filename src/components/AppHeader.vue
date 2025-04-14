@@ -103,35 +103,32 @@ const drawer = ref(false)
 const menuItems = MAIN_MENU
 const downloadMenu = DOWNLOAD_MENU
 
+// APK 파일의 전체 URL 가져오기
+const getApkUrl = () => {
+  const baseUrl = import.meta.env.VITE_API_BASE_URL || window.location.origin
+  return `${baseUrl}/app-debug.apk`
+}
+
 const handleDownload = async () => {
   try {
+    const apkUrl = getApkUrl()
+    
     if (/Android/i.test(navigator.userAgent)) {
-      // 안드로이드에서는 직접 열기
-      window.location.href = '/app-debug.apk'
+      // 안드로이드에서는 새 창에서 열기
+      window.open(apkUrl, '_blank')
     } else {
       // 다른 환경에서는 다운로드
-      const response = await fetch('/app-debug.apk', {
-        headers: {
-          'Content-Type': 'application/vnd.android.package-archive'
-        }
-      })
+      const response = await fetch(apkUrl)
       
-      // response 헤더에서 Content-Disposition 확인
-      const contentDisposition = response.headers.get('Content-Disposition')
-      let filename = 'BaekunFarm.apk'
-      
-      if (contentDisposition && contentDisposition.includes('filename=')) {
-        const matches = /filename[^;=\n]*=((['"]).*?\2|[^;\n]*)/.exec(contentDisposition)
-        if (matches != null && matches[1]) {
-          filename = matches[1].replace(/['"]/g, '')
-        }
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`)
       }
       
       const blob = await response.blob()
       const url = window.URL.createObjectURL(blob)
       const link = document.createElement('a')
       link.href = url
-      link.download = filename
+      link.download = 'BaekunFarm.apk'
       
       // iOS Safari에서의 동작을 위한 추가 처리
       if (/iPad|iPhone|iPod/.test(navigator.userAgent)) {
@@ -142,16 +139,13 @@ const handleDownload = async () => {
       document.body.appendChild(link)
       link.click()
       document.body.removeChild(link)
-      
-      // Blob URL 정리
-      setTimeout(() => {
-        window.URL.revokeObjectURL(url)
-      }, 100)
+      window.URL.revokeObjectURL(url)
     }
   } catch (error) {
     console.error('앱 다운로드 중 오류가 발생했습니다:', error)
-    // 직접 다운로드 시도
-    window.location.href = '/app-debug.apk'
+    // 오류 발생 시 직접 다운로드 시도
+    const apkUrl = getApkUrl()
+    window.open(apkUrl, '_blank')
   }
 }
 
