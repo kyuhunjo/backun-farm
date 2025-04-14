@@ -118,7 +118,7 @@ const handleDownload = async () => {
       // 다른 환경에서는 다운로드
       const link = document.createElement('a')
       link.href = url
-      link.setAttribute('download', 'farm-helper.apk')
+      link.setAttribute('download', 'BaekunFarm.apk')
       document.body.appendChild(link)
       link.click()
       document.body.removeChild(link)
