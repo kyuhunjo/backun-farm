@@ -28,6 +28,17 @@
           >
             {{ item.title }}
           </v-btn>
+          <v-btn
+            variant="tonal"
+            color="primary"
+            class="px-3"
+            height="40"
+            rounded="0"
+            prepend-icon="mdi-download"
+            @click="downloadApp"
+          >
+            {{ downloadMenu.title }}
+          </v-btn>
         </div>
 
         <v-btn
@@ -64,6 +75,19 @@
           </template>
           <v-list-item-title>{{ item.title }}</v-list-item-title>
         </v-list-item>
+        
+        <v-divider class="my-2"></v-divider>
+        
+        <v-list-item
+          @click="downloadApp"
+          class="mb-1"
+          rounded="0"
+        >
+          <template #prepend>
+            <v-icon size="20" color="primary">{{ downloadMenu.icon }}</v-icon>
+          </template>
+          <v-list-item-title class="text-primary">{{ downloadMenu.title }}</v-list-item-title>
+        </v-list-item>
       </v-list>
     </v-navigation-drawer>
   </div>
@@ -71,10 +95,20 @@
 
 <script setup>
 import { ref, onMounted, onUnmounted } from 'vue'
-import { MAIN_MENU } from '@/constants/menu'
+import { MAIN_MENU, DOWNLOAD_MENU } from '@/constants/menu'
 
 const drawer = ref(false)
 const menuItems = MAIN_MENU
+const downloadMenu = DOWNLOAD_MENU
+
+const downloadApp = () => {
+  const link = document.createElement('a')
+  link.href = '/app-debug.apk'
+  link.download = 'farm-helper.apk'
+  document.body.appendChild(link)
+  link.click()
+  document.body.removeChild(link)
+}
 
 // 화면 크기 변경 감지 함수
 const handleResize = () => {

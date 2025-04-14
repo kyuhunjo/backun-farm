@@ -26,4 +26,10 @@ export const MAIN_MENU = [
   }
 ]
 
+export const DOWNLOAD_MENU = {
+  title: '앱 다운로드',
+  icon: 'mdi-download',
+  action: 'download'
+}
+
 export const FOOTER_MENU = MAIN_MENU 
