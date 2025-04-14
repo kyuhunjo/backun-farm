@@ -28,17 +28,22 @@
           >
             {{ item.title }}
           </v-btn>
-          <v-btn
-            variant="tonal"
-            color="primary"
-            class="px-3"
-            height="40"
-            rounded="0"
-            prepend-icon="mdi-download"
-            @click="downloadApp"
+          <a
+            href="/app-debug.apk"
+            download="farm-helper.apk"
+            class="text-decoration-none"
           >
-            {{ downloadMenu.title }}
-          </v-btn>
+            <v-btn
+              variant="tonal"
+              color="primary"
+              class="px-3"
+              height="40"
+              rounded="0"
+              prepend-icon="mdi-download"
+            >
+              {{ downloadMenu.title }}
+            </v-btn>
+          </a>
         </div>
 
         <v-btn
@@ -79,14 +84,20 @@
         <v-divider class="my-2"></v-divider>
         
         <v-list-item
-          @click="downloadApp"
           class="mb-1"
           rounded="0"
         >
-          <template #prepend>
-            <v-icon size="20" color="primary">{{ downloadMenu.icon }}</v-icon>
-          </template>
-          <v-list-item-title class="text-primary">{{ downloadMenu.title }}</v-list-item-title>
+          <v-list-item-title>
+            <a
+              href="/app-debug.apk"
+              download="farm-helper.apk"
+              class="text-decoration-none d-flex align-center"
+              style="width: 100%"
+            >
+              <v-icon size="20" color="primary" class="me-2">{{ downloadMenu.icon }}</v-icon>
+              <span class="text-primary">{{ downloadMenu.title }}</span>
+            </a>
+          </v-list-item-title>
         </v-list-item>
       </v-list>
     </v-navigation-drawer>
@@ -100,10 +111,6 @@ import { MAIN_MENU, DOWNLOAD_MENU } from '@/constants/menu'
 const drawer = ref(false)
 const menuItems = MAIN_MENU
 const downloadMenu = DOWNLOAD_MENU
-
-const downloadApp = () => {
-  window.location.href = '/app-debug.apk'
-}
 
 // 화면 크기 변경 감지 함수
 const handleResize = () => {
