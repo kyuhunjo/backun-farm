@@ -28,22 +28,17 @@
           >
             {{ item.title }}
           </v-btn>
-          <a
-            href="/app-debug.apk"
-            download="farm-helper.apk"
-            class="text-decoration-none"
+          <v-btn
+            variant="tonal"
+            color="primary"
+            class="px-3"
+            height="40"
+            rounded="0"
+            prepend-icon="mdi-download"
+            @click="handleDownload"
           >
-            <v-btn
-              variant="tonal"
-              color="primary"
-              class="px-3"
-              height="40"
-              rounded="0"
-              prepend-icon="mdi-download"
-            >
-              {{ downloadMenu.title }}
-            </v-btn>
-          </a>
+            {{ downloadMenu.title }}
+          </v-btn>
         </div>
 
         <v-btn
@@ -86,17 +81,13 @@
         <v-list-item
           class="mb-1"
           rounded="0"
+          @click="handleDownload"
         >
           <v-list-item-title>
-            <a
-              href="/app-debug.apk"
-              download="farm-helper.apk"
-              class="text-decoration-none d-flex align-center"
-              style="width: 100%"
-            >
+            <div class="d-flex align-center" style="width: 100%">
               <v-icon size="20" color="primary" class="me-2">{{ downloadMenu.icon }}</v-icon>
               <span class="text-primary">{{ downloadMenu.title }}</span>
-            </a>
+            </div>
           </v-list-item-title>
         </v-list-item>
       </v-list>
@@ -111,6 +102,36 @@ import { MAIN_MENU, DOWNLOAD_MENU } from '@/constants/menu'
 const drawer = ref(false)
 const menuItems = MAIN_MENU
 const downloadMenu = DOWNLOAD_MENU
+
+const handleDownload = async () => {
+  try {
+    const response = await fetch('/app-debug.apk')
+    const blob = await response.blob()
+    const url = window.URL.createObjectURL(
+      new Blob([blob], { type: 'application/vnd.android.package-archive' })
+    )
+    
+    if (/Android/i.test(navigator.userAgent)) {
+      // 안드로이드에서는 직접 열기
+      window.location.href = url
+    } else {
+      // 다른 환경에서는 다운로드
+      const link = document.createElement('a')
+      link.href = url
+      link.setAttribute('download', 'farm-helper.apk')
+      document.body.appendChild(link)
+      link.click()
+      document.body.removeChild(link)
+    }
+    
+    // Blob URL 정리
+    setTimeout(() => {
+      window.URL.revokeObjectURL(url)
+    }, 100)
+  } catch (error) {
+    console.error('앱 다운로드 중 오류가 발생했습니다:', error)
+  }
+}
 
 // 화면 크기 변경 감지 함수
 const handleResize = () => {
