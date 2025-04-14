@@ -105,31 +105,53 @@ const downloadMenu = DOWNLOAD_MENU
 
 const handleDownload = async () => {
   try {
-    const response = await fetch('/app-debug.apk')
-    const blob = await response.blob()
-    const url = window.URL.createObjectURL(
-      new Blob([blob], { type: 'application/vnd.android.package-archive' })
-    )
-    
     if (/Android/i.test(navigator.userAgent)) {
       // 안드로이드에서는 직접 열기
-      window.location.href = url
+      window.location.href = '/app-debug.apk'
     } else {
       // 다른 환경에서는 다운로드
+      const response = await fetch('/app-debug.apk', {
+        headers: {
+          'Content-Type': 'application/vnd.android.package-archive'
+        }
+      })
+      
+      // response 헤더에서 Content-Disposition 확인
+      const contentDisposition = response.headers.get('Content-Disposition')
+      let filename = 'BaekunFarm.apk'
+      
+      if (contentDisposition && contentDisposition.includes('filename=')) {
+        const matches = /filename[^;=\n]*=((['"]).*?\2|[^;\n]*)/.exec(contentDisposition)
+        if (matches != null && matches[1]) {
+          filename = matches[1].replace(/['"]/g, '')
+        }
+      }
+      
+      const blob = await response.blob()
+      const url = window.URL.createObjectURL(blob)
       const link = document.createElement('a')
       link.href = url
-      link.setAttribute('download', 'BaekunFarm.apk')
+      link.download = filename
+      
+      // iOS Safari에서의 동작을 위한 추가 처리
+      if (/iPad|iPhone|iPod/.test(navigator.userAgent)) {
+        link.target = '_blank'
+        link.rel = 'noopener'
+      }
+      
       document.body.appendChild(link)
       link.click()
       document.body.removeChild(link)
+      
+      // Blob URL 정리
+      setTimeout(() => {
+        window.URL.revokeObjectURL(url)
+      }, 100)
     }
-    
-    // Blob URL 정리
-    setTimeout(() => {
-      window.URL.revokeObjectURL(url)
-    }, 100)
   } catch (error) {
     console.error('앱 다운로드 중 오류가 발생했습니다:', error)
+    // 직접 다운로드 시도
+    window.location.href = '/app-debug.apk'
   }
 }
 
