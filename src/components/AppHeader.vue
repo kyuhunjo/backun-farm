@@ -103,17 +103,25 @@ const drawer = ref(false)
 const menuItems = MAIN_MENU
 const downloadMenu = DOWNLOAD_MENU
 
-// APK 파일의 전체 URL 가져오기
-const getApkUrl = () => {
-  const baseUrl = import.meta.env.VITE_API_BASE_URL || window.location.origin
-  return `${baseUrl}/app-debug.apk`
-}
+// APK 파일 import
+const apkPath = new URL('@/assets/app-debug.apk', import.meta.url).href
 
 const handleDownload = () => {
-  const apkUrl = getApkUrl()
+  // 안드로이드 환경 체크
+  const isAndroid = /Android/i.test(navigator.userAgent)
   
-  // 모든 환경에서 동일하게 새 창에서 직접 열기
-  window.location.href = apkUrl
+  // 안드로이드에서는 새 탭에서 열기 (설치 프로세스 시작)
+  if (isAndroid) {
+    window.open(apkPath, '_blank')
+  } else {
+    // 다른 환경에서는 다운로드 링크 생성
+    const link = document.createElement('a')
+    link.href = apkPath
+    link.download = 'BaekunFarm.apk'
+    document.body.appendChild(link)
+    link.click()
+    document.body.removeChild(link)
+  }
 }
 
 // 화면 크기 변경 감지 함수
