@@ -3,7 +3,7 @@ import 'vuetify/styles'
 import { createVuetify } from 'vuetify'
 import { aliases, mdi } from 'vuetify/iconsets/mdi'
 
-// 백운마을 테마 색상
+// 빛고을 로컬마켓 테마 색상
 const lightTheme = {
   dark: false,
   colors: {

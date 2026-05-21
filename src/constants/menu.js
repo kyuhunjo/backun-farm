@@ -5,12 +5,12 @@ export const MAIN_MENU = [
     icon: 'mdi-store'
   },
   {
-    title: '전라남도 대기질',
+    title: '광주 대기질',
     icon: 'mdi-weather-dust',
     to: '/air-quality'
   },
   {
-    title: '화순군 요양시설',
+    title: '광주 복지시설',
     icon: 'mdi-hospital-building',
     to: '/facilities'
   },

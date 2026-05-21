@@ -1,6 +1,6 @@
 <template>
   <v-container>
-    <h2 class="text-h4 font-heading mb-6">백운마을의 역사</h2>
+    <h2 class="text-h4 font-heading mb-6">빛고을 로컬마켓의 역사</h2>
     
     <v-timeline>
       <v-timeline-item
@@ -11,7 +11,7 @@
           <div class="text-h6 font-heading">1950년대</div>
         </template>
         <div class="text-body-1 font-body mb-4">
-          백운마을의 시작. 화순군 백운면에 첫 정착민들이 모여 마을을 형성하기 시작했습니다.
+          빛고을 로컬마켓의 시작. 광주광역시에 첫 정착민들이 모여 마을을 형성하기 시작했습니다.
         </div>
       </v-timeline-item>
 
@@ -67,7 +67,7 @@
     <v-card class="mt-8" elevation="1">
       <v-card-text class="font-body">
         <p class="text-body-1">
-          백운마을은 화순군의 대표적인 농촌마을로, 70여 년의 역사를 자랑합니다.
+          빛고을 로컬마켓은 광주의 로컬 정보 플랫폼로, 70여 년의 역사를 자랑합니다.
           전통적인 농업 방식을 계승하면서도 현대적인 기술을 접목하여 지속 가능한 농업을 실천하고 있습니다.
         </p>
         <p class="text-body-1 mt-4">

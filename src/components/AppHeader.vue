@@ -9,7 +9,7 @@
     >
       <v-container class="d-flex align-center px-4">
         <router-link to="/" class="text-decoration-none d-flex align-center">
-          <span class="site-title text-primary">백운마을</span>
+          <span class="site-title text-primary">빛고을 로컬마켓</span>
         </router-link>
 
         <v-spacer></v-spacer>

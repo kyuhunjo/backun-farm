@@ -10,7 +10,7 @@ export const marketData = {
       labels: ['1월', '2월', '3월', '4월', '5월', '6월'],
       datasets: [
         {
-          label: '백운마을',
+          label: '빛고을 로컬마켓',
           data: [12000, 13000, 12500, 14000, 15000, 14500],
           borderColor: 'rgb(75, 192, 192)',
           tension: 0.1
@@ -42,7 +42,7 @@ export const marketData = {
       labels: ['1월', '2월', '3월', '4월', '5월', '6월'],
       datasets: [
         {
-          label: '백운마을',
+          label: '빛고을 로컬마켓',
           data: [22000, 23000, 24000, 24500, 25000, 25000],
           borderColor: 'rgb(75, 192, 192)',
           tension: 0.1
@@ -74,7 +74,7 @@ export const marketData = {
       labels: ['1월', '2월', '3월', '4월', '5월', '6월'],
       datasets: [
         {
-          label: '백운마을',
+          label: '빛고을 로컬마켓',
           data: [16000, 16500, 17000, 17500, 18000, 18000],
           borderColor: 'rgb(75, 192, 192)',
           tension: 0.1

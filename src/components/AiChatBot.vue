@@ -9,7 +9,7 @@
       @click="toggleChat"
     >
       <v-icon size="20" class="chat-icon">{{ isOpen ? 'mdi-close' : 'mdi-message-text' }}</v-icon>
-      <span class="toggle-text text-body-2 ms-2">백운마을 도우미</span>
+      <span class="toggle-text text-body-2 ms-2">빛고을 로컬마켓 도우미</span>
     </v-btn>
 
     <!-- 챗봇 대화창 -->
@@ -32,7 +32,7 @@
           >
             <v-icon size="16">mdi-message-text</v-icon>
           </v-avatar>
-          <span class="chat-title ms-2">백운마을 도우미</span>
+          <span class="chat-title ms-2">빛고을 로컬마켓 도우미</span>
           <v-spacer></v-spacer>
           <v-btn
             icon="mdi-close"
@@ -121,7 +121,7 @@ export default {
       this.isOpen = !this.isOpen
       if (this.isOpen) {
         this.messages = [{
-          text: '안녕하세요! 화순군 청풍면 백운마을 도우미입니다. 무엇을 도와드릴까요?',
+          text: '안녕하세요! 광주광역시 빛고을 로컬마켓 도우미입니다. 무엇을 도와드릴까요?',
           isUser: false,
           time: this.getCurrentTime()
         }]

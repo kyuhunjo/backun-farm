@@ -12,7 +12,7 @@
                 <template v-slot:prepend>
                   <v-icon icon="mdi-map-marker"></v-icon>
                 </template>
-                <v-list-item-title class="font-body">전라남도 화순군 백운면 백운길 123</v-list-item-title>
+                <v-list-item-title class="font-body">광주광역시 서구 상무대로 1000</v-list-item-title>
               </v-list-item>
 
               <v-list-item>
@@ -36,7 +36,7 @@
           <v-card-title class="text-h5 font-heading">대중교통 이용</v-card-title>
           <v-card-text class="font-body">
             <h3 class="text-h6 font-heading mb-2">버스</h3>
-            <p class="text-body-1">화순터미널에서 백운면행 버스 이용 (약 40분 소요)</p>
+            <p class="text-body-1">광주종합버스터미널에서 백운면행 버스 이용 (약 40분 소요)</p>
             <ul class="mb-4">
               <li>첫차: 06:30</li>
               <li>막차: 19:30</li>
@@ -44,7 +44,7 @@
             </ul>
 
             <h3 class="text-h6 font-heading mb-2">택시</h3>
-            <p class="text-body-1">화순터미널에서 택시 이용 (약 30분 소요)</p>
+            <p class="text-body-1">광주종합버스터미널에서 택시 이용 (약 30분 소요)</p>
           </v-card-text>
         </v-card>
       </v-col>
@@ -55,18 +55,18 @@
           <v-card-text class="font-body">
             <h3 class="text-h6 font-heading mb-2">광주 방면</h3>
             <p class="text-body-1 mb-4">
-              광주 → 화순 → 백운면 방면 (약 1시간 소요)<br>
-              - 호남고속도로 → 화순IC → 지방도 22번
+              광주 → 광주 → 무등산 방면 (약 1시간 소요)<br>
+              - 호남고속도로 → 광주IC → 지방도 22번
             </p>
 
             <h3 class="text-h6 font-heading mb-2">순천 방면</h3>
             <p class="text-body-1 mb-4">
-              순천 → 보성 → 화순 → 백운면 방면 (약 1시간 30분 소요)<br>
+              순천 → 보성 → 광주 → 무등산 방면 (약 1시간 30분 소요)<br>
               - 남해고속도로 → 순천IC → 지방도 15번 → 지방도 22번
             </p>
 
             <div class="text-caption mt-4">
-              * 내비게이션 검색: "백운면사무소" 또는 "백운마을회관"
+              * 내비게이션 검색: "백운면사무소" 또는 "빛고을 로컬마켓회관"
             </div>
           </v-card-text>
         </v-card>
@@ -75,10 +75,10 @@
           <v-card-title class="text-h5 font-heading">주변 관광지</v-card-title>
           <v-card-text class="font-body">
             <ul>
-              <li>화순적벽 (차량 20분)</li>
+              <li>무등산 (차량 20분)</li>
               <li>운주사 (차량 30분)</li>
-              <li>화순 고인돌 공원 (차량 25분)</li>
-              <li>화순 천불천탑사진박물관 (차량 15분)</li>
+              <li>광주 국립아시아문화전당 (차량 25분)</li>
+              <li>광주 5.18기념공원 (차량 15분)</li>
             </ul>
           </v-card-text>
         </v-card>

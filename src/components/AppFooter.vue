@@ -7,10 +7,10 @@
             <v-col cols="12" sm="5" class="d-flex flex-column justify-start">
               <div class="d-flex align-center mb-3">
                 <v-icon icon="mdi-home-variant" color="white" size="large" class="me-2" />
-                <h3 class="text-h5 font-weight-bold white mb-0">백운마을</h3>
+                <h3 class="text-h5 font-weight-bold white mb-0">빛고을 로컬마켓</h3>
               </div>
               <p class="text-body-1 grey-lighten-3 mb-0">
-                전라남도 화순군 백운마을에 오신 것을 환영합니다.
+                광주광역시 빛고을 로컬마켓에 오신 것을 환영합니다.
               </p>
             </v-col>
 
@@ -32,7 +32,7 @@
             <v-col cols="12" sm="4" class="d-flex flex-column justify-start">
               <h4 class="text-h6 font-weight-bold white mb-4">연락처</h4>
               <div class="contact-info grey-lighten-3">
-                <p class="mb-1">전라남도 화순군 청풍면</p>
+                <p class="mb-1">광주광역시 청풍면</p>
                 <p>010-5507-2725</p>
               </div>
             </v-col>

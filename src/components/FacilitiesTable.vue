@@ -3,7 +3,7 @@
     <div class="d-flex flex-column mb-6">
       <div class="d-flex align-center justify-space-between mb-2">
         <div class="d-flex align-center">
-          <h2 class="text-h5 font-weight-bold mb-0">화순군 요양시설</h2>
+          <h2 class="text-h5 font-weight-bold mb-0">광주 복지시설</h2>
         </div>
         <v-btn
           prepend-icon="mdi-refresh"
@@ -16,7 +16,7 @@
         </v-btn>
       </div>
       <p class="text-subtitle-1 text-medium-emphasis mb-0">
-        화순군 요양시설 정보를 조회할 수 있습니다.
+        광주 복지시설 정보를 조회할 수 있습니다.
       </p>
     </div>
 

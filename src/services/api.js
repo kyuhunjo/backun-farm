@@ -3,7 +3,7 @@ import axios from 'axios'
 const getBaseUrl = () => {
   // 프로덕션 환경
   if (import.meta.env.PROD) {
-    return import.meta.env.VITE_API_BASE_URL || 'https://api.backun-farm.com/api'
+    return import.meta.env.VITE_API_BASE_URL || 'https://hs-api.imjoe24.com/api'
   }
   
   // 개발 환경
