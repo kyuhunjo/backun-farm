@@ -1,294 +1,37 @@
 <template>
-  <div>
-    <v-app-bar
-      color="white"
-      app
-      elevation="1"
-      rounded="0"
-      height="64"
-    >
-      <v-container class="d-flex align-center px-4">
-        <router-link to="/" class="text-decoration-none d-flex align-center">
-          <span class="site-title text-primary">빛고을 로컬마켓</span>
-        </router-link>
-
-        <v-spacer></v-spacer>
-
-        <!-- Desktop Navigation -->
-        <div class="d-none d-md-flex align-center gap-2">
-          <v-btn
-            v-for="(item, index) in menuItems"
-            :key="index"
-            :to="item.to"
-            variant="text"
-            class="px-3"
-            color="grey-darken-3"
-            height="40"
-            rounded="0"
-          >
-            {{ item.title }}
-          </v-btn>
-          <v-btn
-            variant="tonal"
-            color="primary"
-            class="px-3"
-            height="40"
-            rounded="0"
-            prepend-icon="mdi-download"
-            @click="handleDownload"
-          >
-            {{ downloadMenu.title }}
-          </v-btn>
-        </div>
-
-        <v-btn
-          icon
-          @click.stop="drawer = !drawer"
-          class="d-md-none"
-          variant="text"
-          rounded="0"
-        >
-          <v-icon>mdi-menu</v-icon>
+  <v-app-bar color="white" app elevation="1">
+    <v-container class="d-flex align-center">
+      <router-link to="/" class="text-decoration-none d-flex align-center">
+        <span class="site-title text-primary font-weight-bold text-h5">빛고을 로컬마켓</span>
+      </router-link>
+      <v-spacer></v-spacer>
+      <div class="d-none d-md-flex">
+        <v-btn v-for="item in menuItems" :key="item.title" :to="item.to"
+               variant="text" class="px-3" color="grey-darken-3">
+          {{ item.title }}
         </v-btn>
-      </v-container>
-    </v-app-bar>
-
-    <!-- Mobile Navigation Drawer -->
-    <v-navigation-drawer
-      v-model="drawer"
-      location="right"
-      temporary
-      :transition="'fade'"
-      class="pa-4"
-      width="280"
-    >
-      <v-list nav class="side-menu">
-        <v-list-item
-          v-for="(item, index) in menuItems"
-          :key="index"
-          :to="item.to"
-          class="mb-1"
-          rounded="0"
-        >
-          <template #prepend>
-            <v-icon size="20" color="grey-darken-1">{{ item.icon }}</v-icon>
-          </template>
-          <v-list-item-title>{{ item.title }}</v-list-item-title>
-        </v-list-item>
-        
-        <v-divider class="my-2"></v-divider>
-        
-        <v-list-item
-          class="mb-1"
-          rounded="0"
-          @click="handleDownload"
-        >
-          <v-list-item-title>
-            <div class="d-flex align-center" style="width: 100%">
-              <v-icon size="20" color="primary" class="me-2">{{ downloadMenu.icon }}</v-icon>
-              <span class="text-primary">{{ downloadMenu.title }}</span>
-            </div>
-          </v-list-item-title>
-        </v-list-item>
-      </v-list>
-    </v-navigation-drawer>
-  </div>
+      </div>
+      <v-btn icon @click.stop="drawer = !drawer" class="d-md-none" variant="text">
+        <v-icon>mdi-menu</v-icon>
+      </v-btn>
+    </v-container>
+  </v-app-bar>
+  <v-navigation-drawer v-model="drawer" location="right" temporary width="280">
+    <v-list>
+      <v-list-item v-for="item in menuItems" :key="item.title" :to="item.to">
+        <v-list-item-title>{{ item.title }}</v-list-item-title>
+      </v-list-item>
+    </v-list>
+  </v-navigation-drawer>
 </template>
 
-<script setup>
-import { ref, onMounted, onUnmounted } from 'vue'
-import { MAIN_MENU, DOWNLOAD_MENU } from '@/constants/menu'
-
-const drawer = ref(false)
-const menuItems = MAIN_MENU
-const downloadMenu = DOWNLOAD_MENU
-
-// APK 파일 import
-const apkPath = new URL('@/assets/app-debug.apk', import.meta.url).href
-
-const handleDownload = () => {
-  // 안드로이드 환경 체크
-  const isAndroid = /Android/i.test(navigator.userAgent)
-  
-  // 안드로이드에서는 새 탭에서 열기 (설치 프로세스 시작)
-  if (isAndroid) {
-    window.open(apkPath, '_blank')
-  } else {
-    // 다른 환경에서는 다운로드 링크 생성
-    const link = document.createElement('a')
-    link.href = apkPath
-    link.download = 'BaekunFarm.apk'
-    document.body.appendChild(link)
-    link.click()
-    document.body.removeChild(link)
-  }
+<script>
+import { MAIN_MENU } from "@/constants/menu"
+export default {
+  name: "AppHeader",
+  data: () => ({ drawer: false, menuItems: MAIN_MENU })
 }
-
-// 화면 크기 변경 감지 함수
-const handleResize = () => {
-  if (window.innerWidth >= 768) { // md 브레이크포인트
-    drawer.value = false
-  }
-}
-
-// 컴포넌트 마운트 시 이벤트 리스너 등록
-onMounted(() => {
-  window.addEventListener('resize', handleResize)
-})
-
-// 컴포넌트 언마운트 시 이벤트 리스너 제거
-onUnmounted(() => {
-  window.removeEventListener('resize', handleResize)
-})
 </script>
-
 <style scoped>
-.site-title {
-  font-size: 1.4rem;
-  font-weight: 700;
-  letter-spacing: -0.5px;
-  background: linear-gradient(45deg, rgb(var(--v-theme-primary)), #1976D2);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-}
-
-.v-list-item {
-  transition: background-color 0.2s ease;
-}
-
-.v-list-item:hover {
-  background-color: rgba(var(--v-theme-primary), 0.1);
-}
-
-.v-list-item--active {
-  background-color: rgba(var(--v-theme-primary), 0.1) !important;
-  color: rgb(var(--v-theme-primary)) !important;
-}
-
-.v-list-item--active:hover {
-  background-color: rgba(var(--v-theme-primary), 0.15) !important;
-}
-
-@media (max-width: 600px) {
-  .site-title {
-    font-size: 1.2rem;
-  }
-}
-
-/* 드롭다운 메뉴 스타일 */
-.v-menu > .v-overlay__content {
-  border-radius: 0;
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1) !important;
-}
-
-.v-list-item-title {
-  font-size: 0.95rem !important;
-}
-
-.gap-2 {
-  gap: 0.5rem;
-}
-
-.v-list-group__items {
-  margin-right: 0;
-  padding: 0;
-}
-
-.v-list-group__items .v-list-item {
-  padding-inline: 0;
-}
-
-.v-list-group .v-list-group__items .v-list-item__content {
-  padding: 0;
-}
-
-.v-list-group .v-list-item__content {
-  padding: 0;
-}
-
-.v-list-item {
-  padding: 0;
-}
-
-.v-navigation-drawer .v-list {
-  padding-right: 0;
-}
-
-:deep(.v-list-item__prepend) {
-  margin-right: 4px !important;
-  padding-right: 0 !important;
-  min-width: 24px !important;
-  max-width: 24px !important;
-}
-
-:deep(.v-list-item__append) {
-  margin-left: 4px !important;
-}
-
-:deep(.v-list-item__content) {
-  padding-left: 0 !important;
-}
-
-:deep(.v-list-item) {
-  min-height: 32px !important;
-  padding: 0 !important;
-}
-
-:deep(.v-list-item__spacer) {
-  width: 0 !important;
-}
-
-:deep(.v-list-group__items) {
-  padding-left: 24px !important;
-}
-
-.side-menu {
-  --list-item-height: 36px;
-}
-
-.side-menu :deep(.v-list-item) {
-  min-height: var(--list-item-height) !important;
-  padding: 0 !important;
-  opacity: 0.85;
-}
-
-.side-menu :deep(.v-list-item--active) {
-  opacity: 1;
-  background: transparent !important;
-  color: rgb(var(--v-theme-primary)) !important;
-}
-
-.side-menu :deep(.v-list-item--active) .v-icon {
-  color: rgb(var(--v-theme-primary)) !important;
-}
-
-.side-menu :deep(.v-list-item:hover) {
-  opacity: 1;
-  background: rgba(var(--v-theme-primary), 0.04) !important;
-}
-
-.side-menu :deep(.v-list-group__items) {
-  padding-left: 28px !important;
-  margin-top: 2px;
-  margin-bottom: 2px;
-}
-
-.side-menu :deep(.v-list-item__prepend) {
-  margin-right: 8px !important;
-}
-
-.side-menu :deep(.v-list-item__content) {
-  font-size: 0.95rem;
-  letter-spacing: -0.3px;
-  padding: 0 !important;
-}
-
-.side-menu :deep(.text-subtitle-2) {
-  font-size: 0.9rem !important;
-  opacity: 0.9;
-}
-
-.side-menu :deep(.v-list-group__items .v-list-item) {
-  min-height: 32px !important;
-}
-</style> 
+.site-title { font-size: 1.25rem; }
+</style>

@@ -97,22 +97,18 @@ export const statsAPI = {
 };
 
 // Groq API 설정
-export const groqApi = axios.create({
-  baseURL: 'https://api.groq.com/openai/v1',
   headers: {
     'Content-Type': 'application/json',
     'Authorization': `Bearer ${import.meta.env.VITE_GROQ_API_KEY || ''}`
   }
 });
 
-export const chatWithAI = async (message, context = []) => {
   try {
     if (!import.meta.env.VITE_GROQ_API_KEY) {
       throw new Error('Groq API 키가 설정되지 않았습니다.');
     }
 
     // 시스템 프롬프트 설정
-    const systemMessage = {
       role: "system",
       content: `당신은 광주광역시 로컬푸드 및 생활정보 플랫폼 "빛고을 로컬마켓"의 AI 도우미입니다.
 
@@ -130,7 +126,6 @@ export const chatWithAI = async (message, context = []) => {
 
     // 대화 히스토리 포맷팅
     const messages = [
-      systemMessage,
       ...context.map(msg => ({
         role: msg.isUser ? "user" : "assistant",
         content: msg.text
@@ -141,7 +136,6 @@ export const chatWithAI = async (message, context = []) => {
       }
     ];
 
-    const response = await groqApi.post('/chat/completions', {
       model: 'llama-3.2-90b-vision-preview',
       messages: messages,
       temperature: 0.7,
@@ -234,7 +228,6 @@ export const weatherAPI = {
 };
 
 // 농림축산식품부 뉴스 관련 API 함수들
-export const newsAPI = {
   // 뉴스 목록 조회
   getNews: async () => {
     try {
@@ -248,7 +241,6 @@ export const newsAPI = {
 };
 
 // 일손모집 관련 API 함수들
-export const jobsAPI = {
   // 전체 일손모집 목록 조회
   getAllJobs() {
     return api.get('/jobs')
@@ -281,8 +273,21 @@ const apiObject = {
   airQualityAPI,
   facilitiesAPI,
   weatherAPI,
-  newsAPI,
-  jobsAPI
 };
 
 export default apiObject;
+// 광주 빅데이터 포털 API
+export const gjBigdataAPI = {
+  // 생활인구 데이터
+  getLifePopulation() {
+    return axios.get("https://bigdata.gwangju.go.kr/usr/main/ajxStatisticsData.rd")
+  }
+}
+
+export default {
+  storeAPI: typeof storeAPI !== "undefined" ? storeAPI : {},
+  airQualityAPI: typeof airQualityAPI !== "undefined" ? airQualityAPI : {},
+  facilitiesAPI: typeof facilitiesAPI !== "undefined" ? facilitiesAPI : {},
+  weatherAPI: typeof weatherAPI !== "undefined" ? weatherAPI : {},
+  gjBigdataAPI
+}
